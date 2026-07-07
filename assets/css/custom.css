@@ -2,13 +2,19 @@
 
 /* Larger publication preview images, like classic al-folio */
 @media (min-width: 576px) {
+  ol.bibliography > li > .row {
+    align-items: center;
+  }
   ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 30%;
-    max-width: 30%;
+    flex: 0 0 36%;
+    max-width: 36%;
   }
   ol.bibliography > li > .row > .col-sm-8 {
-    flex: 0 0 66%;
-    max-width: 66%;
+    flex: 0 0 62%;
+    max-width: 62%;
+  }
+  ol.bibliography .preview {
+    width: 100%;
   }
 }
 
