@@ -1,0 +1,18 @@
+/* Site customizations for shijie's homepage */
+
+/* Larger publication preview images, like classic al-folio */
+@media (min-width: 576px) {
+  ol.bibliography > li > .row > .col-sm-2 {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+  ol.bibliography > li > .row > .col-sm-8 {
+    flex: 0 0 66%;
+    max-width: 66%;
+  }
+}
+
+/* Keep the venue badge compact above the wider preview */
+ol.bibliography abbr.badge {
+  max-width: 6rem;
+}

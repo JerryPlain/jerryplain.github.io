@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
 subtitle: MSc student in Robotics, Cognition, Intelligence at <a href='https://www.tum.de/en/'>TU Munich</a>.
 
