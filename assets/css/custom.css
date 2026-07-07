@@ -16,3 +16,22 @@
 ol.bibliography abbr.badge {
   max-width: 6rem;
 }
+
+/* Bold my name in publication author lists */
+ol.bibliography .author > em {
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Social icons under the profile photo: one compact centered row, Guandao-style */
+.profile .social {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+.profile .social .contact-icons {
+  font-size: 2rem;
+  white-space: nowrap;
+}
+.profile .social .contact-icons a {
+  padding: 0 0.35rem;
+}
