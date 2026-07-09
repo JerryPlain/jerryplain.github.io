@@ -1,9 +1,44 @@
 {% if site.mapmyvisitors_id %}
-  <div class="visitor-map" style="margin-top: 2rem; text-align: center;">
-    <script
-      type="text/javascript"
-      id="mapmyvisitors"
-      src="//mapmyvisitors.com/map.js?d={{ site.mapmyvisitors_id }}&cl=ffffff&w=a"
-    ></script>
+  <!-- Compact visitor badge: count via busuanzi, links to the MapMyVisitors stats page. -->
+  <!-- busuanzi reveals the container only after the count loads, so the badge simply -->
+  <!-- stays hidden if the counter service is unreachable. -->
+  <style>
+    .visitor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.1rem 0.75rem;
+      border: 1px solid var(--global-divider-color);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: var(--global-text-color-light);
+      text-decoration: none !important;
+    }
+    .visitor-badge:hover {
+      color: var(--global-theme-color);
+      border-color: var(--global-theme-color);
+    }
+  </style>
+  <div class="visitor-badge-wrap" style="text-align: center; margin-top: 0.6rem;">
+    <span id="busuanzi_container_site_uv" style="display: none">
+      <a
+        class="visitor-badge"
+        href="https://mapmyvisitors.com/web/{{ site.mapmyvisitors_profile }}"
+        target="_blank"
+        rel="noopener nofollow"
+        title="See where visitors come from"
+      >
+        <i class="fa-solid fa-globe" aria-hidden="true"></i>
+        <span id="busuanzi_value_site_uv"></span>
+        visitors
+      </a>
+    </span>
+  </div>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <!-- Off-screen MapMyVisitors tracker: keeps recording visitor locations for the -->
+  <!-- stats page linked above, without showing the bulky map on the page itself. -->
+  <div class="visitor-map-tracker" aria-hidden="true" style="position: fixed; left: -9999px; top: 0; width: 220px; height: 120px; overflow: hidden;">
+    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d={{ site.mapmyvisitors_id }}&cl=ffffff&w=a"></script>
   </div>
 {% endif %}

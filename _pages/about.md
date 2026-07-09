@@ -34,5 +34,3 @@ My research lies at the intersection of **robotics**, **multimodal learning**, a
 Ultimately, I hope to build foundation models and world models that enable robots to understand, predict, and safely interact with the physical world.
 
 I am actively looking for **PhD positions** and open to **remote research collaborations**. If our research interests align, feel free to reach out to me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
-
-{% include visitor_map.liquid %}
