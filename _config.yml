@@ -113,6 +113,11 @@ analytics:
   pirsch: # your Pirsch analytics site ID (length 32 characters)
   openpanel: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
 
+# Visitor map widget (MapMyVisitors, the still-maintained successor to ClustrMaps).
+# Sign up at https://mapmyvisitors.com/, register your site URL, and paste the
+# "d=" token from the generated embed code below. Rendered by _includes/visitor_map.liquid.
+mapmyvisitors_id: hZELT6UZPNZlGfmkobvHKg1hDwHCZ1z1rSwv-G4MW8g # stats: https://mapmyvisitors.com/web/1c6fd
+
 # For Google Search Console, see https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag
 google_site_verification: # your google-site-verification ID (Google Search Console)
 bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)

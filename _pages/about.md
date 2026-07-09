@@ -23,10 +23,16 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I am currently a research assistant at the [CV4DT Group](https://cv4dt.github.io/) at the University of Cambridge, where I work with Dr. Zhengyang Ling and [Dr. Guangming Wang](https://guangmingw.github.io/) on vision-supervised digital twins for soft robotics control. I also work at TU Munich's [AIR Lab](https://www.ce.cit.tum.de/en/air/home/), advised by [Mohammadhossein Malmir](https://www.ce.cit.tum.de/index.php?id=11155) and Prof. Alois Knoll, and at the [Tresp Lab](https://tresp-lab.github.io/) at LMU Munich, advised by Gengyuan Zhang and [Prof. Volker Tresp](https://scholar.google.com/citations?user=xIJHTUwAAAAJ), on multimodal learning and world model representation learning for surgical video understanding. Previously, I was a research intern at the Huawei Munich Research Center, advised by [Dr. Krishna Kanth Nakka](https://krishnakanthnakka.github.io/), where I focused on privacy alignment and agentic evaluation for large language models. I obtained my Bachelor's degree in Electrical Engineering and Automation from Changsha University of Science and Technology.
+I am a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I am currently a Research Assistant at the [CV4DT Group](https://cv4dt.github.io/) at the University of Cambridge, where I work with Dr. Zhengyang Ling and [Dr. Guangming Wang](https://guangmingw.github.io/) on vision-supervised digital twins for soft robotic manipulation and control. I am also a Research Assistant at TU Munich's [AIR Lab](https://www.ce.cit.tum.de/en/air/home/), advised by [Mohammadhossein Malmir](https://www.ce.cit.tum.de/index.php?id=11155) and Prof. Alois Knoll, and at the [Tresp Lab](https://tresp-lab.github.io/) at LMU Munich, advised by Gengyuan Zhang and [Prof. Volker Tresp](https://scholar.google.com/citations?user=xIJHTUwAAAAJ), where I work on multimodal learning and world model representation learning for surgical video understanding. Previously, I was a research intern at the Huawei Munich Research Center, advised by [Dr. Krishna Kanth Nakka](https://krishnakanthnakka.github.io/), where I focused on privacy alignment and agentic evaluation for large language models. I obtained my Bachelor's degree in Electrical Engineering and Automation from Changsha University of Science and Technology.
 
-My research lies at the intersection of **robotics**, **embodied AI**, and **foundation models**. My long-term goal is to develop general-purpose robotic agents capable of robust perception, reasoning, and manipulation in open-world environments. I am currently interested in:
+My research lies at the intersection of **robotics**, **multimodal learning**, and **foundation models**. My long-term goal is to develop intelligent robotic systems capable of perceiving, predicting, reasoning about, and interacting autonomously with complex physical environments, with a particular focus on medical and surgical robotics. My current research interests include:
 
-- **Multimodal Learning** for robotic perception.
-- **World Models** for prediction, reasoning, and planning.
-- **Foundation Models for Robotics** for scalable and generalizable robot learning.
+- **Multimodal Learning** for robot perception and surgical scene understanding.
+- **World Models** for prediction, planning, and autonomous robot decision-making.
+- **Foundation Models for Robotics** for scalable, data-efficient, and generalizable robot learning.
+
+Ultimately, I hope to build foundation models and world models that enable robots to understand, predict, and safely interact with the physical world.
+
+I am actively looking for **PhD positions** and open to **remote research collaborations**. If our research interests align, feel free to reach out to me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
+
+{% include visitor_map.liquid %}

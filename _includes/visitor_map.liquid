@@ -1,0 +1,9 @@
+{% if site.mapmyvisitors_id %}
+  <div class="visitor-map" style="margin-top: 2rem; text-align: center;">
+    <script
+      type="text/javascript"
+      id="mapmyvisitors"
+      src="//mapmyvisitors.com/map.js?d={{ site.mapmyvisitors_id }}&cl=ffffff&w=a"
+    ></script>
+  </div>
+{% endif %}
