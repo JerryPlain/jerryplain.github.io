@@ -35,7 +35,7 @@ cv:
         location: Cambridge, UK
         start_date: 2026-04
         end_date: present
-        summary: Vision-supervised system identification for soft robotics, advised by Dr. Zhengyang Ling and Dr. Guangming Wang.
+        summary: Vision-supervised system identification for soft robotics.
         highlights:
           - Developed a vision-supervised digital twin of a three-finger soft gripper in SoMo/PyBullet, using four calibrated RGB cameras and CoTracker3 to reconstruct 3D deformation trajectories for soft-body system identification.
           - Identified a 2-axis soft-body dynamics model via Levenberg–Marquardt optimization and established a unified benchmark for systematic comparison of model-based and learning-based control strategies.
@@ -45,7 +45,7 @@ cv:
         location: Munich, Germany
         start_date: 2025-10
         end_date: present
-        summary: LLM-guided reward shaping for safety-oriented robot reinforcement learning, advised by Prof. Alois Knoll and Prof. Nassir Navab.
+        summary: LLM-guided reward shaping for safety-oriented robot reinforcement learning.
         highlights:
           - Proposed ReGoRL, a tool-augmented agentic framework based on hierarchical potential-based reward shaping for safety-oriented robot reinforcement learning.
 
@@ -54,7 +54,7 @@ cv:
         location: Munich, Germany
         start_date: 2025-10
         end_date: 2026-04
-        summary: Privacy alignment and jailbreak evaluation for large language models, advised by Dr. Krishna Kanth Nakka.
+        summary: Privacy alignment and jailbreak evaluation for large language models.
         highlights:
           - Conducted a data-centric study of privacy alignment by constructing controlled dataset variants and identifying predictive data signals that govern the privacy–over-refusal–utility tradeoff in LLMs.
           - Proposed a tool-augmented agentic framework for LLM privacy jailbreak evaluation that reconciles conflicting guard and judge signals through adaptive, multi-tool investigation.
@@ -64,7 +64,7 @@ cv:
         location: Munich, Germany
         start_date: 2025-04
         end_date: present
-        summary: Agentic multimodal evaluation and automated agentic system design, advised by Prof. Volker Tresp.
+        summary: Agentic multimodal evaluation and automated agentic system design.
         highlights:
           - Built an agentic evaluation framework for surgical multimodal understanding, integrating bounded retrieval, visual grounding, and trajectory-level analysis for tool-using MLLM agents.
           - Proposed a PSO-inspired framework for automated agentic system generation that optimizes agent functionality and collaboration through language-driven exploration.
