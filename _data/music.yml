@@ -22,6 +22,22 @@
 #   lyrics   lyrics to share; multiple songs allowed, each: song + lines
 # -----------------------------------------------------------------------------
 
+- genre: Art Pop
+  desc: Pop with the edges left strange — soaring vocals, bold production, zero fear.
+  items:
+    - title: Sunset
+      artist: Caroline Polachek
+      type: single
+      release: "2023-01"
+      cover: assets/img/music/sunset.png
+      note: Flamenco guitars and a golden-hour rush — from Desire, I Want to Turn Into You.
+      lyrics:
+        - song: Sunset
+          lines: |
+            Fiery red, forever fearless
+            And in your arms, a warm horizon
+            Don't look back, let's ride away
+
 - genre: Pop
   desc: Big hooks and feelings worn on the sleeve — the songs I keep on repeat.
   items:
