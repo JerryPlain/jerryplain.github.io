@@ -38,6 +38,21 @@
             And in your arms, a warm horizon
             Don't look back, let's ride away
 
+- genre: R&B / Soul
+  desc: Velvet vocals, live strings, and heartbreak delivered with a big-band swagger.
+  items:
+    - title: Click Clack Symphony
+      artist: RAYE, Hans Zimmer
+      type: single
+      release: "2026-03"
+      cover: assets/img/music/click-clack-symphony.png
+      note: A heel-click beat under a full Zimmer orchestra — from This Music May Contain Hope.
+      lyrics:
+        - song: Click Clack Symphony
+          lines: |
+            The cold never lasts, my darling
+            It just teaches the heart how to burn
+
 - genre: Pop
   desc: Big hooks and feelings worn on the sleeve — the songs I keep on repeat.
   items:
