@@ -18,8 +18,16 @@
       color: var(--global-theme-color);
       border-color: var(--global-theme-color);
     }
+    /* Reserve the badge's slot so revealing the count doesn't shift the layout. */
+    .visitor-badge-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 1.7rem;
+      margin-top: 0.6rem;
+    }
   </style>
-  <div class="visitor-badge-wrap" style="text-align: center; margin-top: 0.6rem;">
+  <div class="visitor-badge-wrap">
     <span id="busuanzi_container_site_uv" style="display: none">
       <a
         class="visitor-badge"
