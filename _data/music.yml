@@ -1,35 +1,44 @@
 # -----------------------------------------------------------------------------
-# 我想分享的单曲 / 专辑  ·  Music I want to share
+# Music I want to share
 #
-# 每加一张专辑或单曲，就在下面复制一段模板填好。页面会按「发行年月」自动分组、
-# 从新到旧排列，不用手动改页面代码。
+# Structure: group by GENRE (each with a one-line blurb). Inside a genre, every
+# entry is tagged as an album or a single via `type`, and the page automatically
+# splits them into an "Albums" area and a "Singles" area.
 #
-# 字段说明：
-#   title    专辑名 / 单曲名（必填）
-#   artist   歌手 / 乐队（必填）
-#   type     album（专辑）或 single（单曲）
-#   release  发行年月，格式 "YYYY-MM"，例如 "2020-07"（必填，用于分组和排序；记得加引号）
-#   cover    封面图路径，放在 assets/img/music/ 下（可选，不填就用文字占位）
-#   note     一句话推荐 / 心情（可选）
-#   lyrics   想分享的歌词，可以放好几首歌，每首：
-#              song  歌名
-#              lines 歌词，支持多行
+# Add a new genre : copy a whole top-level block (genre + desc + items).
+# Add a release    : copy one entry under an existing genre's `items`.
+#
+# Genre fields:
+#   genre  name of the genre, e.g. Pop / Indie Folk / R&B   (required)
+#   desc   one line describing the genre                    (optional)
+#   items  list of releases in this genre
+# Release fields:
+#   title    album or single name                           (required)
+#   artist   artist / band                                  (required)
+#   type     album | single  (decides which area it lands in)  (required)
+#   release  release month as "YYYY-MM", e.g. "2020-07"     (keep the quotes)
+#   cover    cover image under assets/img/music/            (optional)
+#   note     one-line recommendation / mood                 (optional)
+#   lyrics   lyrics to share; multiple songs allowed, each: song + lines
 # -----------------------------------------------------------------------------
 
-- title: folklore
-  artist: Taylor Swift
-  type: album
-  release: "2020-07"
-  cover: assets/img/music/folklore.png
-  note: 阴天、旧木头和松针味道的一张专辑。
-  lyrics:
-    - song: seven
-      lines: |
-        Sweet tea in the summer
-        Cross your heart, won't tell no other
-        And though I can't recall your face
-        I still got love for you
-    - song: seven
-      lines: |
-        We'll move to India together
-        Pass down like folk songs, our love lasts so long
+- genre: Pop
+  desc: Big hooks and feelings worn on the sleeve — the songs I keep on repeat.
+  items:
+    - title: folklore
+      artist: Taylor Swift
+      type: album
+      release: "2020-07"
+      cover: assets/img/music/folklore.png
+      note: A record that smells like grey skies, old wood, and pine.
+      lyrics:
+        - song: seven
+          lines: |
+            Sweet tea in the summer
+            Cross your heart, won't tell no other
+            And though I can't recall your face
+            I still got love for you
+        - song: seven
+          lines: |
+            We'll move to India together
+            Pass down like folk songs, our love lasts so long
