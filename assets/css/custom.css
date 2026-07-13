@@ -242,9 +242,9 @@ ol.bibliography .author > em {
 }
 .home-hero__tagline {
   color: #fff;
-  font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
   font-weight: 300;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   max-width: 44ch;
   margin: 0 auto;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
