@@ -1,7 +1,31 @@
 ---
 layout: default
 ---
-<div class="post">
+{% comment %} Full-screen hero header. Swap the background image via the `.home-hero` rule in custom.css. {% endcomment %}
+<section class="home-hero">
+  <div class="home-hero__overlay"></div>
+  <div class="home-hero__content">
+    <img
+      class="home-hero__avatar"
+      src="{{ '/assets/img/prof_pic.jpg' | relative_url | bust_file_cache }}"
+      alt="{{ site.first_name }} {{ site.last_name }}"
+    >
+    <div class="home-hero__name">{{ site.first_name }} {{ site.last_name }}</div>
+    {% if page.subtitle %}
+      <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
+    {% endif %}
+    {% if page.social %}
+      <div class="home-hero__social">
+        <div class="contact-icons">{% social_links %}</div>
+      </div>
+    {% endif %}
+  </div>
+  <a class="home-hero__scroll" href="#about-content" aria-label="Scroll to content">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </a>
+</section>
+
+<div class="post" id="about-content">
   <header class="post-header">
     <h1 class="post-title">
       {% if site.title == 'blank' %}
@@ -35,11 +59,7 @@ layout: default
             cache_bust=true
           %}
         {% endif %}
-        {% if page.social %}
-          <div class="social">
-            <div class="contact-icons">{% social_links %}</div>
-          </div>
-        {% endif %}
+        {% comment %} Social icons moved into the hero pill above {% endcomment %}
         {% include visitor_map.liquid %}
         {% if page.profile.more_info %}
           <div class="more-info">{{ page.profile.more_info }}</div>
