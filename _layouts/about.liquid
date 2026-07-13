@@ -7,10 +7,9 @@ layout: default
   <div class="home-hero__content">
     <img
       class="home-hero__avatar"
-      src="{{ '/assets/img/prof_pic.jpg' | relative_url | bust_file_cache }}"
+      src="{{ '/assets/img/head.jpg' | relative_url | bust_file_cache }}"
       alt="{{ site.first_name }} {{ site.last_name }}"
     >
-    <div class="home-hero__name">{{ site.first_name }} {{ site.last_name }}</div>
     {% if page.subtitle %}
       <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
     {% endif %}

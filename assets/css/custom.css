@@ -261,21 +261,14 @@ ol.bibliography .author > em {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   margin-bottom: 1.5rem;
 }
-.home-hero__name {
-  color: #fff;
-  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  margin-bottom: 0.6rem;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
-}
 .home-hero__tagline {
   color: #fff;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1.35rem, 2.8vw, 1.9rem);
   font-weight: 300;
+  letter-spacing: 0.04em;
   max-width: 44ch;
   margin: 0 auto;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 /* Melt the hero's bottom edge into the page background (both themes) */
 .home-hero::after {
@@ -365,4 +358,21 @@ html[data-theme='dark'][data-theme='dark'] {
 /* Breathing room between the hero and the intro text */
 #about-content {
   padding-top: 3rem;
+}
+
+/* ===== Section rhythm on the home page ===== */
+/* Clear air before each section heading (News, Selected Publications) */
+.post article > h2 {
+  margin-top: 4rem;
+  margin-bottom: 1.4rem;
+}
+/* Space between news entries */
+.news table.table th,
+.news table.table td {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+/* Space between publication entries */
+ol.bibliography > li {
+  margin-bottom: 2.25rem;
 }
