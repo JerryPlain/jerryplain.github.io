@@ -26,21 +26,7 @@ layout: default
 </section>
 
 <div class="post" id="about-content">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">
-          {{- site.first_name }}
-          {{ site.middle_name }}
-          {{ site.last_name -}}
-        </span>
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
-
+  {% comment %} Name and tagline live in the hero above; no repeated header here {% endcomment %}
   <article>
     {% if page.profile %}
       <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">

@@ -2,12 +2,10 @@
 layout: about
 title: About
 permalink: /
-subtitle: MSc student in Robotics, Cognition, Intelligence at <a href='https://www.tum.de/en/'>TU Munich</a>.
+subtitle: Fiery Red, Forever Fearless
 
 profile:
   align: right
-  image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
@@ -23,7 +21,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I am currently a Research Assistant at the [CV4DT Group](https://cv4dt.github.io/) at the University of Cambridge, where I develop vision-supervised digital twins for soft robotic manipulation and control. I am also a Research Assistant at TU Munich's [AIR Lab](https://www.ce.cit.tum.de/en/air/home/), where I work on agentic hierarchical reward shaping for robot reinforcement learning, and at the [Tresp Lab](https://tresp-lab.github.io/) at LMU Munich, where I study multimodal learning and world model representation learning for surgical video understanding. Previously, I was a research intern at the [Huawei Munich Research Center](https://huaweiresearchcentergermanyaustria.teamtailor.com/departments/trustworthy-technology-and-engineering-laboratory-heisenberg-research-center), where I focused on privacy alignment and agentic evaluation for large language models. I obtained my Bachelor's degree in Electrical Engineering and Automation from Changsha University of Science and Technology.
+Hi there! I am Shijie Zhou. I am a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I am currently a Research Assistant at the [CV4DT Group](https://cv4dt.github.io/) at the University of Cambridge, where I develop vision-supervised digital twins for soft robotic manipulation and control. I am also a Research Assistant at TU Munich's [AIR Lab](https://www.ce.cit.tum.de/en/air/home/), where I work on agentic hierarchical reward shaping for robot reinforcement learning, and at the [Tresp Lab](https://tresp-lab.github.io/) at LMU Munich, where I study multimodal learning and world model representation learning for surgical video understanding. Previously, I was a research intern at the [Huawei Munich Research Center](https://huaweiresearchcentergermanyaustria.teamtailor.com/departments/trustworthy-technology-and-engineering-laboratory-heisenberg-research-center), where I focused on privacy alignment and agentic evaluation for large language models. I obtained my Bachelor's degree in Electrical Engineering and Automation from Changsha University of Science and Technology.
 
 My research lies at the intersection of **robotics**, **robot manipulation**, and **embodied interaction**. My long-term goal is to develop intelligent robotic systems that can perceive, reason about, and autonomously interact with complex real-world environments. My current research interests include:
 
