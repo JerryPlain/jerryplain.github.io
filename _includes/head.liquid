@@ -104,6 +104,8 @@
     id="highlight_theme_dark"
   >
   <script>
+    // Default to dark on first visit; the toggle still lets visitors switch.
+    if (!localStorage.getItem('theme')) localStorage.setItem('theme', 'dark');
     initTheme();
   </script>
 {% endif %}

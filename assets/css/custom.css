@@ -262,6 +262,7 @@ ol.bibliography .author > em {
   margin-bottom: 1.5rem;
 }
 .home-hero__name {
+  color: #fff;
   font-size: clamp(1.9rem, 4.5vw, 2.8rem);
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -269,19 +270,31 @@ ol.bibliography .author > em {
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 .home-hero__tagline {
+  color: #fff;
   font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 300;
   max-width: 44ch;
   margin: 0 auto;
-  opacity: 0.94;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+}
+/* Melt the hero's bottom edge into the page background (both themes) */
+.home-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9rem;
+  background: linear-gradient(180deg, transparent, var(--global-bg-color));
+  pointer-events: none;
+  z-index: 1;
 }
 .home-hero__scroll {
   position: absolute;
   bottom: 1.75rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1;
+  z-index: 2; /* above the bottom fade */
   color: rgba(255, 255, 255, 0.85);
   display: inline-flex;
   animation: home-hero-bob 2s ease-in-out infinite;
@@ -335,4 +348,21 @@ ol.bibliography .author > em {
 .home-hero__social .contact-icons a:hover {
   color: #fff;
   transform: translateY(-2px);
+}
+
+/* ===== Premium charcoal dark palette =====
+   Doubled attribute selector beats the theme's html[data-theme=dark]
+   (main.css loads after this file). Not pure black: layered warm greys. */
+html[data-theme='dark'][data-theme='dark'] {
+  --global-bg-color: #17181c; /* page ground: deep charcoal */
+  --global-card-bg-color: #1e2026; /* raised surfaces, one step lighter */
+  --global-code-bg-color: #22242b;
+  --global-text-color: #e4e4e1; /* soft off-white, not #fff */
+  --global-text-color-light: #9b9ca3;
+  --global-divider-color: #2b2d34;
+}
+
+/* Breathing room between the hero and the intro text */
+#about-content {
+  padding-top: 3rem;
 }
