@@ -208,11 +208,9 @@ ol.bibliography .author > em {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-image: url("/assets/img/iceland.jpg");
+  background-image: url("/assets/img/stars.jpg");
   background-size: cover;
-  /* Shift the frame so the church spire clears the avatar on its left.
-     First value: lower % pulls the church further left. */
-  background-position: 34% 50%;
+  background-position: center;
   background-attachment: fixed; /* parallax feel */
   overflow: hidden;
 }
