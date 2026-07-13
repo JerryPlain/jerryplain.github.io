@@ -29,174 +29,209 @@ ol.bibliography .author > em {
   font-style: normal;
 }
 
-/* Music page: genres (with a blurb) -> Albums / Singles areas -> cards + lyrics */
-.music-genre {
-  margin-top: 3.25rem;
+/* ===== Music page: "liner notes" — genre chapters, album-art glow, lyric quotes ===== */
+.mg {
+  margin-top: 4.5rem;
 }
-.music-genre:first-child {
-  margin-top: 1.5rem;
+.mg:first-of-type {
+  margin-top: 2.5rem;
 }
-.music-genre-name {
+.mg__name {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.05rem;
   font-weight: 800;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
-.music-genre-name::before {
+.mg__name::before {
   content: "";
-  display: inline-block;
   width: 0.3rem;
   height: 1.05em;
-  margin-right: 0.65rem;
-  vertical-align: -0.12em;
   border-radius: 3px;
   background-color: var(--global-theme-color);
 }
-.music-genre-desc {
+.mg__desc {
   margin: 0.55rem 0 0;
-  max-width: 42rem;
+  max-width: 44rem;
   color: var(--global-text-color-light);
   font-size: 1.02rem;
   font-style: italic;
   line-height: 1.6;
 }
-.music-subhead {
+
+/* Albums / Singles eyebrow with a hairline and a count pill */
+.mg__label {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  margin: 2rem 0 1.1rem;
+  margin: 2.3rem 0 1.2rem;
   color: var(--global-text-color-light);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-.music-subhead::after {
+.mg__label::after {
   content: "";
   flex: 1 1 auto;
   height: 1px;
   background-color: var(--global-divider-color);
 }
-.music-count {
+.mg__label i {
+  font-style: normal;
   padding: 0.05rem 0.55rem;
   border-radius: 999px;
   background-color: rgba(128, 128, 128, 0.16);
-  color: var(--global-text-color-light);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.7rem;
   letter-spacing: 0.02em;
 }
-.music-list {
+
+.rel-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-.music-card {
-  display: flex;
   gap: 1.6rem;
-  padding: 1.6rem;
-  border: 1px solid var(--global-divider-color);
-  border-radius: 16px;
+}
+.rel {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
   background-color: var(--global-card-bg-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
-.music-card:hover {
-  border-color: var(--global-theme-color);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.09);
-  transform: translateY(-2px);
+.rel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
 }
-.music-cover-wrap {
+/* Soft colored halo derived from the album art, blooming behind the cover */
+.rel__glow {
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  transform: translateY(-50%) scale(1.45);
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) saturate(1.6);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.rel__grid {
+  position: relative;
+  display: flex;
+  gap: 1.8rem;
+  padding: 1.8rem;
+}
+.rel__cover {
   flex: 0 0 auto;
-}
-.music-cover {
-  width: 132px;
-  height: 132px;
-  border-radius: 12px;
+  width: 150px;
+  height: 150px;
+  border-radius: 14px;
   object-fit: cover;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
 }
-.music-cover--placeholder {
+.rel__cover--ph {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--global-theme-color), var(--global-hover-color, #b509ac));
+  background: linear-gradient(135deg, var(--global-theme-color), #b509ac);
   color: #fff;
-  font-size: 3.2rem;
+  font-size: 3.4rem;
   font-weight: 800;
 }
-.music-body {
+.rel__body {
   flex: 1 1 auto;
   min-width: 0;
 }
-.music-title {
+.rel__title {
   margin: 0;
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 700;
   line-height: 1.15;
+  letter-spacing: -0.01em;
 }
-.music-artist {
-  margin-top: 0.25rem;
-  color: var(--global-text-color);
-  font-size: 0.98rem;
+.rel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  color: var(--global-text-color-light);
+  font-size: 0.92rem;
   font-weight: 500;
 }
-.music-date {
-  margin-top: 0.15rem;
-  color: var(--global-text-color-light);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.rel__meta .dot {
+  opacity: 0.5;
+}
+.rel__meta .date {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.music-note {
-  margin: 0.7rem 0 0;
+.rel__note {
+  margin: 0.8rem 0 0;
   color: var(--global-text-color-light);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   line-height: 1.6;
 }
-.music-lyrics {
+.rel__lyrics {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.2rem;
+  gap: 1.3rem;
+  margin-top: 1.4rem;
 }
-.music-lyric {
+.lyric {
+  position: relative;
   margin: 0;
-  padding: 0.9rem 1.1rem 0.95rem 1.3rem;
-  border-left: 2px solid var(--global-theme-color);
-  border-radius: 0 10px 10px 0;
-  background-color: rgba(128, 128, 128, 0.06);
+  padding-left: 1.35rem;
 }
-.music-lyric blockquote {
+.lyric::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--global-theme-color);
+  opacity: 0.7;
+}
+.lyric blockquote {
   margin: 0;
-  padding: 0;
   border: none;
+  padding: 0;
   color: var(--global-text-color);
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   font-style: italic;
-  line-height: 1.8;
+  line-height: 1.85;
 }
-.music-lyric figcaption {
-  margin-top: 0.6rem;
+.lyric figcaption {
+  margin-top: 0.55rem;
   color: var(--global-theme-color);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
 @media (max-width: 576px) {
-  .music-card {
+  .rel__grid {
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 1.2rem;
   }
-  .music-cover,
-  .music-cover--placeholder {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
+  .rel__cover {
+    width: 120px;
+    height: 120px;
+  }
+  .rel__glow {
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.4);
   }
 }
 
