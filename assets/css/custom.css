@@ -277,8 +277,14 @@ html.home-hero-page body.fixed-top-nav {
 html.home-hero-page .container.mt-5 {
   margin-top: 0 !important;
 }
+/* tailwind.css ships `@layer components { .mt-5 { margin-top: 3rem !important } }`.
+   A layered !important beats our unlayered !important regardless of specificity,
+   so the rule above can't win and .mt-5 keeps its 48px top margin — that gap was
+   showing a band of page background (white in light theme, near-black in dark)
+   above the hero. Cancel the 48px by pulling the hero up the same amount so the
+   image sits flush to the very top, under the transparent navbar. */
 html.home-hero-page .home-hero {
-  margin-top: 0 !important;
+  margin-top: -3rem !important;
 }
 /* Widen the navbar to full width so the name hugs the far left and the
    nav cluster the far right (content below stays in the 930px column). */
