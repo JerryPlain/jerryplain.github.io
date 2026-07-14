@@ -2,7 +2,7 @@
 layout: page
 permalink: /music/
 title: Music
-description: A place to share some of my favorite music of all time — for music has always had the power to leave a mark on the soul.
+description: A place to share some of my all-time favorite music—songs that have left a lasting mark on my soul.
 nav: true
 nav_order: 4
 ---
