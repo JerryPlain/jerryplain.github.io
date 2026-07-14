@@ -283,12 +283,69 @@ ol.bibliography .author > em {
 }
 .home-hero__tagline {
   color: #fff;
-  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
-  font-weight: 300;
-  letter-spacing: 0.05em;
+  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-size: clamp(1.1rem, 1.9vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
   max-width: 44ch;
   margin: 0 auto;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+}
+
+/* ===== Home: transparent navbar over the hero, name top-left (zhou-xian style) ===== */
+/* Let the hero reach the very top, under the fixed navbar */
+html.home-hero-page body.fixed-top-nav {
+  padding-top: 0;
+}
+html.home-hero-page .container.mt-5 {
+  margin-top: 0 !important;
+}
+html.home-hero-page .home-hero {
+  margin-top: 0;
+}
+/* Transparent navbar while sitting over the hero image */
+html.home-hero-page #navbar {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+html.home-hero-page #navbar .nav-link,
+html.home-hero-page #navbar .navbar-brand,
+html.home-hero-page #navbar #light-toggle i,
+html.home-hero-page #navbar #search-toggle .nav-link {
+  color: #fff !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+html.home-hero-page #navbar .icon-bar {
+  background-color: #fff !important;
+}
+/* The name, top-left, in an elegant serif; push the nav links to the right */
+html.home-hero-page #navbar .navbar-brand {
+  margin-right: auto;
+}
+.home-hero-brand {
+  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+/* Once scrolled past the hero, restore the solid navbar */
+html.home-hero-page.nav-solid #navbar {
+  background: var(--global-bg-color) !important;
+  box-shadow: 0 1px 0 var(--global-divider-color);
+}
+html.home-hero-page.nav-solid #navbar .nav-link,
+html.home-hero-page.nav-solid #navbar .navbar-brand,
+html.home-hero-page.nav-solid #navbar #light-toggle i,
+html.home-hero-page.nav-solid #navbar #search-toggle .nav-link {
+  color: var(--global-text-color) !important;
+  text-shadow: none;
+}
+html.home-hero-page.nav-solid #navbar .icon-bar {
+  background-color: var(--global-text-color) !important;
 }
 /* Melt the hero's bottom edge into the page background (both themes) */
 .home-hero::after {

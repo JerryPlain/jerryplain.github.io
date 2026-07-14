@@ -1,3 +1,11 @@
+<!-- Mark the home page early so the hero navbar renders transparent without a flash -->
+<script>
+  (function () {
+    var p = location.pathname.replace(/index\.html$/, "");
+    if (p === "/") document.documentElement.classList.add("home-hero-page");
+  })();
+</script>
+
 <!-- Metadata, OpenGraph and Schema.org -->
 {% include metadata.liquid %}
 

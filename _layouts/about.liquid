@@ -62,3 +62,26 @@ layout: default
     {% endif %}
   </article>
 </div>
+
+{% comment %} Inject the name as a navbar brand (al-folio hides it on home) and toggle
+   the navbar between transparent-over-hero and solid-on-scroll. {% endcomment %}
+<script>
+  (function () {
+    var nav = document.getElementById("navbar");
+    var container = nav && nav.querySelector(".container");
+    if (container && !container.querySelector(".navbar-brand")) {
+      var a = document.createElement("a");
+      a.className = "navbar-brand home-hero-brand";
+      a.href = "{{ '/' | relative_url }}";
+      a.textContent = "{{ site.first_name }} {{ site.last_name }}";
+      container.insertBefore(a, container.firstChild);
+    }
+    var root = document.documentElement;
+    var onScroll = function () {
+      root.classList.toggle("nav-solid", window.scrollY > window.innerHeight - 80);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  })();
+</script>
