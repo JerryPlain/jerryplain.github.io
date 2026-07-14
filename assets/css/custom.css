@@ -298,9 +298,12 @@ html.home-hero-page #navbar #search-toggle .nav-link {
 html.home-hero-page #navbar .icon-bar {
   background-color: #fff !important;
 }
-/* The name, top-left, in an elegant serif; push the nav links to the right */
+/* The name, top-left, in an elegant serif; push the nav cluster to the far right */
 html.home-hero-page #navbar .navbar-brand {
-  margin-right: auto;
+  margin-right: 0;
+}
+html.home-hero-page #navbar .navbar-collapse-main {
+  margin-left: auto;
 }
 .home-hero-brand {
   font-family: Georgia, "Times New Roman", "Songti SC", serif;
