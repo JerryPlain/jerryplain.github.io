@@ -21,7 +21,6 @@ nav_order: 4
         <div class="rel-list">
           {% for item in list %}
           <article class="rel">
-            {% if item.cover %}<div class="rel__glow" style="background-image: url('{{ item.cover | relative_url }}')"></div>{% endif %}
             <div class="rel__grid">
               {% if item.cover %}
               <img class="rel__cover" src="{{ item.cover | relative_url }}" alt="{{ item.title }} cover" loading="lazy" />
