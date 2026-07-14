@@ -2,7 +2,7 @@
 layout: page
 permalink: /music/
 title: Music
-description: Albums and singles worth sharing — and the lyrics I can't skip.
+description: A place to share some of my favorite music of all time — for music has always had the power to leave a mark on the soul.
 nav: true
 nav_order: 4
 ---
