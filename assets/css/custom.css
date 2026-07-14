@@ -295,13 +295,20 @@ ol.bibliography .author > em {
 /* ===== Home: transparent navbar over the hero, name top-left (zhou-xian style) ===== */
 /* Let the hero reach the very top, under the fixed navbar */
 html.home-hero-page body.fixed-top-nav {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 html.home-hero-page .container.mt-5 {
   margin-top: 0 !important;
 }
 html.home-hero-page .home-hero {
-  margin-top: 0;
+  margin-top: 0 !important;
+}
+/* Widen the navbar to full width so the name hugs the far left and the
+   nav cluster the far right (content below stays in the 930px column). */
+html.home-hero-page #navbar > .container {
+  max-width: none;
+  padding-left: 2.2rem;
+  padding-right: 2.2rem;
 }
 /* Transparent navbar while sitting over the hero image */
 html.home-hero-page #navbar {
