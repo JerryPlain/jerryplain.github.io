@@ -226,7 +226,8 @@ ol.bibliography .author > em {
   text-align: center;
   background-image: url("/assets/img/stars.jpg");
   background-size: cover;
-  background-position: center;
+  /* Raise the Milky Way band so it sits behind the navbar (not dark sky) */
+  background-position: center 22%;
   background-attachment: fixed; /* parallax feel */
   overflow: hidden;
 }
@@ -301,6 +302,15 @@ html.home-hero-page #navbar #light-toggle i,
 html.home-hero-page #navbar #search-toggle .nav-link {
   color: #fff !important;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+/* Unify the navbar font with the serif brand + motto */
+html.home-hero-page #navbar .nav-link,
+html.home-hero-page #navbar .navbar-brand {
+  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+}
+/* Nudge the whole navbar row up a touch */
+html.home-hero-page #navbar > .container {
+  transform: translateY(-3px);
 }
 html.home-hero-page #navbar .icon-bar {
   background-color: #fff !important;
