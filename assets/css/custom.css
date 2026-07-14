@@ -269,6 +269,7 @@ ol.bibliography .author > em {
   position: relative;
   z-index: 1;
   padding: 6rem 1.5rem 2rem; /* top padding clears the fixed navbar */
+  transform: translateY(-5vh); /* nudge the whole block up from center */
   color: #fff;
 }
 .home-hero__avatar {
