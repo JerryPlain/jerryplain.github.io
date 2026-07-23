@@ -56,6 +56,18 @@
 - genre: Pop
   desc: Big hooks and feelings worn on the sleeve — the songs I keep on repeat.
   items:
+    - title: Wildflower
+      artist: Billie Eilish
+      type: single
+      release: "2024-05"
+      cover: assets/img/music/wildflower.png
+      note: A jealous ache sung barely above a whisper — from Hit Me Hard and Soft.
+      lyrics:
+        - song: Wildflower
+          lines: |
+            Feels like a fever (like a fever), like I'm burning alive (burning alive)
+            Like a sign
+            Did I cross the line?
     - title: folklore
       artist: Taylor Swift
       type: album
