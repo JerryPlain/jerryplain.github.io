@@ -18,7 +18,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi there! I am Shijie Zhou. I am a Master's student in Robotics, Cognition, Intelligence at the Technical University of Munich (TUM). I am currently a Research Assistant at TUM's AIR Lab, where I work on agentic hierarchical reward shaping for robot reinforcement learning, and at the Tresp Lab at LMU Munich, where I study multimodal learning and world model representation learning for surgical video understanding. Previously, I was a research intern at the Huawei Munich Research Center, where I focused on privacy alignment and agentic evaluation for large language models.
+Hi there! I am Shijie Zhou. I am a Master's student in Robotics, Cognition, Intelligence at the Technical University of Munich (TUM). I am currently a Research Assistant at TUM's AIR Lab, where I work on agentic hierarchical reward shaping for robot reinforcement learning, and at the Tresp Lab at LMU Munich, where I investigate self-evolving agents and multimodal learning for surgical video understanding. Previously, I was a research intern at the Huawei Munich Research Center, where I focused on privacy alignment and agentic evaluation for large language models.
 
 My research lies at the intersection of **robotics**, **robot manipulation**, and **embodied interaction**. My long-term goal is to develop intelligent robotic systems that can perceive, reason about, and autonomously interact with complex real-world environments. My current research interests include:
 
