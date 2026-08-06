@@ -7,7 +7,7 @@ first_name: Shijie
 middle_name:
 last_name: Zhou
 contact_note: >
-  The best way to reach me is via email.
+  The best way to reach me is via <a href="mailto:jerryplain@outlook.com">email</a>.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Personal academic website of Shijie Zhou — robotics, embodied AI, and foundation models.
 footer_text: >

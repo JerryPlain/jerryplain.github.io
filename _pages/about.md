@@ -28,4 +28,4 @@ My research lies at the intersection of **robotics**, **robot manipulation**, an
 
 Ultimately, I hope to build foundation models that enable robots to understand, reason about, and safely interact with the physical world.
 
-If our research interests align, please feel free to contact me at jerryplain@outlook.com for collaborations.
+If our research interests align, please feel free to contact me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com) for collaborations.
