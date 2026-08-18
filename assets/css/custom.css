@@ -1,21 +1,40 @@
 /* Site customizations for shijie's homepage */
 
-/* Larger publication preview images, like classic al-folio */
+/* ===== Publications: project-page style (large teaser left, clean text right,
+   plain accent links instead of outlined buttons — jianghanxiao/barron style) ===== */
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
     align-items: center;
+    flex-wrap: nowrap;
   }
   ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 36%;
-    max-width: 36%;
+    flex: 0 0 34%;
+    max-width: 34%;
   }
   ol.bibliography > li > .row > .col-sm-8 {
     flex: 0 0 62%;
     max-width: 62%;
+    padding-left: 1.6rem;
   }
   ol.bibliography .preview {
     width: 100%;
   }
+}
+
+/* Teaser image: soft rounded card with a gentle lift on hover */
+ol.bibliography img.preview {
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1) !important;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+ol.bibliography > li:hover img.preview {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16) !important;
+}
+html[data-theme="dark"] ol.bibliography img.preview {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
 }
 
 /* Keep the venue badge compact above the wider preview */
@@ -23,10 +42,64 @@ ol.bibliography abbr.badge {
   max-width: 6rem;
 }
 
+/* Title: the anchor of each entry */
+.publications ol.bibliography .title {
+  font-size: 1.13rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.2rem;
+  color: var(--global-text-color);
+}
+
 /* Bold my name in publication author lists */
 ol.bibliography .author > em {
   font-weight: 700;
   font-style: normal;
+}
+.publications ol.bibliography .author {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  margin-bottom: 0.1rem;
+}
+
+/* Venue line: quiet italics */
+.publications ol.bibliography .periodical {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--global-text-color-light);
+  margin-bottom: 0;
+}
+
+/* Links: strip the button chrome, render as spaced accent text links */
+.publications ol.bibliography .links {
+  margin-top: 0.45rem;
+}
+.publications ol.bibliography .links a.btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 1.15rem 0 0 !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  color: var(--global-theme-color) !important;
+}
+.publications ol.bibliography .links a.btn:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Real links (with an href) get a small outward arrow; Abs/Bib toggles do not */
+.publications ol.bibliography .links a.btn[href]::after {
+  content: " \2197";
+  font-size: 0.75em;
+  vertical-align: 8%;
+}
+/* Award pill keeps a hint of emphasis without the button frame */
+.publications ol.bibliography .links a.award.btn {
+  color: #b8860b !important;
+  font-style: italic;
 }
 
 /* Social icons under the profile photo: one compact centered row, Guandao-style */
@@ -69,12 +142,7 @@ ol.bibliography .author > em {
   position: absolute;
   inset: 0;
   /* Light gradient — the starry image is already dark; just enough for text contrast */
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.12) 0%,
-    rgba(0, 0, 0, 0.22) 55%,
-    rgba(0, 0, 0, 0.45) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.22) 55%, rgba(0, 0, 0, 0.45) 100%);
 }
 .home-hero__content {
   position: relative;
@@ -249,7 +317,9 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
 .home-hero__social .contact-icons a {
   color: rgba(255, 255, 255, 0.88);
   padding: 0.15rem 0.45rem;
-  transition: color 0.15s ease, transform 0.15s ease;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 .home-hero__social .contact-icons a:hover {
   color: #fff;
@@ -259,7 +329,7 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
 /* ===== Premium charcoal dark palette =====
    Doubled attribute selector beats the theme's html[data-theme=dark]
    (main.css loads after this file). Not pure black: layered warm greys. */
-html[data-theme='dark'][data-theme='dark'] {
+html[data-theme="dark"][data-theme="dark"] {
   --global-bg-color: #17181c; /* page ground: deep charcoal */
   --global-card-bg-color: #1e2026; /* raised surfaces, one step lighter */
   --global-code-bg-color: #22242b;
@@ -287,5 +357,5 @@ html[data-theme='dark'][data-theme='dark'] {
 }
 /* Space between publication entries */
 ol.bibliography > li {
-  margin-bottom: 2.25rem;
+  margin-bottom: 2.5rem;
 }

@@ -20,7 +20,9 @@ layout: default
     {% endif %}
   </div>
   <a class="home-hero__scroll" href="#about-content" aria-label="Scroll to content">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
   </a>
 </section>
 
@@ -63,25 +65,27 @@ layout: default
   </article>
 </div>
 
-{% comment %} Inject the name as a navbar brand (al-folio hides it on home) and toggle
-   the navbar between transparent-over-hero and solid-on-scroll. {% endcomment %}
+{% comment %}
+  Inject the name as a navbar brand (al-folio hides it on home) and toggle
+  the navbar between transparent-over-hero and solid-on-scroll.
+{% endcomment %}
 <script>
   (function () {
-    var nav = document.getElementById("navbar");
-    var container = nav && nav.querySelector(".container");
-    if (container && !container.querySelector(".navbar-brand")) {
-      var a = document.createElement("a");
-      a.className = "navbar-brand home-hero-brand";
+    var nav = document.getElementById('navbar');
+    var container = nav && nav.querySelector('.container');
+    if (container && !container.querySelector('.navbar-brand')) {
+      var a = document.createElement('a');
+      a.className = 'navbar-brand home-hero-brand';
       a.href = "{{ '/' | relative_url }}";
-      a.textContent = "{{ site.first_name }} {{ site.last_name }}";
+      a.textContent = '{{ site.first_name }} {{ site.last_name }}';
       container.insertBefore(a, container.firstChild);
     }
     var root = document.documentElement;
     var onScroll = function () {
-      root.classList.toggle("nav-solid", window.scrollY > window.innerHeight - 80);
+      root.classList.toggle('nav-solid', window.scrollY > window.innerHeight - 80);
     };
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
   })();
 </script>
