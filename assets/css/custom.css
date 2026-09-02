@@ -22,13 +22,15 @@
 }
 
 /* Teaser image: soft rounded card with a gentle lift on hover.
-   Fixed 4:3 frame with cover-cropping so every entry's thumbnail sits in the
-   same proportions next to its text block, whatever the source figure's shape. */
+   Fixed 16:9 white card; the full figure is scaled to fit inside (never
+   cropped) — wide pipeline figures letterbox invisibly against the white
+   ground, and clicking zooms to the complete original. */
 ol.bibliography img.preview {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
   background: #fff;
+  padding: 0.45rem;
   border-radius: 0.6rem;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1) !important;
   transition:
