@@ -21,8 +21,14 @@
   }
 }
 
-/* Teaser image: soft rounded card with a gentle lift on hover */
+/* Teaser image: soft rounded card with a gentle lift on hover.
+   Fixed 4:3 frame with cover-cropping so every entry's thumbnail sits in the
+   same proportions next to its text block, whatever the source figure's shape. */
 ol.bibliography img.preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #fff;
   border-radius: 0.6rem;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1) !important;
   transition:
@@ -126,6 +132,22 @@ ol.bibliography .author > em {
   background-position: center 22%;
   background-attachment: fixed; /* parallax feel */
   overflow: hidden;
+}
+/* Stardust canvas: above the darkening overlay, below the content (z 1).
+   Starts invisible; home-effects.js adds .is-on after the first frame so the
+   stars fade in instead of popping. Decorative only — never catches clicks. */
+.home-hero__fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.6s ease 0.25s;
+  pointer-events: none;
+}
+.home-hero__fx.is-on {
+  opacity: 1;
 }
 .home-hero__overlay {
   position: absolute;
@@ -347,4 +369,22 @@ html[data-theme="dark"][data-theme="dark"] {
 /* Space between publication entries */
 ol.bibliography > li {
   margin-bottom: 2.5rem;
+}
+
+/* ===== Scroll reveal =====
+   home-effects.js tags elements with .sr, so nothing is ever hidden without
+   JS (or under prefers-reduced-motion, where the script skips tagging). */
+.sr {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.65s ease var(--sr-delay, 0s),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--sr-delay, 0s);
+}
+.sr--fade {
+  transform: none;
+}
+.sr.sr-in {
+  opacity: 1;
+  transform: none;
 }
