@@ -13,6 +13,12 @@ layout: default
     >
     {% if page.subtitle %}
       <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
+      {% if page.subtitle_source %}
+        <p class="home-hero__attrib">
+          — <cite>{{ page.subtitle_source | strip_html }}</cite>
+          {%- if page.subtitle_source_by %}, {{ page.subtitle_source_by | strip_html }}{% endif %}
+        </p>
+      {% endif %}
     {% endif %}
   </div>
   <a class="home-hero__scroll" href="#about-content" aria-label="Scroll to content">

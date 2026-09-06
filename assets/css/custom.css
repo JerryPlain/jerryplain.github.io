@@ -244,6 +244,20 @@ ol.bibliography .author > em {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   margin-bottom: 1.3rem;
 }
+/* Attribution under the tagline: quiet enough to read as a credit, clear
+   enough that anyone who knows the song sees it is a quote, not a slogan. */
+.home-hero__attrib {
+  margin: 0.55rem auto 0;
+  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-size: clamp(0.72rem, 0.95vw, 0.86rem);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.62);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+.home-hero__attrib cite {
+  font-style: italic;
+}
+
 .home-hero__tagline {
   color: #fff;
   font-family: Georgia, "Times New Roman", "Songti SC", serif;
