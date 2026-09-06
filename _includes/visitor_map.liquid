@@ -1,52 +1,51 @@
 {% if site.mapmyvisitors_id %}
-  <!-- Compact visitor badge: count via busuanzi, links to the MapMyVisitors stats page. -->
-  <!-- busuanzi reveals the container only after the count loads, so the badge simply -->
-  <!-- stays hidden if the counter service is unreachable. -->
+  <!-- Visitor map: the MapMyVisitors image is itself the tracker — fetching it -->
+  <!-- registers the visit, so no extra script is needed, and it is deliberately -->
+  <!-- NOT lazy-loaded: a visitor who never scrolls this far would otherwise go -->
+  <!-- uncounted. Requested at twice the displayed width to stay sharp on retina; -->
+  <!-- clicking opens the full stats page. -->
   <style>
-    .visitor-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.1rem 0.75rem;
-      border: 1px solid var(--global-divider-color);
-      border-radius: 999px;
-      font-size: 0.8rem;
+    .visitor-map {
+      margin: 3.5rem auto 0;
+      text-align: center;
+    }
+    .visitor-map__note {
+      font-size: 0.78rem;
+      line-height: 1.5;
       color: var(--global-text-color-light);
-      text-decoration: none !important;
+      max-width: 34rem;
+      margin: 0 auto 0.7rem;
     }
-    .visitor-badge:hover {
-      color: var(--global-theme-color);
-      border-color: var(--global-theme-color);
+    .visitor-map__link {
+      display: inline-block;
+      max-width: 100%;
+      line-height: 0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid var(--global-divider-color);
     }
-    /* Reserve the badge's slot so revealing the count doesn't shift the layout. */
-    .visitor-badge-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 1.7rem;
-      margin-top: 0.6rem;
+    .visitor-map__link img {
+      width: 600px;
+      max-width: 100%;
+      height: auto;
     }
   </style>
-  <div class="visitor-badge-wrap">
-    <span id="busuanzi_container_site_uv" style="display: none">
-      <a
-        class="visitor-badge"
-        href="https://mapmyvisitors.com/web/{{ site.mapmyvisitors_profile }}"
-        target="_blank"
-        rel="noopener nofollow"
-        title="See where visitors come from"
+  <section class="visitor-map">
+    <p class="visitor-map__note">This map shows approximate locations of visitors. No personally identifiable information is stored.</p>
+    <a
+      class="visitor-map__link"
+      href="https://mapmyvisitors.com/web/{{ site.mapmyvisitors_profile }}"
+      target="_blank"
+      rel="noopener nofollow"
+      title="See where visitors come from"
+    >
+      <img
+        src="https://mapmyvisitors.com/map.png?d={{ site.mapmyvisitors_id }}&amp;cl=000033&amp;w=1200"
+        alt="Map of approximate visitor locations"
+        width="1200"
+        height="613"
+        decoding="async"
       >
-        <i class="fa-solid fa-globe" aria-hidden="true"></i>
-        <span id="busuanzi_value_site_uv"></span>
-        visitors
-      </a>
-    </span>
-  </div>
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  <!-- Off-screen MapMyVisitors tracker: keeps recording visitor locations for the -->
-  <!-- stats page linked above, without showing the bulky map on the page itself. -->
-  <div class="visitor-map-tracker" aria-hidden="true" style="position: fixed; left: -9999px; top: 0; width: 220px; height: 120px; overflow: hidden;">
-    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d={{ site.mapmyvisitors_id }}&cl=ffffff&w=a"></script>
-  </div>
+    </a>
+  </section>
 {% endif %}
