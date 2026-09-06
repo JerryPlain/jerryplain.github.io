@@ -27,14 +27,14 @@
       {% endif %}
       {% comment %}
         Local override: every teaser sits in the same fixed-ratio panel (see
-        --pub-teaser-ratio in custom.css) and is scaled to fit inside it, so
-        figures of any proportion produce identically sized cards. A bib entry
-        may set `preview_fit = {cover}` to crop-fill that panel instead — good
-        for teasers already close to the panel's shape.
+        --pub-teaser-ratio in custom.css), cropped to fill it, so figures of
+        any proportion produce identically sized cards. A bib entry
+        may set `preview_fit = {contain}` to fit the whole figure inside that
+        panel instead of cropping it to fill.
       {% endcomment %}
       {% assign preview_class = 'preview z-depth-1 rounded' %}
-      {% if entry.preview_fit == 'cover' %}
-        {% assign preview_class = preview_class | append: ' preview-cover' %}
+      {% if entry.preview_fit == 'contain' %}
+        {% assign preview_class = preview_class | append: ' preview-contain' %}
       {% endif %}
       {% if entry.preview %}
         {% if entry.preview contains '://' %}
