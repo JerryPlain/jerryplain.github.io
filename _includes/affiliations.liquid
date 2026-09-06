@@ -1,0 +1,54 @@
+{% comment %}
+  Education / Experience lists with institution logos. Data: _data/affiliations.yml.
+  `include affiliations.liquid section="education"` or `section="experience"`.
+{% endcomment %}
+
+{% if include.section == 'education' %}
+  {% assign entries = site.data.affiliations.education %}
+{% else %}
+  {% assign entries = site.data.affiliations.experience %}
+{% endif %}
+
+{% if entries and entries.size > 0 %}
+  <ul class="affiliations">
+    {% for entry in entries %}
+      {% if include.section == 'education' %}
+        {% assign name = entry.institution %}
+        {% assign line = entry.degree %}
+      {% else %}
+        {% assign name = entry.organization %}
+        {% assign line = entry.role %}
+      {% endif %}
+      <li class="affiliation">
+        <div class="affiliation__logo">
+          {% if entry.logo %}
+            <img src="{{ entry.logo | prepend: '/assets/img/logos/' | relative_url | bust_file_cache }}" alt="{{ name }} logo" loading="lazy">
+          {% endif %}
+        </div>
+        <div class="affiliation__body">
+          <div class="affiliation__name">
+            {% if entry.url %}
+              <a href="{{ entry.url }}" target="_blank" rel="noopener">{{ name }}</a>
+            {% else %}
+              {{ name }}
+            {% endif %}
+          </div>
+          {% if line %}
+            <div class="affiliation__role">{{ line }}</div>
+          {% endif %}
+          {% if entry.advisor %}
+            <div class="affiliation__advisor">{{ entry.advisor }}</div>
+          {% endif %}
+        </div>
+        <div class="affiliation__meta">
+          {% if entry.location %}
+            <div class="affiliation__location">{{ entry.location }}</div>
+          {% endif %}
+          {% if entry.dates %}
+            <div class="affiliation__dates">{{ entry.dates }}</div>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

@@ -56,6 +56,18 @@ layout: default
       {% include selected_papers.liquid %}
     {% endif %}
 
+    <!-- Education -->
+    {% if site.data.affiliations.education %}
+      <h2>Education</h2>
+      {% include affiliations.liquid section="education" %}
+    {% endif %}
+
+    <!-- Experience -->
+    {% if site.data.affiliations.experience %}
+      <h2>Experience</h2>
+      {% include affiliations.liquid section="experience" %}
+    {% endif %}
+
     {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
       {% if site.plugins contains 'al_newsletter' %}
         {% include plugins/al_newsletter_form_center_margin.liquid %}

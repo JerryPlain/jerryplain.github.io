@@ -1,0 +1,43 @@
+# Education and experience shown on the home page, rendered by
+# _includes/affiliations.liquid. Logos live in assets/img/logos/.
+# Kept separate from _data/cv.yml, which feeds the CV renderer.
+
+education:
+  - institution: Technical University of Munich
+    url: https://www.tum.de/en/
+    logo: tum.png
+    degree: MSc in Robotics, Cognition, Intelligence
+    location: Munich, Germany
+    dates: Oct 2024 – Present
+
+  - institution: Changsha University of Science and Technology
+    url: https://english.csust.edu.cn/
+    logo: csust.png
+    degree: BEng in Electrical Engineering and Automation
+    location: Changsha, China
+    dates: Sep 2020 – Jun 2024
+
+experience:
+  - organization: Technical University of Munich
+    url: https://www.tum.de/en/
+    logo: tum.png
+    role: Research Assistant at AIR Lab and CAMP
+    advisor: Advised by Prof. Alois Knoll and Prof. Nassir Navab
+    location: Munich, Germany
+    dates: Oct 2025 – Present
+
+  - organization: LMU Munich
+    url: https://www.lmu.de/en/
+    logo: lmu.png
+    role: Research Assistant at TRESP Lab
+    advisor: Advised by Prof. Volker Tresp
+    location: Munich, Germany
+    dates: Feb 2026 – Oct 2026
+
+  - organization: Huawei Munich Research Center
+    url: https://www.huawei.com/en/
+    logo: huawei.png
+    role: Research Intern at TTE Lab
+    advisor: Advised by Dr. Krishna Kanth Nakka
+    location: Munich, Germany
+    dates: Oct 2025 – Apr 2026
