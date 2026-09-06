@@ -465,6 +465,102 @@ html[data-theme="dark"][data-theme="dark"] {
   padding-bottom: 0.55rem;
 }
 
+/* ===== Education / Experience =====
+   Logo left, institution and role in the middle, place and dates right —
+   the same shape as the CV's entries, rendered from _data/affiliations.yml. */
+.affiliations {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.affiliation {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+.affiliation:last-child {
+  border-bottom: none;
+}
+.affiliation__logo {
+  flex: 0 0 3.4rem;
+  height: 3.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* White plate: invisible against the light page, and in dark mode it keeps
+     black-on-transparent marks (the LMU seal, the HUAWEI wordmark) legible
+     instead of letting them sink into the background. */
+  background: #fff;
+  border-radius: 0.4rem;
+  padding: 0.25rem;
+}
+.affiliation__logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.affiliation__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.affiliation__name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.affiliation__name a {
+  color: inherit;
+}
+.affiliation__name a:hover {
+  color: var(--global-theme-color);
+}
+.affiliation__role {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.affiliation__advisor {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
+}
+.affiliation__meta {
+  flex: 0 0 auto;
+  text-align: right;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
+  white-space: nowrap;
+}
+
+/* Phones: no room for a third column — drop the place and dates under the
+   text, still aligned to it, with the logo holding its own column. */
+@media (max-width: 575px) {
+  .affiliation {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    grid-template-areas:
+      "logo body"
+      ". meta";
+    column-gap: 0.8rem;
+    row-gap: 0.15rem;
+  }
+  .affiliation__logo {
+    grid-area: logo;
+    height: 2.6rem;
+    padding: 0.2rem;
+  }
+  .affiliation__body {
+    grid-area: body;
+  }
+  .affiliation__meta {
+    grid-area: meta;
+    text-align: left;
+    white-space: normal;
+  }
+}
+
 /* ===== Scroll reveal =====
    home-effects.js tags elements with .sr, so nothing is ever hidden without
    JS (or under prefers-reduced-motion, where the script skips tagging). */
