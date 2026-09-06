@@ -21,13 +21,6 @@
   transform: translateY(-3px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13);
 }
-html[data-theme="dark"] .publications ol.bibliography > li {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-}
-html[data-theme="dark"] .publications ol.bibliography > li:hover {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-}
-
 /* Section headings: First-author / Co-authored */
 .publications h2.pub-section {
   font-size: 1.2rem;
@@ -417,27 +410,10 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   transform: translateY(-2px);
 }
 
-/* ===== Premium charcoal dark palette =====
-   Doubled attribute selector beats the theme's html[data-theme=dark]
-   (main.css loads after this file). Not pure black: layered warm greys. */
-html[data-theme="dark"][data-theme="dark"] {
-  --global-bg-color: #17181c; /* page ground: deep charcoal */
-  --global-card-bg-color: #1e2026; /* raised surfaces, one step lighter */
-  --global-code-bg-color: #22242b;
-  --global-text-color: #e4e4e1; /* soft off-white, not #fff */
-  --global-text-color-light: #9b9ca3;
-  --global-divider-color: #2b2d34;
-  /* Same two roles as light, lightened to hold up on charcoal */
-  --global-theme-color: #5dade2;
-  --global-hover-color: #5dade2;
-  --site-accent: #e2705d;
-}
-
 /* ===== CV palette: red accent, blue links =====
    The same two colours as the LaTeX CV — accent #C0392B for section headings,
    #2E86C1 for every link — so the page and the PDF read as one document.
-   `:root:root` outspecifies the theme's own `:root` block, which loads later;
-   the dark rule above outspecifies this in turn. */
+   `:root:root` outspecifies the theme's own `:root` block, which loads later. */
 :root:root {
   --global-theme-color: #2e86c1;
   --global-hover-color: #2e86c1;
@@ -500,12 +476,6 @@ html[data-theme="dark"][data-theme="dark"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* White plate: invisible against the light page, and in dark mode it keeps
-     black-on-transparent marks (the LMU seal, the HUAWEI wordmark) legible
-     instead of letting them sink into the background. */
-  background: #fff;
-  border-radius: 0.4rem;
-  padding: 0.25rem;
 }
 .affiliation__logo img {
   max-width: 100%;
@@ -560,7 +530,6 @@ html[data-theme="dark"][data-theme="dark"] {
   .affiliation__logo {
     grid-area: logo;
     height: 2.6rem;
-    padding: 0.2rem;
   }
   .affiliation__body {
     grid-area: body;
