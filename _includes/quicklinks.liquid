@@ -1,0 +1,31 @@
+{% comment %}
+  Row of pill links under the home-page intro. Data: _data/quicklinks.yml.
+  Entries without a url render as placeholders holding their place in the row.
+{% endcomment %}
+
+{% if site.data.quicklinks and site.data.quicklinks.size > 0 %}
+  <div class="quicklinks">
+    {% for link in site.data.quicklinks %}
+      {% capture link_inner %}
+        {% if link.icon %}<i class="{{ link.icon }}" aria-hidden="true"></i>{% elsif link.glyph %}<span class="quicklink__glyph" aria-hidden="true">{{ link.glyph }}</span>{% endif %}
+        <span>{{ link.label }}</span>
+      {% endcapture %}
+      {% if link.url and link.url != '' %}
+        <a
+          class="quicklink"
+          href="{% if link.url contains 'mailto:' or link.url contains '://' %}{{ link.url }}{% else %}{{ link.url | relative_url }}{% endif %}"
+          {% unless link.url contains 'mailto:' %}
+            target="_blank"
+            rel="noopener"
+          {% endunless %}
+        >
+          {{ link_inner }}
+        </a>
+      {% else %}
+        <span class="quicklink quicklink--pending" title="{{ link.label }} — coming soon">
+          {{ link_inner }}
+        </span>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

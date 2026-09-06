@@ -1,0 +1,34 @@
+# Pill links shown under the intro on the home page, rendered by
+# _includes/quicklinks.liquid.
+#
+# An entry with an empty `url` renders as a greyed-out placeholder that holds
+# its spot in the row — fill the url in and it becomes a live link.
+#
+# `icon` is a Font Awesome 7 or Academicons class. `glyph` is text shown in
+# place of an icon, for marks Font Awesome has no icon for.
+
+- label: CV
+  icon: fa-regular fa-file-lines
+  # A July 2026 PDF already sits at /assets/pdf/CV_Shijie_Zhou.pdf — point this
+  # at it, or at whatever newer file gets dropped in, to activate the button.
+  url: ""
+
+- label: Email
+  icon: fa-solid fa-envelope
+  url: mailto:jerryplain@outlook.com
+
+- label: Google Scholar
+  icon: ai ai-google-scholar
+  url: https://scholar.google.com/citations?user=hfjfsC8AAAAJ
+
+- label: GitHub
+  icon: fa-brands fa-github
+  url: https://github.com/JerryPlain
+
+- label: LinkedIn
+  icon: fa-brands fa-linkedin
+  url: https://www.linkedin.com/in/jerryzhou11
+
+- label: RedNote
+  glyph: 小红书
+  url: ""

@@ -32,6 +32,9 @@ layout: default
   <article>
     <div class="clearfix">{{ content }}</div>
 
+    {% comment %} CV / contact / profile links, as pills under the intro {% endcomment %}
+    {% include quicklinks.liquid %}
+
     <!-- News -->
     {% if page.announcements and page.announcements.enabled %}
       <h2>
