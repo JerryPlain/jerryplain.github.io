@@ -25,9 +25,20 @@
           <abbr class="badge rounded w-100">{{ entry.abbr }}</abbr>
         {% endif %}
       {% endif %}
+      {% comment %}
+        Local override: every teaser sits in the same fixed-ratio panel (see
+        --pub-teaser-ratio in custom.css) and is scaled to fit inside it, so
+        figures of any proportion produce identically sized cards. A bib entry
+        may set `preview_fit = {cover}` to crop-fill that panel instead — good
+        for teasers already close to the panel's shape.
+      {% endcomment %}
+      {% assign preview_class = 'preview z-depth-1 rounded' %}
+      {% if entry.preview_fit == 'cover' %}
+        {% assign preview_class = preview_class | append: ' preview-cover' %}
+      {% endif %}
       {% if entry.preview %}
         {% if entry.preview contains '://' %}
-          <img class="preview z-depth-1 rounded" src="{{ entry.preview }}">
+          <img class="{{ preview_class }}" src="{{ entry.preview }}">
         {% else %}
           {% assign entry_path = entry.preview | prepend: '/assets/img/publication_preview/' %}
           {%
@@ -35,7 +46,7 @@
             loading="eager"
             path=entry_path
             sizes = "200px"
-            class="preview z-depth-1 rounded"
+            class=preview_class
             zoomable=true
             avoid_scaling=true
             alt=entry.preview
