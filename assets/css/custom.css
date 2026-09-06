@@ -10,8 +10,8 @@
   background: var(--global-card-bg-color);
   border: 1px solid var(--global-divider-color);
   border-radius: 0.7rem;
-  padding: 1rem 1.15rem;
-  margin-bottom: 1.25rem;
+  padding: 1.15rem 1.3rem;
+  margin-bottom: 1.4rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   transition:
     transform 0.25s ease,
@@ -43,54 +43,52 @@ html[data-theme="dark"] .publications ol.bibliography > li:hover {
   margin-top: 1rem;
 }
 
-/* Teaser on top, spanning the full card width; text below.
-   A wide pipeline figure is unreadable squeezed into a side column, so the
-   figure gets the whole width and the metadata sits under it. */
+/* Thumbnail left, text right — the figure is a small identifying plate, not
+   the point of the card; the title and authors carry it. */
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
-    flex-wrap: wrap;
-  }
-  ol.bibliography > li > .row > .col-sm-2,
-  ol.bibliography > li > .row > .col-sm-8 {
-    flex: 0 0 100%;
-    max-width: 100%;
+    align-items: flex-start;
+    flex-wrap: nowrap;
   }
   ol.bibliography > li > .row > .col-sm-2 {
-    margin-bottom: 0.75rem;
+    flex: 0 0 26%;
+    max-width: 26%;
+  }
+  ol.bibliography > li > .row > .col-sm-8 {
+    flex: 0 0 74%;
+    max-width: 74%;
+    padding-left: 1.4rem;
   }
 }
 
-/* Every teaser is rendered at the same height, with its width following the
-   figure's own proportions — a 3:1 pipeline diagram and a square gif line up
-   on a common baseline without either being cropped or padded out with dead
-   space. Change --pub-teaser-height once to resize every teaser. */
+/* One panel size for every paper, whatever the figure's own proportions, so
+   the cards line up as papers are added. The figure fills the panel and the
+   overflow is cropped, which is why teasers should be cropped to roughly this
+   shape before being added — a full-page pipeline figure reduced to a
+   thumbnail is unreadable anyway. An entry may set `preview_fit = {contain}`
+   to fit inside the panel instead, uncropped. Both --pub-teaser-ratio and
+   --pub-teaser-width reshape every teaser at once. */
 .publications {
-  --pub-teaser-height: 12rem;
-}
-/* Flush left, so the figure's edge lines up with the title under it */
-ol.bibliography > li .abbr {
-  text-align: left;
+  --pub-teaser-ratio: 3 / 2;
 }
 ol.bibliography > li .abbr figure {
   margin: 0;
 }
 ol.bibliography img.preview,
 ol.bibliography video.preview {
-  height: var(--pub-teaser-height, 15rem);
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
+  width: 100%;
+  aspect-ratio: var(--pub-teaser-ratio, 3 / 2);
+  object-fit: cover;
   background: #fff;
   border: 1px solid var(--global-divider-color);
-  border-radius: 0.55rem;
+  border-radius: 0.5rem;
   box-shadow: none !important;
 }
 
-/* Phones: same rule, shorter — a full-width square gif would otherwise eat
-   the whole screen while a wide diagram shrank to a strip. */
+/* Phones: the row stacks, so cap the plate rather than letting it fill */
 @media (max-width: 575px) {
-  .publications {
-    --pub-teaser-height: 8rem;
+  ol.bibliography > li .abbr {
+    max-width: 15rem;
   }
 }
 
@@ -101,10 +99,10 @@ ol.bibliography abbr.badge {
 
 /* Title: the anchor of each entry */
 .publications ol.bibliography .title {
-  font-size: 1.02rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 0.2rem;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
   color: var(--global-text-color);
 }
 
@@ -114,14 +112,14 @@ ol.bibliography .author > em {
   font-style: normal;
 }
 .publications ol.bibliography .author {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.55;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.15rem;
 }
 
 /* Venue line: quiet italics */
 .publications ol.bibliography .periodical {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-style: italic;
   color: var(--global-text-color-light);
   margin-bottom: 0;
@@ -137,7 +135,7 @@ ol.bibliography .author > em {
   box-shadow: none !important;
   padding: 0 !important;
   margin: 0 1.15rem 0 0 !important;
-  font-size: 0.8rem;
+  font-size: 0.84rem;
   font-weight: 600;
   letter-spacing: 0.015em;
   text-transform: none;
@@ -161,11 +159,11 @@ ol.bibliography .author > em {
 
 /* One-line takeaway, set off by a dashed rule like a project page */
 .publications ol.bibliography .tldr {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   line-height: 1.5;
   color: var(--global-text-color-light);
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
   border-top: 1px dashed var(--global-divider-color);
 }
 
