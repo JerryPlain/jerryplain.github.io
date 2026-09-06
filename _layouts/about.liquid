@@ -12,13 +12,19 @@ layout: default
       alt="{{ site.first_name }} {{ site.last_name }}"
     >
     {% if page.subtitle %}
-      <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
-      {% if page.subtitle_source %}
-        <p class="home-hero__attrib">
-          — <cite>{{ page.subtitle_source | strip_html }}</cite>
-          {%- if page.subtitle_source_by %}, {{ page.subtitle_source_by | strip_html }}{% endif %}
-        </p>
-      {% endif %}
+      {% comment %}
+        The wrapper shrinks to the tagline's own width, so the credit can sit
+        flush with the end of the quote instead of centred under it.
+      {% endcomment %}
+      <div class="home-hero__quote">
+        <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
+        {% if page.subtitle_source %}
+          <p class="home-hero__attrib">
+            — <cite>{{ page.subtitle_source | strip_html }}</cite>
+            {%- if page.subtitle_source_by %}, {{ page.subtitle_source_by | strip_html }}{% endif %}
+          </p>
+        {% endif %}
+      </div>
     {% endif %}
   </div>
   <a class="home-hero__scroll" href="#about-content" aria-label="Scroll to content">
