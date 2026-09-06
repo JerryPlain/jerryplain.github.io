@@ -43,53 +43,54 @@ html[data-theme="dark"] .publications ol.bibliography > li:hover {
   margin-top: 1rem;
 }
 
-/* Figure left, text right */
+/* Teaser on top, spanning the full card width; text below.
+   A wide pipeline figure is unreadable squeezed into a side column, so the
+   figure gets the whole width and the metadata sits under it. */
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
-    align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+  }
+  ol.bibliography > li > .row > .col-sm-2,
+  ol.bibliography > li > .row > .col-sm-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
   ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 33%;
-    max-width: 33%;
-  }
-  ol.bibliography > li > .row > .col-sm-8 {
-    flex: 0 0 67%;
-    max-width: 67%;
-    padding-left: 1.5rem;
-  }
-  ol.bibliography .preview {
-    width: 100%;
+    margin-bottom: 1rem;
   }
 }
 
-/* Teaser: every paper gets the same size panel, whatever the figure's own
-   proportions — a wide pipeline figure and a square gif both sit in a 16:9
-   box, so the cards stay a uniform grid as papers are added. The figure is
-   scaled to fit (contain), never cropped: extra room shows as white margin,
-   and clicking zooms to the complete original. Change --pub-teaser-ratio in
-   one place to reshape every teaser at once. */
+/* Every teaser is rendered at the same height, with its width following the
+   figure's own proportions — a 3:1 pipeline diagram and a square gif line up
+   on a common baseline without either being cropped or padded out with dead
+   space. Change --pub-teaser-height once to resize every teaser. */
 .publications {
-  --pub-teaser-ratio: 16 / 9;
+  --pub-teaser-height: 16rem;
+}
+ol.bibliography > li .abbr {
+  text-align: center;
+}
+ol.bibliography > li .abbr figure {
+  margin: 0;
 }
 ol.bibliography img.preview,
 ol.bibliography video.preview {
-  width: 100%;
-  aspect-ratio: var(--pub-teaser-ratio, 16 / 9);
+  height: var(--pub-teaser-height, 15rem);
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
   background: #fff;
-  padding: 0.4rem;
   border: 1px solid var(--global-divider-color);
   border-radius: 0.55rem;
   box-shadow: none !important;
 }
 
-/* Opt-in per paper: `preview_fit = {cover}` in papers.bib crops the teaser to
-   fill the panel instead of fitting inside it. */
-ol.bibliography img.preview-cover,
-ol.bibliography video.preview-cover {
-  object-fit: cover;
-  padding: 0;
+/* Phones: same rule, shorter — a full-width square gif would otherwise eat
+   the whole screen while a wide diagram shrank to a strip. */
+@media (max-width: 575px) {
+  .publications {
+    --pub-teaser-height: 9rem;
+  }
 }
 
 /* Keep the venue badge compact above the wider preview */
