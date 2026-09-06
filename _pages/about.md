@@ -3,6 +3,7 @@ layout: about
 title: About
 permalink: /
 subtitle: Fiery red, forever fearless
+profile_photo: /assets/img/head_berlin.jpg # square crop; swap the path to change the hero portrait
 # Credited under the tagline in small, faint type, so the quote reads as a quote
 subtitle_source: Sunset
 subtitle_source_by: Caroline Polachek
