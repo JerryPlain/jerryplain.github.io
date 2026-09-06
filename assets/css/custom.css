@@ -530,6 +530,58 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   }
 }
 
+/* ===== Quick links =====
+   A row of outlined pills under the intro: CV, contact and profile links.
+   An entry still waiting on a URL renders greyed out, holding its place. */
+.quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.6rem 0 0.4rem;
+}
+.quicklink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: var(--global-text-color);
+  text-decoration: none;
+  background: var(--global-card-bg-color);
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+.quicklink i,
+.quicklink__glyph {
+  color: var(--global-text-color-light);
+  font-size: 0.95em;
+  transition: color 0.18s ease;
+}
+.quicklink__glyph {
+  font-size: 0.78em;
+  letter-spacing: 0.02em;
+}
+a.quicklink:hover {
+  color: var(--global-theme-color);
+  border-color: var(--global-theme-color);
+  transform: translateY(-1px);
+}
+a.quicklink:hover i,
+a.quicklink:hover .quicklink__glyph {
+  color: var(--global-theme-color);
+}
+/* Reserved slot: visible but plainly not yet clickable */
+.quicklink--pending {
+  color: var(--global-text-color-light);
+  border-style: dashed;
+  cursor: default;
+}
+
 /* ===== Photography =====
    A simple responsive grid; each frame keeps its own proportions and clicking
    one zooms it. Files are read straight out of assets/img/photography/. */
