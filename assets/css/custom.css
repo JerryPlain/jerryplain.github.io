@@ -1,48 +1,96 @@
 /* Site customizations for shijie's homepage */
 
-/* ===== Publications: project-page style (large teaser left, clean text right,
-   plain accent links instead of outlined buttons — jianghanxiao/barron style) ===== */
+/* ===== Publications: card layout =====
+   Each entry is a self-contained card — teaser figure on the left, title,
+   authors, venue, links and a one-line takeaway on the right — so the list
+   reads as distinct papers rather than one continuous block. */
+
+/* The card surface */
+.publications ol.bibliography > li {
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.85rem;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 1.6rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.publications ol.bibliography > li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13);
+}
+html[data-theme="dark"] .publications ol.bibliography > li {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="dark"] .publications ol.bibliography > li:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* Section headings: First-author / Co-authored */
+.publications h2.pub-section {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--global-text-color);
+  border-bottom: 1px solid var(--global-divider-color);
+  padding-bottom: 0.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+.publications h2.pub-section:first-of-type {
+  margin-top: 1rem;
+}
+
+/* Teaser on top, spanning the full card width; text below.
+   A wide pipeline figure is unreadable squeezed into a side column, so the
+   figure gets the whole width and the metadata sits under it. */
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
-    align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+  }
+  ol.bibliography > li > .row > .col-sm-2,
+  ol.bibliography > li > .row > .col-sm-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
   ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 34%;
-    max-width: 34%;
-  }
-  ol.bibliography > li > .row > .col-sm-8 {
-    flex: 0 0 62%;
-    max-width: 62%;
-    padding-left: 1.6rem;
-  }
-  ol.bibliography .preview {
-    width: 100%;
+    margin-bottom: 1rem;
   }
 }
 
-/* Teaser image: soft rounded card with a gentle lift on hover.
-   Fixed 16:9 white card; the full figure is scaled to fit inside (never
-   cropped) — wide pipeline figures letterbox invisibly against the white
-   ground, and clicking zooms to the complete original. */
-ol.bibliography img.preview {
-  width: 100%;
-  aspect-ratio: 16 / 9;
+/* Every teaser is rendered at the same height, with its width following the
+   figure's own proportions — a 3:1 pipeline diagram and a square gif line up
+   on a common baseline without either being cropped or padded out with dead
+   space. Change --pub-teaser-height once to resize every teaser. */
+.publications {
+  --pub-teaser-height: 16rem;
+}
+ol.bibliography > li .abbr {
+  text-align: center;
+}
+ol.bibliography > li .abbr figure {
+  margin: 0;
+}
+ol.bibliography img.preview,
+ol.bibliography video.preview {
+  height: var(--pub-teaser-height, 15rem);
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
   background: #fff;
-  padding: 0.45rem;
-  border-radius: 0.6rem;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1) !important;
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.55rem;
+  box-shadow: none !important;
 }
-ol.bibliography > li:hover img.preview {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16) !important;
-}
-html[data-theme="dark"] ol.bibliography img.preview {
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
+
+/* Phones: same rule, shorter — a full-width square gif would otherwise eat
+   the whole screen while a wide diagram shrank to a strip. */
+@media (max-width: 575px) {
+  .publications {
+    --pub-teaser-height: 9rem;
+  }
 }
 
 /* Keep the venue badge compact above the wider preview */
@@ -108,6 +156,26 @@ ol.bibliography .author > em {
 .publications ol.bibliography .links a.award.btn {
   color: #b8860b !important;
   font-style: italic;
+}
+
+/* One-line takeaway, set off by a dashed rule like a project page */
+.publications ol.bibliography .tldr {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--global-divider-color);
+}
+
+/* Stacked on phones: figure on top, text below, comfortable gap */
+@media (max-width: 575px) {
+  .publications ol.bibliography > li {
+    padding: 1rem;
+  }
+  .publications ol.bibliography > li .abbr {
+    margin-bottom: 0.9rem;
+  }
 }
 
 /* Social icons under the profile photo: one compact centered row, Guandao-style */
@@ -367,10 +435,6 @@ html[data-theme="dark"][data-theme="dark"] {
 .news table.table td {
   padding-top: 0.55rem;
   padding-bottom: 0.55rem;
-}
-/* Space between publication entries */
-ol.bibliography > li {
-  margin-bottom: 2.5rem;
 }
 
 /* ===== Scroll reveal =====
