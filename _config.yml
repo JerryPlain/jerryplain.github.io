@@ -378,6 +378,7 @@ filtered_bibtex_keywords:
     altmetric,
     annotation,
     arxiv,
+    author_role,
     award,
     award_name,
     bibtex_show,
@@ -396,6 +397,7 @@ filtered_bibtex_keywords:
     selected,
     slides,
     supp,
+    tldr,
     video,
     website,
   ]

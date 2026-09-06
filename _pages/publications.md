@@ -15,6 +15,27 @@ nav_order: 2
 
 <div class="publications">
 
-{% bibliography %}
+{% comment %}
+Papers are split by my authorship role via the `author_role` field in
+_bibliography/papers.bib: `first` (first / co-first author) or `co`
+(co-authored). A section is rendered only when it has at least one entry,
+so the first-author heading stays hidden until such a paper exists.
+{% endcomment %}
+
+{% capture first_author_papers %}{% bibliography --group_by none --query @*[author_role=first] %}{% endcapture %}
+{% if first_author_papers contains "<li" %}
+
+<h2 class="pub-section">First-author Publications</h2>
+{{ first_author_papers }}
+
+{% endif %}
+
+{% capture coauthored_papers %}{% bibliography --group_by none --query @*[author_role=co] %}{% endcapture %}
+{% if coauthored_papers contains "<li" %}
+
+<h2 class="pub-section">Co-authored Publications</h2>
+{{ coauthored_papers }}
+
+{% endif %}
 
 </div>

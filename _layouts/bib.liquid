@@ -326,6 +326,15 @@
       {% endif %}
     {% endif %}
 
+    {% comment %}
+      Local addition: a one-line takeaway ("tldr" field in papers.bib) shown
+      under each entry, the way project pages summarise a paper. Purely
+      optional — entries without a `tldr` render exactly as before.
+    {% endcomment %}
+    {% if entry.tldr %}
+      <div class="tldr">{{ entry.tldr }}</div>
+    {% endif %}
+
     {% if entry.award %}
       <!-- Hidden Award block -->
       <div class="award hidden d-print-inline">
