@@ -427,6 +427,35 @@ html[data-theme="dark"][data-theme="dark"] {
   --global-text-color: #e4e4e1; /* soft off-white, not #fff */
   --global-text-color-light: #9b9ca3;
   --global-divider-color: #2b2d34;
+  /* Same two roles as light, lightened to hold up on charcoal */
+  --global-theme-color: #5dade2;
+  --global-hover-color: #5dade2;
+  --site-accent: #e2705d;
+}
+
+/* ===== CV palette: red accent, blue links =====
+   The same two colours as the LaTeX CV — accent #C0392B for section headings,
+   #2E86C1 for every link — so the page and the PDF read as one document.
+   `:root:root` outspecifies the theme's own `:root` block, which loads later;
+   the dark rule above outspecifies this in turn. */
+:root:root {
+  --global-theme-color: #2e86c1;
+  --global-hover-color: #2e86c1;
+  --site-accent: #c0392b;
+}
+
+/* Section headings carry the accent: News, Selected Publications, and the
+   First-author / Co-authored headings on the publications page. */
+.post article > h2,
+.post article > h2 > a,
+.publications h2.pub-section {
+  color: var(--site-accent);
+}
+
+/* The current page in the navbar is a state, not a link — accent, not blue.
+   Over the hero the navbar keeps its own white/solid rules. */
+#navbar .navbar-nav .nav-item.active > .nav-link {
+  color: var(--site-accent);
 }
 
 /* Breathing room between the hero and the intro text */
