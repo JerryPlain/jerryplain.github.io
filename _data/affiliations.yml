@@ -18,6 +18,14 @@ education:
     dates: Sep 2020 – Jun 2024
 
 experience:
+  - organization: University of Cambridge
+    url: https://www.cam.ac.uk/
+    logo: cambridge.png
+    role: Research Assistant at Physical AI Lab
+    advisor: Advised by Prof. Brian Sheil
+    location: Cambridge, UK
+    dates: Mar 2026 – Present
+
   - organization: Technical University of Munich
     url: https://www.tum.de/en/
     logo: tum.png
