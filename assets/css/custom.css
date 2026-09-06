@@ -380,36 +380,6 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   }
 }
 
-/* Frosted-glass social pill inside the hero */
-.home-hero__social {
-  display: inline-flex;
-  margin-top: 1.35rem;
-  padding: 0.45rem 0.95rem;
-  border-radius: 0.8rem;
-  background: rgba(20, 22, 25, 0.38);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-}
-.home-hero__social .contact-icons {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 1.3rem;
-}
-.home-hero__social .contact-icons a {
-  color: rgba(255, 255, 255, 0.88);
-  padding: 0.15rem 0.45rem;
-  transition:
-    color 0.15s ease,
-    transform 0.15s ease;
-}
-.home-hero__social .contact-icons a:hover {
-  color: #fff;
-  transform: translateY(-2px);
-}
-
 /* ===== CV palette: red accent, blue links =====
    The same two colours as the LaTeX CV — accent #C0392B for section headings,
    #2E86C1 for every link — so the page and the PDF read as one document.
@@ -418,6 +388,19 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   --global-theme-color: #2e86c1;
   --global-hover-color: #2e86c1;
   --site-accent: #c0392b;
+  /* Warm paper rather than flat white, so the white cards read as lifted */
+  --global-bg-color: #f9f7f4;
+}
+
+/* Three soft washes drawn from the same two accents, fixed to the viewport so
+   the content drifts over them as you scroll — the trick from etaoxing.com.
+   Kept faint (about a tenth opacity) so text contrast is untouched. */
+body {
+  background-image:
+    radial-gradient(60rem 40rem at 12% 8%, rgba(192, 57, 43, 0.07), transparent 62%),
+    radial-gradient(55rem 45rem at 88% 26%, rgba(46, 134, 193, 0.08), transparent 64%),
+    radial-gradient(50rem 40rem at 60% 96%, rgba(214, 158, 46, 0.07), transparent 62%);
+  background-attachment: fixed;
 }
 
 /* Section headings carry the accent: News, Selected Publications, and the
@@ -450,95 +433,6 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
 .news table.table td {
   padding-top: 0.55rem;
   padding-bottom: 0.55rem;
-}
-
-/* ===== Education / Experience =====
-   Logo left, institution and role in the middle, place and dates right —
-   the same shape as the CV's entries, rendered from _data/affiliations.yml. */
-.affiliations {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.affiliation {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.1rem;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--global-divider-color);
-}
-.affiliation:last-child {
-  border-bottom: none;
-}
-.affiliation__logo {
-  flex: 0 0 3.4rem;
-  height: 3.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.affiliation__logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-.affiliation__body {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.affiliation__name {
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.affiliation__name a {
-  color: inherit;
-}
-.affiliation__name a:hover {
-  color: var(--global-theme-color);
-}
-.affiliation__role {
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-.affiliation__advisor {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--global-text-color-light);
-}
-.affiliation__meta {
-  flex: 0 0 auto;
-  text-align: right;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--global-text-color-light);
-  white-space: nowrap;
-}
-
-/* Phones: no room for a third column — drop the place and dates under the
-   text, still aligned to it, with the logo holding its own column. */
-@media (max-width: 575px) {
-  .affiliation {
-    display: grid;
-    grid-template-columns: 2.6rem 1fr;
-    grid-template-areas:
-      "logo body"
-      ". meta";
-    column-gap: 0.8rem;
-    row-gap: 0.15rem;
-  }
-  .affiliation__logo {
-    grid-area: logo;
-    height: 2.6rem;
-  }
-  .affiliation__body {
-    grid-area: body;
-  }
-  .affiliation__meta {
-    grid-area: meta;
-    text-align: left;
-    white-space: normal;
-  }
 }
 
 /* ===== Quick links =====

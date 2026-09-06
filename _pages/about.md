@@ -5,7 +5,6 @@ permalink: /
 subtitle: Fiery red, forever fearless
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
 
 announcements:
   enabled: true # includes a list of news items
@@ -18,14 +17,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi there! I am Shijie Zhou. I am a Master's student in Robotics, Cognition, Intelligence at the Technical University of Munich (TUM). I am currently a Research Assistant at TUM's AIR Lab, where I work on agentic hierarchical reward shaping for robot reinforcement learning, and at the Tresp Lab at LMU Munich, where I investigate self-evolving agents and multimodal learning for surgical video understanding. Previously, I was a research intern at the Huawei Munich Research Center, where I focused on privacy alignment and agentic evaluation for large language models.
+I am Shijie Zhou, a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I work on **embodied AI for robot manipulation** — multimodal learning, robot learning, and foundation models for robotics — towards robots that perceive, reason about, and act reliably in the physical world.
 
-My research lies at the intersection of **robotics**, **robot manipulation**, and **embodied interaction**. My long-term goal is to develop intelligent robotic systems that can perceive, reason about, and autonomously interact with complex real-world environments. My current research interests include:
+I am a Research Assistant at TUM's [AIR Lab](https://www.ce.cit.tum.de/air/home/) and [CAMP](https://www.cs.cit.tum.de/camp/start/), at the Physical AI Lab at the [University of Cambridge](https://www.cam.ac.uk/), and at the Tresp Lab at [LMU Munich](https://www.lmu.de/en/). Previously I was a research intern at the [Huawei Munich Research Center](https://www.huawei.com/en/).
 
-- **Multimodal Learning**: Integrating vision, language, touch, and audio to enable fine-grained robotic manipulation.
-- **Robot Learning**: Leveraging imitation learning and reinforcement learning to acquire long-horizon embodied behaviors.
-- **Foundation Models for Robotics**: Developing generalizable policies and learning architectures that transfer across tasks, environments, and robotic embodiments.
-
-Ultimately, I hope to build foundation models that enable robots to understand, reason about, and safely interact with the physical world.
-
-If our research interests align, please feel free to contact me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com) for collaborations.
+If our interests align, feel free to reach out at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).

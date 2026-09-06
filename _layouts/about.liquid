@@ -14,11 +14,6 @@ layout: default
     {% if page.subtitle %}
       <p class="home-hero__tagline">{{ page.subtitle | strip_html }}</p>
     {% endif %}
-    {% if page.social %}
-      <div class="home-hero__social">
-        <div class="contact-icons">{% social_links %}</div>
-      </div>
-    {% endif %}
   </div>
   <a class="home-hero__scroll" href="#about-content" aria-label="Scroll to content">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -57,18 +52,6 @@ layout: default
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected Publications</a>
       </h2>
       {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Education -->
-    {% if site.data.affiliations.education %}
-      <h2>Education</h2>
-      {% include affiliations.liquid section="education" %}
-    {% endif %}
-
-    <!-- Experience -->
-    {% if site.data.affiliations.experience %}
-      <h2>Experience</h2>
-      {% include affiliations.liquid section="experience" %}
     {% endif %}
 
     {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
