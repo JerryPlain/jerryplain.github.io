@@ -39,7 +39,8 @@ layout: default
   <article>
     <div class="clearfix">{{ content }}</div>
 
-    {% comment %} CV / contact / profile links, as pills under the intro {% endcomment %}
+    {% comment %} Invitation to book a call, then CV / contact / profile links {% endcomment %}
+    {% include chat_invite.liquid %}
     {% include quicklinks.liquid %}
 
     <!-- News -->

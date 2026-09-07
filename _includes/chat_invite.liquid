@@ -1,0 +1,30 @@
+{% comment %}
+  Invitation to book a call. Edit the copy here.
+
+  The button follows site.booking_url (set it in _config.yml): with a
+  scheduling link it offers the call and email side by side; without one it
+  falls back to a single email button, so the block is never a dead end.
+{% endcomment %}
+
+<div class="chat-invite">
+  <p class="chat-invite__text">
+    <b>Let's chat!</b> I am always glad to talk — about research collaboration, or about building something. Starting my own company is where I want
+    to end up, so if you are thinking along the same lines, I would like to hear from you.
+  </p>
+  <div class="chat-invite__actions">
+    {% if site.booking_url and site.booking_url != '' %}
+      <a class="chat-cta" href="{{ site.booking_url }}" target="_blank" rel="noopener">
+        <i class="fa-regular fa-calendar-check" aria-hidden="true"></i>
+        <span>Book a 30-min chat</span>
+        <span class="chat-cta__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="chat-invite__alt" href="mailto:{{ site.data.socials.email }}">or send me an email</a>
+    {% else %}
+      <a class="chat-cta" href="mailto:{{ site.data.socials.email }}">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+        <span>Email me</span>
+        <span class="chat-cta__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    {% endif %}
+  </div>
+</div>

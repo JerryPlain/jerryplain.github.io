@@ -117,6 +117,11 @@ analytics:
 # Renders a compact visitor-count badge under the profile photo (count via busuanzi)
 # that links to the MapMyVisitors stats page with the full geo map. The map widget
 # itself runs off-screen purely as a tracker. Rendered by _includes/visitor_map.liquid.
+# Scheduling link for the "Let's chat" block on the home page. Create one at
+# cal.com or calendly.com and paste the public booking URL here; while it is
+# empty the block offers email instead of a call.
+booking_url: ""
+
 mapmyvisitors_id: hZELT6UZPNZlGfmkobvHKg1hDwHCZ1z1rSwv-G4MW8g # "d=" token from the embed code
 mapmyvisitors_profile: 1c6fd # stats page: https://mapmyvisitors.com/web/1c6fd
 
