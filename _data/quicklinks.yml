@@ -29,6 +29,12 @@
   icon: fa-brands fa-linkedin
   url: https://www.linkedin.com/in/jerryzhou11
 
+# These two open a QR card image rather than a profile page — the pattern
+# tx-leo.github.io uses for the same two networks.
 - label: RedNote
   glyph: 小红书
-  url: ""
+  url: /assets/img/rednote.jpg
+
+- label: WeChat
+  icon: fa-brands fa-weixin
+  url: /assets/img/wechat.jpg
