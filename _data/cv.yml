@@ -30,16 +30,6 @@ cv:
         end_date: 2024-06
 
     Experience:
-      - company: University of Cambridge — CV4DT Group
-        position: Research Assistant
-        location: Cambridge, UK
-        start_date: 2026-04
-        end_date: present
-        summary: Vision-supervised system identification for soft robotics.
-        highlights:
-          - Developed a vision-supervised digital twin of a three-finger soft gripper in SoMo/PyBullet, using four calibrated RGB cameras and CoTracker3 to reconstruct 3D deformation trajectories for soft-body system identification.
-          - Identified a 2-axis soft-body dynamics model via Levenberg–Marquardt optimization and established a unified benchmark for systematic comparison of model-based and learning-based control strategies.
-
       - company: TU Munich — AIR Lab & CAMP
         position: Research Assistant
         location: Munich, Germany
