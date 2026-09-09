@@ -97,6 +97,8 @@
   {% comment %} Local addition: raster fallback of the SZ monogram for iOS home-screen bookmarks {% endcomment %}
   <link rel="apple-touch-icon" href="{{ '/assets/img/sz-mark-180.png' | relative_url | bust_file_cache }}">
 {% endif %}
+{% comment %} Local addition: lightbox for publication figures (see _layouts/bib.liquid) {% endcomment %}
+<script src="{{ '/assets/js/pub-figure.js' | relative_url | bust_file_cache }}" defer></script>
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
 {% if page.layout == 'cv' and site.plugins contains 'al_folio_cv' and site.al_folio.features.cv.enabled != false %}
   <link rel="stylesheet" href="{{ '/assets/css/al-folio-cv.css' | relative_url | bust_file_cache }}">

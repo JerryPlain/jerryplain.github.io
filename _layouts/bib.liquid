@@ -27,9 +27,10 @@
       {% endif %}
       {% comment %}
         Local override: the teaser is a hand-cropped 8:5 detail of the paper's
-        figure (`preview`), shown at a fixed width like a project page. Clicking
-        it zooms to the full figure (`preview_full`, falling back to the teaser
-        itself), which medium-zoom picks up from data-zoom-src.
+        figure (`preview`), shown at a fixed width like a project page. Hovering
+        floats the full figure (`preview_full`, falling back to the teaser
+        itself) in a white card; clicking opens it in a lightbox
+        (assets/js/pub-figure.js reads data-zoom-src).
       {% endcomment %}
       {% if entry.preview %}
         {% if entry.preview contains '://' %}
@@ -45,14 +46,19 @@
             {% assign zoom_src = entry.preview_full | prepend: '/assets/img/publication_preview/' | relative_url %}
           {% endif %}
         {% endif %}
-        <img
-          class="preview rounded"
-          src="{{ preview_src }}"
-          data-zoomable
-          data-zoom-src="{{ zoom_src }}"
-          loading="eager"
-          alt="{{ entry.title | strip_html | escape }}"
-        >
+        <div class="thumbnail-hover-wrapper">
+          <img
+            class="preview rounded"
+            src="{{ preview_src }}"
+            data-zoom-src="{{ zoom_src }}"
+            loading="eager"
+            alt="{{ entry.title | strip_html | escape }}"
+          >
+          {% comment %} Desktop only: hovering the teaser floats the full figure in a white card {% endcomment %}
+          <div class="thumbnail-hover-overlay" aria-hidden="true">
+            <img src="{{ zoom_src }}" loading="lazy" alt="">
+          </div>
+        </div>
       {% endif %}
     </div>
   {% endif %}
