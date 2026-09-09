@@ -1,9 +1,10 @@
 /* Site customizations for shijie's homepage */
 
-/* ===== Publications: card layout =====
-   Each entry is a self-contained card — teaser figure on the left, title,
-   authors, venue, links and a one-line takeaway on the right — so the list
-   reads as distinct papers rather than one continuous block. */
+/* ===== Publications: project-page style =====
+   Each entry is a card — a fixed-width teaser on the left; title, a folded
+   author list, a short bold venue, a two-sentence description and a row of
+   outlined buttons on the right — so the list reads like a project page
+   rather than a bibliography. Modelled on yaozhang.ai. */
 
 /* The card surface */
 .publications ol.bibliography > li {
@@ -36,51 +37,50 @@
   margin-top: 1rem;
 }
 
-/* Thumbnail left, text right — the figure is a small identifying plate, not
-   the point of the card; the title and authors carry it. */
+/* Teaser left at a fixed width, text right filling the rest */
+.publications {
+  --pub-teaser-width: 250px;
+  --pub-teaser-ratio: 8 / 5;
+}
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
     align-items: flex-start;
     flex-wrap: nowrap;
   }
   ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 26%;
-    max-width: 26%;
+    flex: 0 0 var(--pub-teaser-width);
+    max-width: var(--pub-teaser-width);
   }
   ol.bibliography > li > .row > .col-sm-8 {
-    flex: 0 0 74%;
-    max-width: 74%;
-    padding-left: 1.4rem;
+    flex: 1 1 auto;
+    max-width: none;
+    min-width: 0;
+    padding-left: 1.5rem;
   }
 }
 
-/* One panel size for every paper, whatever the figure's own proportions, so
-   the cards line up as papers are added. The figure fills the panel and the
-   overflow is cropped, which is why teasers should be cropped to roughly this
-   shape before being added — a full-page pipeline figure reduced to a
-   thumbnail is unreadable anyway. An entry may set `preview_fit = {contain}`
-   to fit inside the panel instead, uncropped. Both --pub-teaser-ratio and
-   --pub-teaser-width reshape every teaser at once. */
-.publications {
-  --pub-teaser-ratio: 3 / 2;
-}
-ol.bibliography > li .abbr figure {
-  margin: 0;
-}
+/* The teaser: a hand-cropped detail of the figure filling an 8:5 plate.
+   Crop teasers to roughly this shape before adding them (see
+   assets/img/publication_preview/); clicking one zooms to the full figure. */
 ol.bibliography img.preview {
+  display: block;
   width: 100%;
-  aspect-ratio: var(--pub-teaser-ratio, 3 / 2);
+  aspect-ratio: var(--pub-teaser-ratio, 8 / 5);
   object-fit: cover;
   background: #fff;
-  border: 1px solid var(--global-divider-color);
-  border-radius: 0.5rem;
+  border-radius: 6px;
   box-shadow: none !important;
+  cursor: zoom-in;
+}
+ol.bibliography > li .abbr {
+  margin-bottom: 0;
 }
 
 /* Phones: the row stacks, so cap the plate rather than letting it fill */
 @media (max-width: 575px) {
   ol.bibliography > li .abbr {
-    max-width: 15rem;
+    max-width: 18rem;
+    margin-bottom: 0.9rem;
   }
 }
 
@@ -94,78 +94,101 @@ ol.bibliography abbr.badge {
   font-size: 1.12rem;
   font-weight: 700;
   line-height: 1.35;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
   color: var(--global-text-color);
 }
 
-/* Bold my name in publication author lists */
+/* Authors: my name bold; the fold ("N more authors") is a dashed toggle */
 ol.bibliography .author > em {
   font-weight: 700;
   font-style: normal;
+  border-bottom: 0;
 }
 .publications ol.bibliography .author {
   font-size: 0.9rem;
   line-height: 1.55;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.2rem;
 }
 
-/* Venue line: quiet italics */
+/* Venue: short and bold, e.g. "EMNLP 2025 (Main)" */
 .publications ol.bibliography .periodical {
-  font-size: 0.86rem;
-  font-style: italic;
-  color: var(--global-text-color-light);
-  margin-bottom: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--global-text-color);
+  margin: 0;
+}
+.publications ol.bibliography .periodical:empty {
+  display: none;
 }
 
-/* Links: strip the button chrome, render as spaced accent text links */
+/* Description: two quiet sentences between the venue and the buttons */
+.publications ol.bibliography .short-description {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--global-text-color);
+  opacity: 0.75;
+  margin: 0.35rem 0 0.2rem;
+}
+
+/* Links: a row of small outlined buttons — Abs · arXiv · Bib · Homepage · Code */
 .publications ol.bibliography .links {
-  margin-top: 0.45rem;
+  margin-top: 0.5rem;
 }
 .publications ol.bibliography .links a.btn {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 1.15rem 0 0 !important;
-  font-size: 0.84rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.2rem 0.85rem !important;
+  margin: 0 0.35rem 0.35rem 0 !important;
+  font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.015em;
-  text-transform: none;
-  color: var(--global-theme-color) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--global-text-color) !important;
+  background: transparent !important;
+  border: 1px solid var(--global-text-color) !important;
+  border-radius: 5px;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .publications ol.bibliography .links a.btn:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--global-theme-color) !important;
+  border-color: var(--global-theme-color) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
-/* Real links (with an href) get a small outward arrow; Abs/Bib toggles do not */
-.publications ol.bibliography .links a.btn[href]::after {
-  content: " \2197";
-  font-size: 0.75em;
-  vertical-align: 8%;
-}
-/* Award pill keeps a hint of emphasis without the button frame */
+/* Award pill keeps a hint of emphasis */
 .publications ol.bibliography .links a.award.btn {
   color: #b8860b !important;
-  font-style: italic;
+  border-color: #b8860b !important;
 }
 
-/* One-line takeaway, set off by a dashed rule like a project page */
-.publications ol.bibliography .tldr {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--global-text-color-light);
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px dashed var(--global-divider-color);
+/* Abs / Bib panels that unfold under the buttons */
+.publications ol.bibliography .hidden.open {
+  margin-top: 0.5rem;
+}
+.publications ol.bibliography div.abstract.hidden.open {
+  border-color: var(--global-divider-color);
+  border-radius: 6px;
+}
+.publications ol.bibliography .hidden p {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  text-align: left;
 }
 
-/* Stacked on phones: figure on top, text below, comfortable gap */
+/* Stacked on phones: figure on top, text below */
 @media (max-width: 575px) {
   .publications ol.bibliography > li {
     padding: 1rem;
-  }
-  .publications ol.bibliography > li .abbr {
-    margin-bottom: 0.9rem;
   }
 }
 
@@ -262,6 +285,35 @@ ol.bibliography .author > em {
   letter-spacing: 0.01em;
   margin: 0;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+}
+
+/* ===== SZ monogram beside the name in the navbar =====
+   The same mark as the favicon (assets/img/sz-mark.svg): a seal-like rounded
+   frame with an S and a red Z set as a tight serif ligature. Drawn with a
+   ::before so the theme's header include stays untouched; over the hero the
+   white variant is used until the navbar turns solid. */
+#navbar .navbar-brand.title,
+#navbar .navbar-brand.home-hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+#navbar .navbar-brand.title::before,
+#navbar .navbar-brand.home-hero-brand::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 1.45em;
+  height: 1.45em;
+  background: url("/assets/img/sz-mark.svg") center / contain no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+  transition: transform 0.25s ease;
+}
+#navbar .navbar-brand:hover::before {
+  transform: rotate(-6deg) scale(1.06);
+}
+html.home-hero-page:not(.nav-solid) #navbar .navbar-brand.home-hero-brand::before {
+  background-image: url("/assets/img/sz-mark-light.svg");
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.45));
 }
 
 /* ===== Home: transparent navbar over the hero, name top-left (zhou-xian style) ===== */
