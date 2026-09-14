@@ -591,11 +591,147 @@ body {
   margin-top: 4rem;
   margin-bottom: 1.4rem;
 }
-/* Space between news entries */
-.news table.table th,
-.news table.table td {
-  padding-top: 0.55rem;
-  padding-bottom: 0.55rem;
+/* ===== News: a timeline, not a table =====
+   Each item hangs off a thin rail with a dot at its date. On the home page the
+   list lives in a card that scrolls at a fixed height, with the top and bottom
+   edges fading only while there is more to scroll to; /news/ shows it whole.
+   Markup comes from the local override in `_includes/news.liquid`. */
+.news {
+  position: relative;
+  /* The hole punched in each dot: the surface the dot sits on */
+  --news-dot-hole: var(--global-bg-color);
+}
+.news-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.news-entry {
+  position: relative;
+  padding: 0 0 1.35rem 1.65rem;
+}
+.news-entry:last-child {
+  padding-bottom: 0.15rem;
+}
+/* The rail: drawn per entry so it stops at the last dot */
+.news-entry::before {
+  content: "";
+  position: absolute;
+  left: 0.29rem;
+  top: 0.95rem;
+  bottom: 0;
+  width: 1px;
+  background: var(--global-divider-color);
+}
+.news-entry:last-child::before {
+  display: none;
+}
+/* The dot */
+.news-entry::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.28rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--news-dot-hole);
+  border: 2px solid rgba(192, 57, 43, 0.45);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.news-entry:first-child::after,
+.news-entry:hover::after {
+  background: var(--site-accent);
+  border-color: var(--site-accent);
+}
+.news-entry:hover::after {
+  transform: scale(1.18);
+}
+.news-entry__date {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--site-accent);
+}
+.news-entry__text {
+  line-height: 1.6;
+}
+.news-entry__text p {
+  margin-bottom: 0;
+}
+
+/* The home-page box: a card that scrolls */
+.news--scroll {
+  /* Inside the card the dots sit on the card, not the page */
+  --news-dot-hole: var(--global-card-bg-color);
+}
+.news--scroll .news__scroller {
+  max-height: 15.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.1rem 1.2rem;
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(192, 57, 43, 0.35) transparent;
+}
+.news--scroll .news__scroller::-webkit-scrollbar {
+  width: 6px;
+}
+.news--scroll .news__scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+.news--scroll .news__scroller::-webkit-scrollbar-thumb {
+  background: rgba(192, 57, 43, 0.3);
+  border-radius: 999px;
+}
+.news--scroll .news__scroller:hover::-webkit-scrollbar-thumb {
+  background: rgba(192, 57, 43, 0.5);
+}
+/* Fades at the edges, shown only when there is content past them */
+.news--scroll::before,
+.news--scroll::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 7px;
+  height: 2.2rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.news--scroll::before {
+  top: 1px;
+  border-radius: 0.8rem 0.8rem 0 0;
+  background: linear-gradient(to bottom, var(--global-card-bg-color) 25%, transparent);
+}
+.news--scroll::after {
+  bottom: 1px;
+  border-radius: 0 0 0.8rem 0.8rem;
+  background: linear-gradient(to top, var(--global-card-bg-color) 25%, transparent);
+}
+.news--scroll.is-scrollable:not(.at-top)::before,
+.news--scroll.is-scrollable:not(.at-end)::after {
+  opacity: 1;
+}
+@media (max-width: 576px) {
+  .news--scroll .news__scroller {
+    max-height: 17rem;
+    padding: 0.95rem 1rem;
+  }
+}
+
+/* The /news/ page: the same timeline, given a little more air */
+.news:not(.news--scroll) .news-entry {
+  padding-bottom: 1.6rem;
 }
 
 /* ===== "Let's chat" invitation =====

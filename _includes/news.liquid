@@ -1,0 +1,61 @@
+{% comment %}
+  News, as a timeline rather than al_folio_core's bare table.
+
+  `limit=true` (the home page) renders a compact box: the newest
+  `page.announcements.limit` items inside a scroller that fades at the edges,
+  so the list stays a fixed height however long it grows. The /news/ page
+  includes this without `limit` and gets the full list, unscrolled.
+{% endcomment %}
+
+{% assign news_items = site.news | sort: 'date' | reverse %}
+{% if include.limit and page.announcements.limit %}
+  {% assign news_items = news_items | slice: 0, page.announcements.limit %}
+{% endif %}
+{% assign scrollable = false %}
+{% if include.limit and page.announcements.scrollable %}
+  {% assign scrollable = true %}
+{% endif %}
+
+<div class="news{% if scrollable %} news--scroll{% endif %}">
+  {% if news_items != blank %}
+    <div class="news__scroller">
+      <ol class="news-timeline">
+        {% for item in news_items %}
+          <li class="news-entry">
+            <time class="news-entry__date" datetime="{{ item.date | date_to_xmlschema }}">
+              {{ item.date | date: '%b %-d, %Y' }}
+            </time>
+            <div class="news-entry__text">
+              {% if item.inline %}
+                {{ item.content | remove: '<p>' | remove: '</p>' | emojify }}
+              {% else %}
+                <a class="news-title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+    {% if scrollable %}
+      {% comment %} Fade only on the edges that still have content past them {% endcomment %}
+      <script>
+        (function () {
+          var box = document.currentScript.parentElement;
+          var scroller = box.querySelector('.news__scroller');
+          function sync() {
+            var over = scroller.scrollHeight - scroller.clientHeight;
+            box.classList.toggle('is-scrollable', over > 4);
+            box.classList.toggle('at-top', scroller.scrollTop <= 4);
+            box.classList.toggle('at-end', scroller.scrollTop >= over - 4);
+          }
+          scroller.addEventListener('scroll', sync, { passive: true });
+          window.addEventListener('resize', sync, { passive: true });
+          window.addEventListener('load', sync);
+          sync();
+        })();
+      </script>
+    {% endif %}
+  {% else %}
+    <p>No news so far...</p>
+  {% endif %}
+</div>

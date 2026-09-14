@@ -197,9 +197,8 @@
     article.querySelectorAll(":scope > h2").forEach(function (h2) {
       add(h2, 0);
     });
-    /* table rows: fade only — transforms on <tr> are unreliable across engines */
-    article.querySelectorAll(".news table tr").forEach(function (tr, i) {
-      add(tr, Math.min(i * 60, 300), true);
+    article.querySelectorAll(".news .news-entry").forEach(function (li, i) {
+      add(li, Math.min(i * 60, 300), true);
     });
     article.querySelectorAll("ol.bibliography > li").forEach(function (li, i) {
       add(li, Math.min(i * 90, 360));
