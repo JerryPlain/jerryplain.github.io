@@ -1,4 +1,4 @@
-/* Home-page ambience: twinkling stardust + rare meteors over the hero,
+/* Home-page ambience: twinkling stardust + a light meteor shower over the hero,
    and a gentle scroll-reveal for the sections below.
    Loaded only by _layouts/about.liquid. */
 (function () {
@@ -6,7 +6,7 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ===== Stardust: breathing stars + an occasional meteor ===== */
+  /* ===== Stardust: breathing stars, glints, and a light meteor shower ===== */
   var hero = document.querySelector(".home-hero");
   var canvas = document.querySelector(".home-hero__fx");
   if (hero && canvas && !reduced && canvas.getContext) initStardust();
@@ -40,6 +40,26 @@
     var coolSprite = makeSprite(214, 226, 255);
     var warmSprite = makeSprite(233, 202, 143);
 
+    /* Four-point glint, shown on the brightest stars at the top of their breath */
+    function makeFlare() {
+      var s = document.createElement("canvas");
+      s.width = s.height = 64;
+      var c = s.getContext("2d");
+      var h = c.createLinearGradient(0, 0, 64, 0);
+      var v = c.createLinearGradient(0, 0, 0, 64);
+      [h, v].forEach(function (g) {
+        g.addColorStop(0, "rgba(230,236,255,0)");
+        g.addColorStop(0.5, "rgba(230,236,255,0.9)");
+        g.addColorStop(1, "rgba(230,236,255,0)");
+      });
+      c.fillStyle = h;
+      c.fillRect(0, 31.25, 64, 1.5);
+      c.fillStyle = v;
+      c.fillRect(31.25, 0, 1.5, 64);
+      return s;
+    }
+    var flareSprite = makeFlare();
+
     function buildField() {
       stars = [];
       var n = Math.min(170, Math.round((W * H) / 9000));
@@ -60,17 +80,23 @@
       }
     }
 
+    /* Every meteor dives leftward at a similar shallow angle, as if from one
+       radiant, so they read as a shower rather than random scratches. About a
+       third are distant ones: thinner, shorter, dimmer and quicker to fade. */
     function spawnMeteor(now) {
-      var angle = ((18 + Math.random() * 14) * Math.PI) / 180; // shallow dive
-      var speed = 380 + Math.random() * 220; // px/s
+      var faint = Math.random() < 0.3;
+      var angle = ((16 + Math.random() * 14) * Math.PI) / 180;
+      var speed = faint ? 300 + Math.random() * 140 : 420 + Math.random() * 260; // px/s
       meteors.push({
-        x0: W * (0.3 + Math.random() * 0.65),
-        y0: H * (0.04 + Math.random() * 0.2),
+        x0: W * (0.28 + Math.random() * 0.68),
+        y0: H * (0.03 + Math.random() * 0.22),
         vx: -Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        tail: 90 + Math.random() * 60,
+        tail: faint ? 60 + Math.random() * 50 : 130 + Math.random() * 110,
+        width: faint ? 0.65 : 1 + Math.random() * 0.35,
+        peak: faint ? 0.55 : 1,
         born: now,
-        dur: 1.2 + Math.random() * 0.5,
+        dur: faint ? 0.8 + Math.random() * 0.4 : 1.1 + Math.random() * 0.6,
       });
     }
 
@@ -78,7 +104,7 @@
       var t = (now - m.born) / m.dur;
       if (t >= 1) return false;
       /* fade-in fast, hold, fade-out long — no popping */
-      var a = t < 0.12 ? t / 0.12 : t > 0.55 ? (1 - t) / 0.45 : 1;
+      var a = (t < 0.12 ? t / 0.12 : t > 0.55 ? (1 - t) / 0.45 : 1) * m.peak;
       var elapsed = now - m.born;
       var x = m.x0 + m.vx * elapsed;
       var y = m.y0 + m.vy * elapsed;
@@ -99,21 +125,27 @@
       ctx.moveTo(x, y);
       ctx.lineTo(tx, ty);
       ctx.strokeStyle = grad;
-      ctx.lineWidth = 3.4; // halo pass
+      ctx.lineWidth = 3.4 * m.width; // halo pass
       ctx.globalAlpha = 0.35;
       ctx.stroke();
       ctx.globalAlpha = 1;
-      ctx.lineWidth = 1.4; // core pass
+      ctx.lineWidth = 1.4 * m.width; // core pass
       ctx.stroke();
 
       ctx.globalAlpha = a;
-      ctx.drawImage(warmSprite, x - 7, y - 7, 14, 14); // glowing head
+      var head = 14 * m.width;
+      ctx.drawImage(warmSprite, x - head / 2, y - head / 2, head, head); // glowing head
       ctx.globalAlpha = 1;
       return true;
     }
 
     function frame(nowMs) {
       var now = nowMs / 1000;
+      if (!started) {
+        started = true;
+        nextMeteorAt = now + 0.8; // let the layer fade in before the first streak
+        canvas.classList.add("is-on"); // CSS fades the whole layer in
+      }
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
@@ -121,21 +153,27 @@
         var size = s.r * 8;
         ctx.globalAlpha = alpha;
         ctx.drawImage(s.warm ? warmSprite : coolSprite, s.x - size / 2, s.y - size / 2, size, size);
+        if (s.r > 2.2) {
+          /* 0 → 1 across the top 30% of this star's breath */
+          var glint = (alpha - s.base - s.amp * 0.7) / (s.amp * 0.3);
+          if (glint > 0) {
+            var fs = s.r * 11;
+            ctx.globalAlpha = glint * 0.8;
+            ctx.drawImage(flareSprite, s.x - fs / 2, s.y - fs / 2, fs, fs);
+          }
+        }
       }
       ctx.globalAlpha = 1;
 
-      if (now >= nextMeteorAt && meteors.length === 0) {
+      if (now >= nextMeteorAt && meteors.length < 3) {
         spawnMeteor(now);
-        nextMeteorAt = now + 5 + Math.random() * 6; // one at a time, rare on purpose
+        /* every 2–5 s, and now and then a second streak close behind */
+        nextMeteorAt = now + (Math.random() < 0.18 ? 0.25 + Math.random() * 0.5 : 1.8 + Math.random() * 3.2);
       }
       for (var j = meteors.length - 1; j >= 0; j--) {
         if (!drawMeteor(meteors[j], now)) meteors.splice(j, 1);
       }
 
-      if (!started) {
-        started = true;
-        canvas.classList.add("is-on"); // CSS fades the whole layer in
-      }
       raf = requestAnimationFrame(frame);
     }
 
