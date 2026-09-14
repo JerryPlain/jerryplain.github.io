@@ -13,7 +13,7 @@ overrides:
     gem_version: 1.0.11
     upstream_path: _includes/news.liquid
     upstream_sha256: 2a37611539b5b3d59050cc20b8d008ca070e253d953724f6499a422e9b186f63
-    local_sha256: f6429f2b96614699354344720b9cc11cc913f27bd9901e1ebb3a9b50c4ec5442
+    local_sha256: b549b9761965cabc2d82cfdfd99492c89b5d5273e15951f6b2b8caf04391bd87
     acknowledged_at: "2026-09-14"
   _layouts/about.liquid:
     owner: al_folio_core

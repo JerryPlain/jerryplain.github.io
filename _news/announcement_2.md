@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-SwarmAgentic is accepted to EMNLP 2025 (Main)!
+[SwarmAgentic](https://yaozhang.ai/swarmagentic/) is accepted to **EMNLP 2025** (Main)!
