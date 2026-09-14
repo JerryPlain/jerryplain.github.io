@@ -733,8 +733,19 @@ body {
   background: linear-gradient(180deg, rgba(192, 57, 43, 0.055), rgba(192, 57, 43, 0.02));
 }
 .chat-invite__text {
-  margin: 0 0 0.95rem;
+  margin: 0 0 0.8rem;
   line-height: 1.6;
+}
+/* The closing line is a personal aside, so it is set quieter than the
+   invitation above it and marked off with a short accent rule. */
+.chat-invite__note {
+  margin: 0 0 1.05rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid rgba(192, 57, 43, 0.28);
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.55;
+  opacity: 0.82;
 }
 .chat-invite__actions {
   display: flex;
