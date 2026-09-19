@@ -1,37 +1,32 @@
 /* Site customizations for shijie's homepage */
 
-/* ===== Publications: project-page style =====
-   Each entry is a card — a fixed-width teaser on the left; title, a folded
-   author list, a short bold venue, a two-sentence description and a row of
-   outlined buttons on the right — so the list reads like a project page
-   rather than a bibliography. Modelled on yaozhang.ai. */
+/* ===== Publications: research-list style =====
+   After wenlonghuang.com: no card, just rows divided by hairlines. A fixed
+   width teaser on the left; on the right the title as a link, the full
+   author list with my name underlined, the venue in italics with the year,
+   an award line in red, a row of slash-separated text links, and a short
+   grey description. Markup comes from the local override in
+   `_layouts/bib.liquid`. */
 
-/* The card surface */
-.publications ol.bibliography > li {
-  background: var(--global-card-bg-color);
-  border: 1px solid var(--global-divider-color);
-  border-radius: 0.7rem;
-  padding: 1.15rem 1.3rem;
-  margin-bottom: 1.4rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+.publications ol.bibliography {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.publications ol.bibliography > li:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13);
+.publications ol.bibliography > li {
+  padding: 1.5rem 0;
+  margin: 0;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+.publications ol.bibliography > li:last-child {
+  border-bottom: 0;
 }
 /* Section headings: First-author / Co-authored */
 .publications h2.pub-section {
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--global-text-color);
-  border-bottom: 1px solid var(--global-divider-color);
   padding-bottom: 0.5rem;
   margin-top: 3rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--global-divider-color);
 }
 .publications h2.pub-section:first-of-type {
   margin-top: 1rem;
@@ -44,7 +39,7 @@
 }
 @media (min-width: 576px) {
   ol.bibliography > li > .row {
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: nowrap;
   }
   ol.bibliography > li > .row > .col-sm-2 {
@@ -55,7 +50,7 @@
     flex: 1 1 auto;
     max-width: none;
     min-width: 0;
-    padding-left: 1.5rem;
+    padding-left: 1.6rem;
   }
 }
 
@@ -69,7 +64,7 @@ ol.bibliography img.preview {
   aspect-ratio: var(--pub-teaser-ratio, 8 / 5);
   object-fit: cover;
   background: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow: none !important;
   cursor: zoom-in;
 }
@@ -105,7 +100,7 @@ ol.bibliography .thumbnail-hover-overlay img {
     display: block;
     animation: pub-overlay-in 0.18s ease-out;
   }
-  /* Lift the hovered card above its siblings so the overlay is never clipped */
+  /* Lift the hovered row above its siblings so the overlay is never clipped */
   .publications ol.bibliography > li:hover {
     position: relative;
     z-index: 20;
@@ -131,7 +126,7 @@ ol.bibliography .thumbnail-hover-overlay img {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: rgba(249, 247, 244, 0.86);
+  background: rgba(246, 243, 236, 0.86);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   cursor: zoom-out;
@@ -179,32 +174,44 @@ ol.bibliography abbr.badge {
   max-width: 6rem;
 }
 
-/* Title: the anchor of each entry */
-.publications ol.bibliography .title {
-  font-size: 1.12rem;
-  font-weight: 700;
+/* Title: the anchor of each entry, a link to the project page. The theme
+   sets the title's weight with a more specific selector, so this one is
+   deeper too. */
+.publications ol.bibliography > li .row .title,
+.publications ol.bibliography > li .row .title a {
+  font-size: 1.08rem;
+  font-weight: 600;
   line-height: 1.35;
-  margin-bottom: 0.3rem;
-  color: var(--global-text-color);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+  color: var(--site-heading-color);
+}
+.publications ol.bibliography .title a {
+  color: inherit;
 }
 
-/* Authors: my name bold; the fold ("N more authors") is a dashed toggle */
+/* Authors: everyone listed; my name underlined; the equal-contribution
+   note small and grey */
+.publications ol.bibliography .author {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.1rem;
+}
 ol.bibliography .author > em {
-  font-weight: 700;
   font-style: normal;
+  font-weight: 400;
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
   border-bottom: 0;
 }
-.publications ol.bibliography .author {
-  font-size: 0.9rem;
-  line-height: 1.55;
-  margin-bottom: 0.2rem;
-}
 
-/* Venue: short and bold, e.g. "EMNLP 2025 (Main)" */
+/* Venue: italic name, then the year */
 .publications ol.bibliography .periodical {
-  font-size: 0.9rem;
-  font-weight: 700;
-  font-style: normal;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.6;
   color: var(--global-text-color);
   margin: 0;
 }
@@ -212,58 +219,33 @@ ol.bibliography .author > em {
   display: none;
 }
 
-/* Description: two quiet sentences between the venue and the buttons */
+/* Award line: the award itself in red, the rest plain */
+
+/* Links: Project Page / Paper / Code / ... as plain underlined text */
+.publications ol.bibliography .links {
+  margin-top: 0.1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.publications ol.bibliography .links a {
+  cursor: pointer;
+}
+.publications ol.bibliography .links__sep {
+  margin: 0 0.35em;
+  color: var(--global-text-color-light);
+}
+
+/* Description: two quiet grey sentences under the links */
 .publications ol.bibliography .short-description {
   font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--global-text-color);
-  opacity: 0.75;
-  margin: 0.35rem 0 0.2rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0.4rem 0 0;
 }
 
-/* Links: a row of small outlined buttons — Abs · arXiv · Bib · Homepage · Code */
-.publications ol.bibliography .links {
-  margin-top: 0.5rem;
-}
-.publications ol.bibliography .links a.btn {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0.2rem 0.85rem !important;
-  margin: 0 0.35rem 0.35rem 0 !important;
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1.2;
-  color: var(--global-text-color) !important;
-  background: transparent !important;
-  border: 1px solid var(--global-text-color) !important;
-  border-radius: 5px;
-  box-shadow: none !important;
-  text-decoration: none !important;
-  cursor: pointer;
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.publications ol.bibliography .links a.btn:hover {
-  color: var(--global-theme-color) !important;
-  border-color: var(--global-theme-color) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-}
-/* Award pill keeps a hint of emphasis */
-.publications ol.bibliography .links a.award.btn {
-  color: #b8860b !important;
-  border-color: #b8860b !important;
-}
-
-/* Abs / Bib panels that unfold under the buttons */
+/* Abs / Bib panels that unfold under the links */
 .publications ol.bibliography .hidden.open {
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
 }
 .publications ol.bibliography div.abstract.hidden.open {
   border-color: var(--global-divider-color);
@@ -273,13 +255,6 @@ ol.bibliography .author > em {
   font-size: 0.86rem;
   line-height: 1.55;
   text-align: left;
-}
-
-/* Stacked on phones: figure on top, text below */
-@media (max-width: 575px) {
-  .publications ol.bibliography > li {
-    padding: 1rem;
-  }
 }
 
 /* Social icons under the profile photo: one compact centered row, Guandao-style */
@@ -357,7 +332,7 @@ ol.bibliography .author > em {
   margin: 0.55rem 0 0;
   text-align: right;
   padding-right: 0.15em;
-  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-family: var(--site-font-serif);
   font-size: clamp(0.72rem, 0.95vw, 0.86rem);
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.62);
@@ -369,7 +344,7 @@ ol.bibliography .author > em {
 
 .home-hero__tagline {
   color: #fff;
-  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-family: var(--site-font-serif);
   font-size: clamp(1.1rem, 1.9vw, 1.5rem);
   font-weight: 400;
   letter-spacing: 0.01em;
@@ -449,7 +424,7 @@ html.home-hero-page #navbar #search-toggle .nav-link {
 /* Unify the navbar font with the serif brand + motto */
 html.home-hero-page #navbar .nav-link,
 html.home-hero-page #navbar .navbar-brand {
-  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-family: var(--site-font-serif);
 }
 /* Nudge the whole navbar row up a touch */
 html.home-hero-page #navbar > .container {
@@ -466,7 +441,7 @@ html.home-hero-page #navbar .navbar-collapse-main {
   margin-left: auto;
 }
 .home-hero-brand {
-  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-family: var(--site-font-serif);
   font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -531,41 +506,69 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   }
 }
 
-/* ===== CV palette: red accent, blue links =====
-   The same two colours as the LaTeX CV — accent #C0392B for section headings,
-   #2E86C1 for every link — so the page and the PDF read as one document.
+/* ===== Palette and type =====
+   Warm cream ground, near-black text, quiet grey for secondary lines and a
+   single caramel accent for hover states — the tone of wenlonghuang.com.
+   Type is IBM Plex Sans for text and IBM Plex Serif for the name and motto
+   (loaded through `google_fonts` in _config.yml).
    `:root:root` outspecifies the theme's own `:root` block, which loads later. */
 :root:root {
-  --global-theme-color: #2e86c1;
-  --global-hover-color: #2e86c1;
-  --site-accent: #c0392b;
-  /* Warm paper rather than flat white, so the white cards read as lifted */
-  --global-bg-color: #f9f7f4;
+  --global-bg-color: #f6f3ec;
+  --global-text-color: #202020;
+  --global-text-color-light: #666;
+  --global-divider-color: #e3e3e3;
+  --global-card-bg-color: #fff;
+  --global-theme-color: #c58b5c;
+  --global-hover-color: #c58b5c;
+  --site-accent: #c58b5c;
+  --site-heading-color: #111;
+  --site-font-sans: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --site-font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
 }
-
-/* Three soft washes drawn from the same two accents, fixed to the viewport so
-   the content drifts over them as you scroll — the trick from etaoxing.com.
-   Kept faint (about a tenth opacity) so text contrast is untouched. */
 body {
-  background-image:
-    radial-gradient(60rem 40rem at 12% 8%, rgba(192, 57, 43, 0.07), transparent 62%),
-    radial-gradient(55rem 45rem at 88% 26%, rgba(46, 134, 193, 0.08), transparent 64%),
-    radial-gradient(50rem 40rem at 60% 96%, rgba(214, 158, 46, 0.07), transparent 62%);
-  background-attachment: fixed;
+  font-family: var(--site-font-sans);
+  color: var(--global-text-color);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Section headings carry the accent: News, Selected Publications, and the
-   First-author / Co-authored headings on the publications page. */
+/* Links in running text: the text colour with a thin grey underline that
+   darkens on hover, instead of coloured link text. Buttons and pills keep
+   their own styling. */
+.post article a:not(.btn):not(.quicklink):not(.chat-cta):not(.thumbnail-hover-wrapper):not(h2 > a) {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: #b7b7b7;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s ease;
+}
+.post article a:not(.btn):not(.quicklink):not(.chat-cta):not(.thumbnail-hover-wrapper):not(h2 > a):hover {
+  color: inherit;
+  text-decoration-color: currentColor;
+}
+
+/* Section headings: News, Selected Publications, Experience, and the
+   First-author / Co-authored headings on the publications page. Set small
+   and tight, in near-black, the way the reference sets its headings. */
 .post article > h2,
 .post article > h2 > a,
 .publications h2.pub-section {
-  color: var(--site-accent);
+  color: var(--site-heading-color);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+.post article > h2 > a {
+  text-decoration: none;
 }
 
-/* The current page in the navbar is a state, not a link — accent, not blue.
-   Over the hero the navbar keeps its own white/solid rules. */
+/* The current page in the navbar is a state, not a link: near-black, the
+   rest of the items grey. Over the hero the navbar keeps its own rules. */
 #navbar .navbar-nav .nav-item.active > .nav-link {
-  color: var(--site-accent);
+  color: var(--site-heading-color);
+  font-weight: 600;
 }
 
 /* Breathing room between the hero and the intro text */
@@ -603,7 +606,7 @@ body {
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  color: var(--site-accent);
+  color: var(--global-text-color-light);
 }
 .news-entry__text {
   flex: 1 1 auto;
@@ -637,14 +640,14 @@ body {
 }
 
 /* ===== "Let's chat" invitation =====
-   A tinted card that reads as an offer rather than another paragraph, with a
-   single solid call to action. Tint and button both come from the accent. */
+   A white card that reads as an offer rather than another paragraph, with a
+   single solid call to action that warms to the accent on hover. */
 .chat-invite {
   margin-top: 1.8rem;
   padding: 1.15rem 1.3rem 1.25rem;
-  border: 1px solid rgba(192, 57, 43, 0.22);
+  border: 1px solid var(--global-divider-color);
   border-radius: 0.8rem;
-  background: linear-gradient(180deg, rgba(192, 57, 43, 0.055), rgba(192, 57, 43, 0.02));
+  background: var(--global-card-bg-color);
 }
 .chat-invite__text {
   margin: 0 0 0.8rem;
@@ -655,7 +658,7 @@ body {
 .chat-invite__note {
   margin: 0 0 1.05rem;
   padding-left: 0.85rem;
-  border-left: 2px solid rgba(192, 57, 43, 0.28);
+  border-left: 2px solid rgba(197, 139, 92, 0.6);
   font-size: 0.92rem;
   font-style: italic;
   line-height: 1.55;
@@ -673,13 +676,13 @@ body {
   gap: 0.55rem;
   padding: 0.55rem 1.2rem;
   border-radius: 999px;
-  border: 1px solid rgba(192, 57, 43, 0.35);
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--site-accent) !important;
+  border: 1px solid var(--global-text-color);
+  background: var(--global-text-color);
+  color: #fff !important;
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none !important;
-  box-shadow: 0 1px 3px rgba(192, 57, 43, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition:
     background 0.18s ease,
     border-color 0.18s ease,
@@ -687,10 +690,14 @@ body {
     box-shadow 0.18s ease;
 }
 .chat-cta:hover {
-  background: rgba(192, 57, 43, 0.08);
-  border-color: rgba(192, 57, 43, 0.55);
+  background: var(--site-accent);
+  border-color: var(--site-accent);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.14);
+  box-shadow: 0 4px 12px rgba(197, 139, 92, 0.3);
+}
+.chat-cta > span,
+.chat-cta > i {
+  color: inherit;
 }
 .chat-cta__arrow {
   transition: transform 0.18s ease;
@@ -775,4 +782,109 @@ a.quicklink:hover .quicklink__glyph {
 .sr.sr-in {
   opacity: 1;
   transform: none;
+}
+
+/* ===== Experience =====
+   After wenlonghuang.com: a white logo plate on the left; organisation in
+   bold, then role, then advisors in grey; the dates set small to the far
+   right of the organisation line. Rows are divided by hairlines, with no
+   card around them. Data: _data/experience.yml, markup:
+   _includes/experience.liquid. */
+.experience {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+}
+.experience__entry {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  column-gap: 18px;
+  align-items: start;
+  padding: 15px 0;
+  border-top: 1px solid var(--global-divider-color);
+}
+.experience__entry:first-child {
+  border-top: 0;
+  padding-top: 4px;
+}
+.experience__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.045);
+}
+.experience__logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 38px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.experience__body {
+  min-width: 0;
+}
+.experience__org {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.experience__entry:hover .experience__org a {
+  color: var(--site-accent);
+  text-decoration-color: currentColor;
+}
+.experience__dates {
+  float: right;
+  margin: 0.1rem 0 0.25rem 0.9rem;
+  color: var(--global-text-color-light);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.experience__role {
+  margin-top: 0.2rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.experience__note {
+  margin-top: 0.15rem;
+  max-width: 48rem;
+  color: var(--global-text-color-light);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+/* Phones: logo above the text, dates on their own line under the name
+   (the dates sit before the name in the markup so they can float right on
+   desktop; a flex column reorders them here). */
+@media (max-width: 575px) {
+  .experience__entry {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+  .experience__logo {
+    width: min(13rem, 100%);
+  }
+  .experience__body {
+    display: flex;
+    flex-direction: column;
+  }
+  .experience__org {
+    order: 0;
+  }
+  .experience__dates {
+    order: 1;
+    float: none;
+    margin: 0.1rem 0 0.05rem;
+  }
+  .experience__role {
+    order: 2;
+  }
+  .experience__note {
+    order: 3;
+  }
 }
