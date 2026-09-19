@@ -241,6 +241,9 @@
     article.querySelectorAll("ol.bibliography > li").forEach(function (li, i) {
       add(li, Math.min(i * 90, 360));
     });
+    article.querySelectorAll(".experience > li").forEach(function (li, i) {
+      add(li, Math.min(i * 70, 280));
+    });
 
     var io = new IntersectionObserver(
       function (entries) {

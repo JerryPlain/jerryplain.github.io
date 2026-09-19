@@ -1,0 +1,44 @@
+# Experience list on the home page, rendered by _includes/experience.liquid.
+# One entry per affiliation, main one first, then reverse chronological.
+# Logos live in assets/img/logos/ (transparent 200px squares).
+# `people_label` is the word before the names: Advisors / Mentor / ...
+
+- organization: Technical University of Munich
+  url: https://www.tum.de/en/
+  logo: tum.png
+  role: M.Sc. in Robotics, Cognition, Intelligence
+  dates: Oct 2024 - Present
+  people_label: Advisors
+  people:
+    - name: Alois Knoll
+      url: https://www.ce.cit.tum.de/air/people/prof-dr-ing-habil-alois-knoll/
+    - name: Nassir Navab
+      url: https://www.cs.cit.tum.de/camp/members/cv-nassir-navab/nassir-navab/
+
+- organization: LMU Munich
+  url: https://www.lmu.de/en/
+  logo: lmu.png
+  role: Research Assistant
+  dates: Feb 2026 - Oct 2026
+  people_label: Advisors
+  people:
+    - name: Gengyuan Zhang
+      url: https://gengyuanmax.github.io/
+    - name: Volker Tresp
+      url: https://www.dbs.ifi.lmu.de/~tresp/
+
+- organization: Huawei Munich Research Center
+  url: https://www.huawei.com/en/
+  logo: huawei.png
+  role: Research Intern
+  dates: Oct 2025 - Apr 2026
+  people_label: Mentor
+  people:
+    - name: Krishna Kanth Nakka
+      url: https://krishnakanthnakka.github.io/
+
+- organization: Changsha University of Science and Technology
+  url: https://www.csust.edu.cn/index.htm
+  logo: csust.png
+  role: B.Eng. in Electrical Engineering and Automation
+  dates: Sep 2020 - Jun 2024

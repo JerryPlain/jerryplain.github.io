@@ -1,0 +1,52 @@
+{% comment %}
+  Experience list with institution logos, after wenlonghuang.com: logo plate
+  on the left; organisation, role and advisors on the right; dates set to the
+  far right of the organisation line. Data: _data/experience.yml.
+{% endcomment %}
+
+{% if site.data.experience and site.data.experience.size > 0 %}
+  <ul class="experience">
+    {% for entry in site.data.experience %}
+      <li class="experience__entry">
+        <div class="experience__logo">
+          {% if entry.logo %}
+            <img
+              src="{{ entry.logo | prepend: '/assets/img/logos/' | relative_url | bust_file_cache }}"
+              alt="{{ entry.organization }} logo"
+              loading="lazy"
+              decoding="async"
+            >
+          {% endif %}
+        </div>
+        <div class="experience__body">
+          {% if entry.dates %}
+            <div class="experience__dates">{{ entry.dates }}</div>
+          {% endif %}
+          <div class="experience__org">
+            {% if entry.url %}
+              <a href="{{ entry.url }}" target="_blank" rel="noopener">{{ entry.organization }}</a>
+            {% else %}
+              {{ entry.organization }}
+            {% endif %}
+          </div>
+          {% if entry.role %}
+            <div class="experience__role">{{ entry.role }}</div>
+          {% endif %}
+          {% if entry.people and entry.people.size > 0 %}
+            <div class="experience__note">
+              {{ entry.people_label | default: 'Advisors' }}:
+              {% for person in entry.people -%}
+                {% if person.url -%}
+                  <a href="{{ person.url }}" target="_blank" rel="noopener">{{ person.name }}</a>
+                {%- else -%}
+                  {{- person.name -}}
+                {%- endif %}
+                {%- unless forloop.last %}, {% endunless %}
+              {%- endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
