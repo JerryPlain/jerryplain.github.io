@@ -17,10 +17,36 @@
     - name: Nassir Navab
       url: https://www.cs.cit.tum.de/camp/members/cv-nassir-navab/nassir-navab/
 
+- organization: Carnegie Mellon University
+  url: https://www.cmu.edu/
+  logo: cmu.png
+  role: Research Intern at Safe AI Lab
+  dates: Sep 2026 - Present
+  people_label: Advisors
+  people:
+    - name: Heng Zhang
+      url: https://alfredo-pearson.github.io/
+    - name: Ding Zhao
+      url: https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html
+    - name: Douglas Weber
+      url: https://www.meche.engineering.cmu.edu/directory/bios/weber-douglas.html
+
+- organization: University of Cambridge
+  url: https://www.cam.ac.uk/
+  logo: cambridge.png
+  role: Research Assistant at Physical AI Lab
+  dates: Mar 2026 - Present
+  people_label: Advisors
+  people:
+    - name: Zhengyang Ling
+      url: https://www.construction.cam.ac.uk/people/dr-zhengyang-ling
+    - name: Brian Sheil
+      url: https://www.construction.cam.ac.uk/staff/dr-brian-sheil
+
 - organization: LMU Munich
   url: https://www.lmu.de/en/
   logo: lmu.png
-  role: Research Assistant
+  role: Research Assistant at TRESP Lab
   dates: Feb 2026 - Oct 2026
   people_label: Advisors
   people:
@@ -32,7 +58,7 @@
 - organization: Huawei Munich Research Center
   url: https://www.huawei.com/en/
   logo: huawei.png
-  role: Research Intern
+  role: Research Intern at TTE Lab
   dates: Oct 2025 - Apr 2026
   people_label: Mentor
   people:
