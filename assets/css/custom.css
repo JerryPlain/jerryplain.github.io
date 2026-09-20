@@ -845,7 +845,9 @@ a.quicklink:hover .quicklink__glyph {
 }
 .experience__entry {
   display: grid;
-  grid-template-columns: 84px 1fr;
+  /* Wide enough that a wordmark logo (CMU, TUM) still reads; square marks are
+     capped by max-height below, so they are unaffected by the extra width. */
+  grid-template-columns: 104px 1fr;
   column-gap: 18px;
   align-items: start;
   padding: 15px 0;
