@@ -12,6 +12,8 @@
   people:
     - name: Mohammadhossein Malmir
       url: https://www.ce.cit.tum.de/air/people/mohammadhossein-malmir-msc/
+    - name: Zhengyang Ling
+      url: https://www.construction.cam.ac.uk/people/dr-zhengyang-ling
     - name: Alois Knoll
       url: https://www.ce.cit.tum.de/air/people/prof-dr-ing-habil-alois-knoll/
     - name: Nassir Navab
@@ -30,18 +32,6 @@
       url: https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html
     - name: Douglas Weber
       url: https://www.meche.engineering.cmu.edu/directory/bios/weber-douglas.html
-
-- organization: University of Cambridge
-  url: https://www.cam.ac.uk/
-  logo: cambridge.png
-  role: Research Assistant at Physical AI Lab
-  dates: Mar 2026 - Present
-  people_label: Advisors
-  people:
-    - name: Zhengyang Ling
-      url: https://www.construction.cam.ac.uk/people/dr-zhengyang-ling
-    - name: Brian Sheil
-      url: https://www.construction.cam.ac.uk/staff/dr-brian-sheil
 
 - organization: LMU Munich
   url: https://www.lmu.de/en/
