@@ -37,11 +37,13 @@
   url: https://www.lmu.de/en/
   logo: lmu.png
   role: Research Assistant at TRESP Lab
-  dates: Feb 2026 - Oct 2026
+  dates: Feb 2026 - Nov 2026
   people_label: Advisors
   people:
     - name: Gengyuan Zhang
       url: https://gengyuanmax.github.io/
+    - name: Ghazal Ghazaei
+      url: https://scholar.google.com/citations?user=T7BXBYkAAAAJ&hl=en
     - name: Volker Tresp
       url: https://www.dbs.ifi.lmu.de/~tresp/
 
