@@ -19,19 +19,19 @@
     - name: Nassir Navab
       url: https://www.cs.cit.tum.de/camp/members/cv-nassir-navab/nassir-navab/
 
-- organization: Carnegie Mellon University
-  url: https://www.cmu.edu/
-  logo: cmu.png
-  role: Visiting Research Intern at Safe AI Lab
-  dates: Nov 2026 - Present
-  people_label: Advisors
-  people:
-    - name: Heng Zhang
-      url: https://alfredo-pearson.github.io/
-    - name: Ding Zhao
-      url: https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html
-    - name: Douglas Weber
-      url: https://www.meche.engineering.cmu.edu/directory/bios/weber-douglas.html
+# - organization: Carnegie Mellon University
+#   url: https://www.cmu.edu/
+#   logo: cmu.png
+#   role: Visiting Research Intern at Safe AI Lab
+#   dates: Nov 2026 - Present
+#   people_label: Advisors
+#   people:
+#     - name: Heng Zhang
+#       url: https://alfredo-pearson.github.io/
+#     - name: Ding Zhao
+#       url: https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html
+#     - name: Douglas Weber
+#       url: https://www.meche.engineering.cmu.edu/directory/bios/weber-douglas.html
 
 - organization: LMU Munich
   url: https://www.lmu.de/en/
