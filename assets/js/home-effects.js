@@ -9,7 +9,10 @@
   /* ===== Stardust: breathing stars, glints, and a light meteor shower ===== */
   var hero = document.querySelector(".home-hero");
   var canvas = document.querySelector(".home-hero__fx");
-  if (hero && canvas && !reduced && canvas.getContext) initStardust();
+  /* custom.css hides the canvas while the hero image is a studio shot rather
+     than a night sky; skip the whole animation loop in that case. */
+  var canvasHidden = canvas && window.getComputedStyle(canvas).display === "none";
+  if (hero && canvas && !reduced && !canvasHidden && canvas.getContext) initStardust();
 
   function initStardust() {
     var ctx = canvas.getContext("2d");
