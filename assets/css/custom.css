@@ -275,17 +275,36 @@ ol.bibliography .author > em {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-image: url("/assets/img/stars.jpg");
-  background-size: cover;
-  /* Raise the Milky Way band so it sits behind the navbar (not dark sky) */
-  background-position: center 22%;
-  background-attachment: fixed; /* parallax feel */
+  /* Human and robot hand reaching for each other on studio black (the
+     previous Milky Way is still at /assets/img/stars.jpg). The photo is split
+     into two layers, each hand alone on black, pinned to opposite corners: the
+     robot arm enters top right, the human arm bottom left, and the space
+     between them belongs to the avatar and the tagline. Both hands get the
+     same height so the composition stays point-symmetric about the content.
+     The size is fitted, not guessed: for twelve viewports from 912x760 to
+     2560x1440 the largest height that keeps every fingertip 45px from the
+     avatar and the tagline was measured, and min() of the two lines below is
+     the tightest formula that never exceeds it, then nudged 12px larger at
+     Jerry's request (the gap now lands between about 33 and 70px). The height term rules on wide screens, the width term on
+     squarer windows. Each layer is pushed 3vh past its corner, which clips a
+     sliver of forearm and keeps the fingertips clear of the content. */
+  background-color: #000;
+  background-image: url("/assets/img/hand-robot.jpg"), url("/assets/img/hand-human.jpg");
+  background-position:
+    right top -3vh,
+    left bottom -3vh;
+  background-size: auto min(70vh - 238px, 37vw - 53px);
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 /* Stardust canvas: above the darkening overlay, below the content (z 1).
    Starts invisible; home-effects.js adds .is-on after the first frame so the
-   stars fade in instead of popping. Decorative only — never catches clicks. */
+   stars fade in instead of popping. Decorative only — never catches clicks.
+   Hidden while the hands image is in use — twinkling stars and meteors read
+   as space, not a studio shot. Delete the `display: none` to bring them back;
+   home-effects.js skips the animation while the canvas is hidden. */
 .home-hero__fx {
+  display: none;
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -301,14 +320,18 @@ ol.bibliography .author > em {
 .home-hero__overlay {
   position: absolute;
   inset: 0;
-  /* Light gradient — the starry image is already dark; just enough for text contrast */
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.22) 55%, rgba(0, 0, 0, 0.45) 100%);
+  /* The image is already black; a scrim across the top keeps the navbar
+     legible where the white robot arm enters the frame, and a light one at
+     the bottom eases into the page fade. The middle stays untouched. */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 24%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.35) 100%);
 }
 .home-hero__content {
   position: relative;
   z-index: 1;
-  padding: 6rem 1.5rem 2rem; /* top padding clears the fixed navbar */
-  transform: translateY(-5vh); /* nudge the whole block up from center */
+  padding: 2rem 1.5rem;
+  /* A touch above true centre: the optical centre of the space between the
+     two fingertips sits slightly high. */
+  transform: translateY(-2vh);
   color: #fff;
 }
 .home-hero__avatar {
@@ -318,15 +341,46 @@ ol.bibliography .author > em {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-  margin: 0 auto 1.3rem;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 0 0 7px rgba(255, 255, 255, 0.07),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  margin: 0 auto 1.5rem;
 }
 /* Attribution under the tagline: quiet enough to read as a credit, clear
    enough that anyone who knows the song sees it is a quote, not a slogan. */
 .home-hero__quote {
   display: inline-block;
   max-width: 44ch;
+}
+/* Portrait viewports (phones, tablets): the width is the scarce dimension,
+   so the cap flips — size from the width, limited by the height. */
+@media (max-aspect-ratio: 1/1) {
+  .home-hero {
+    background-size: auto min(32vh, 60vw);
+  }
+}
+@media (max-width: 575px) {
+  .home-hero {
+    /* The phone hero is shorter (see the phone rules above), so the hands
+       shrink a step further and the human hand is lifted only slightly out
+       of the bottom fade. */
+    background-size: auto min(30vh, 60vw);
+    background-position:
+      right top -3vh,
+      left bottom 2vh;
+  }
+}
+/* Landscape phones: a short hero, so the avatar shrinks to keep the stack
+   clear of the navbar and the bottom fade. */
+@media (max-height: 500px) {
+  .home-hero {
+    background-size: auto 36vh;
+  }
+  .home-hero__avatar {
+    width: 100px;
+    height: 100px;
+  }
 }
 .home-hero__attrib {
   margin: 0.55rem 0 0;
@@ -347,7 +401,7 @@ ol.bibliography .author > em {
   font-family: var(--site-font-serif);
   font-size: clamp(1.1rem, 1.9vw, 1.5rem);
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
   margin: 0;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
@@ -468,7 +522,9 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 9rem;
+  /* Short enough to leave the human hand's palm out of the fade; only the
+     wrist melts into the page. */
+  height: 6rem;
   background: linear-gradient(180deg, transparent, var(--global-bg-color));
   pointer-events: none;
   z-index: 1;
@@ -530,6 +586,49 @@ body {
   color: var(--global-text-color);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Dark mode =====
+   The same warm register turned down: charcoal with a hint of brown for the
+   ground, bone for text, the caramel accent unchanged. The theme's
+   assets/js/theme.js sets html[data-theme] (the navbar toggle cycles system →
+   light → dark and remembers the choice); `:root:root[data-theme="dark"]`
+   outspecifies both the palette block above and the theme's own dark block.
+   Figure plates and logo plates stay white in both modes: those images were
+   made for white. */
+:root:root[data-theme="dark"] {
+  --global-bg-color: #161412;
+  --global-text-color: #e6e1d8;
+  --global-text-color-light: #9b958b;
+  --global-divider-color: #2d2a26;
+  --global-card-bg-color: #1e1b18;
+  --global-code-bg-color: #23201c;
+  --site-heading-color: #f3efe7;
+  --global-footer-bg-color: #0f0e0d;
+  --global-footer-text-color: #9b958b;
+  --global-footer-link-color: #e6e1d8;
+}
+html[data-theme="dark"] .pub-lightbox {
+  background: rgba(22, 20, 18, 0.86);
+}
+html[data-theme="dark"] .publications ol.bibliography .short-description {
+  color: #aaa49a;
+}
+html[data-theme="dark"] .post article a:not(.btn):not(.quicklink):not(.chat-cta):not(.thumbnail-hover-wrapper):not(h2 > a) {
+  text-decoration-color: #57524b;
+}
+/* Solid button: bone ground, so the label goes dark */
+html[data-theme="dark"] .chat-cta {
+  color: var(--global-bg-color) !important;
+}
+html[data-theme="dark"] .experience__logo {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+/* Navbar monogram: the light variant everywhere, not just over the hero */
+html[data-theme="dark"] #navbar .navbar-brand.title::before,
+html[data-theme="dark"] #navbar .navbar-brand.home-hero-brand::before {
+  background-image: url("/assets/img/sz-mark-light.svg");
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 /* Links in running text: the text colour with a thin grey underline that
