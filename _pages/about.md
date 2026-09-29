@@ -23,6 +23,6 @@ latest_posts:
 
 I am Shijie Zhou, a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I work on **embodied AI for robot manipulation** — multimodal learning, robot learning, and foundation models for robotics — towards robots that perceive, reason about, and act reliably in the physical world.
 
-I am a Research Assistant at TUM's [AIR Lab](https://www.ce.cit.tum.de/air/home/) and [CAMP](https://www.cs.cit.tum.de/camp/start/), and at the Tresp Lab at [LMU Munich](https://www.lmu.de/en/). Previously I was a research intern at the [Huawei Munich Research Center](https://www.huawei.com/en/).
+My goal is to become a full-stack roboticist, fluent across the whole stack from low-level hardware and control to high-level models, and I am working my way along that path.
 
-If our interests align, feel free to reach out at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
+I am always glad to join and contribute to solid robotics projects. If you have an opportunity to collaborate, feel free to email me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
