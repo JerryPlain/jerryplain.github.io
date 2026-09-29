@@ -1,9 +1,10 @@
-{% if site.mapmyvisitors_id %}
-  <!-- Visitor map: the MapMyVisitors image is itself the tracker — fetching it -->
-  <!-- registers the visit, so no extra script is needed, and it is deliberately -->
-  <!-- NOT lazy-loaded: a visitor who never scrolls this far would otherwise go -->
-  <!-- uncounted. Requested at twice the displayed width to stay sharp on retina; -->
-  <!-- clicking opens the full stats page. -->
+{% if site.revolvermaps_id %}
+  <!-- Visitor globe: the RevolverMaps2 script counts the visit as soon as it runs -->
+  <!-- and drops the globe in as a lazy iframe right after its own tag, so the -->
+  <!-- wrapper reserves the square up front to keep the page from jumping. The -->
+  <!-- widget page declares no colour scheme, so the wrapper pins "light" to -->
+  <!-- match it: a mismatch makes the browser paint an opaque white backdrop -->
+  <!-- behind the transparent iframe in dark mode. -->
   <style>
     .visitor-map {
       margin: 3.5rem auto 0;
@@ -16,36 +17,25 @@
       max-width: 34rem;
       margin: 0 auto 0.7rem;
     }
-    .visitor-map__link {
-      display: inline-block;
+    .visitor-map__globe {
+      width: 300px;
       max-width: 100%;
-      line-height: 0;
-      border-radius: 0.5rem;
-      overflow: hidden;
-      border: 1px solid var(--global-divider-color);
-    }
-    .visitor-map__link img {
-      width: 600px;
-      max-width: 100%;
-      height: auto;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      color-scheme: light;
     }
   </style>
   <section class="visitor-map">
-    <p class="visitor-map__note">This map shows approximate locations of visitors. No personally identifiable information is stored.</p>
-    <a
-      class="visitor-map__link"
-      href="https://mapmyvisitors.com/web/{{ site.mapmyvisitors_profile }}"
-      target="_blank"
-      rel="noopener nofollow"
-      title="See where visitors come from"
-    >
-      <img
-        src="https://mapmyvisitors.com/map.png?d={{ site.mapmyvisitors_id }}&amp;cl=000033&amp;w=1200"
-        alt="Map of approximate visitor locations"
-        width="1200"
-        height="613"
-        decoding="async"
-      >
-    </a>
+    <p class="visitor-map__note">This globe shows approximate locations of visitors. No personally identifiable information is stored.</p>
+    <div class="visitor-map__globe">
+      <script
+        src="https://revolvermaps2.com/embed.js"
+        data-site="{{ site.revolvermaps_id }}"
+        data-size="300"
+        data-theme="{{ site.revolvermaps_theme | default: 'night' }}"
+        data-color="{{ site.revolvermaps_color | default: 'ffb23f' }}"
+        async
+      ></script>
+    </div>
   </section>
 {% endif %}

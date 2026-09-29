@@ -113,17 +113,19 @@ analytics:
   pirsch: # your Pirsch analytics site ID (length 32 characters)
   openpanel: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
 
-# Visitor badge + map (MapMyVisitors, the still-maintained successor to ClustrMaps).
-# Renders a compact visitor-count badge under the profile photo (count via busuanzi)
-# that links to the MapMyVisitors stats page with the full geo map. The map widget
-# itself runs off-screen purely as a tracker. Rendered by _includes/visitor_map.liquid.
 # Scheduling link for the "Let's chat" block on the home page. Create one at
 # cal.com or calendly.com and paste the public booking URL here; while it is
 # empty the block offers email instead of a call.
 booking_url: ""
 
-mapmyvisitors_id: hZELT6UZPNZlGfmkobvHKg1hDwHCZ1z1rSwv-G4MW8g # "d=" token from the embed code
-mapmyvisitors_profile: 1c6fd # stats page: https://mapmyvisitors.com/web/1c6fd
+# Spinning visitor globe (RevolverMaps2) at the foot of the home page, rendered by
+# _includes/visitor_map.liquid. The key comes from the "data-site" attribute of the
+# snippet at revolvermaps2.com; while it is empty no globe renders. The photography
+# site (jerryplain.github.io/photography) uses the same key, so the globe counts
+# visitors to both.
+revolvermaps_id: a2tgw4xdkrzv
+revolvermaps_theme: blue # globe texture: night, dark or blue
+revolvermaps_color: 13dc04 # pin colour, 6-digit hex without the "#"
 
 # For Google Search Console, see https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag
 google_site_verification: # your google-site-verification ID (Google Search Console)
