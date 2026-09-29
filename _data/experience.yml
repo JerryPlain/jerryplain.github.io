@@ -12,12 +12,21 @@
   people:
     - name: Mohammadhossein Malmir
       url: https://www.ce.cit.tum.de/air/people/mohammadhossein-malmir-msc/
-    - name: Zhengyang Ling
-      url: https://www.construction.cam.ac.uk/people/dr-zhengyang-ling
     - name: Alois Knoll
       url: https://www.ce.cit.tum.de/air/people/prof-dr-ing-habil-alois-knoll/
     - name: Nassir Navab
       url: https://www.cs.cit.tum.de/camp/members/cv-nassir-navab/nassir-navab/
+
+- organization: University of Cambridge
+  url: https://www.cam.ac.uk/
+  logo: cambridge.png
+  dates: Apr 2026 - Present
+  people_label: Advisors
+  people:
+    - name: Zhengyang Ling
+      url: https://www.construction.cam.ac.uk/people/dr-zhengyang-ling
+    - name: Brian Sheil
+      url: https://www.construction.cam.ac.uk/people/dr-brian-sheil
 
 # - organization: Carnegie Mellon University
 #   url: https://www.cmu.edu/
