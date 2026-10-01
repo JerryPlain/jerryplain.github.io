@@ -4,7 +4,7 @@ permalink: /photography/
 title: Photography
 description: A few frames I liked enough to keep.
 nav: true
-nav_order: 3
+nav_order: 4
 ---
 
 <!-- Drop .jpg or .png files into assets/img/photography/ and they appear here,

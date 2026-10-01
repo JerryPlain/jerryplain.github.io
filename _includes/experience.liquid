@@ -2,11 +2,14 @@
   Experience list with institution logos, after wenlonghuang.com: logo plate
   on the left; organisation, role and advisors on the right; dates set to the
   far right of the organisation line. Data: _data/experience.yml.
+
+  `include.group` names the list to render: education, research or work.
 {% endcomment %}
 
-{% if site.data.experience and site.data.experience.size > 0 %}
+{% assign entries = site.data.experience[include.group] %}
+{% if entries and entries.size > 0 %}
   <ul class="experience">
-    {% for entry in site.data.experience %}
+    {% for entry in entries %}
       <li class="experience__entry">
         <div class="experience__logo">
           {% if entry.logo %}

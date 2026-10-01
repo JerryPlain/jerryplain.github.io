@@ -4,7 +4,7 @@
   `limit=true` (the home page) shows the newest `page.announcements.limit`
   items (all of them when the limit is blank) in a thin outlined box that
   scrolls once the list outgrows it. The /news/ page includes this without
-  `limit` and shows every item, unboxed.
+  `limit` and shows every item, unboxed and grouped by year.
 {% endcomment %}
 
 {% assign news_items = site.news | sort: 'date' | reverse %}
@@ -12,25 +12,35 @@
   {% assign news_items = news_items | slice: 0, page.announcements.limit %}
 {% endif %}
 
-<div class="news{% if include.limit and page.announcements.scrollable %} news--scroll{% endif %}">
-  {% if news_items != blank %}
-    <div class="news__scroller">
-      <ul class="news-list">
-        {% for item in news_items %}
-          <li class="news-entry">
-            <time class="news-entry__date" datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: '%b %Y' }}</time>
-            <div class="news-entry__text">
-              {% if item.inline %}
-                {{ item.content | remove: '<p>' | remove: '</p>' | emojify }}
-              {% else %}
-                <a class="news-title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
-              {% endif %}
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% else %}
-    <p>No news so far...</p>
-  {% endif %}
-</div>
+{% if include.limit %}
+  <div class="news{% if page.announcements.scrollable %} news--scroll{% endif %}">
+    {% if news_items != blank %}
+      <div class="news__scroller">
+        <ul class="news-list">
+          {% for item in news_items %}
+            {% include news_entry.liquid item=item format='%b %Y' %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      <p>No news so far...</p>
+    {% endif %}
+  </div>
+{% else %}
+  {% comment %} /news/: one section per year, each under its own heading {% endcomment %}
+  <div class="news news--page">
+    {% assign news_years = news_items | group_by_exp: 'item', "item.date | date: '%Y'" %}
+    {% for year in news_years %}
+      <section class="news-year">
+        <h2 class="exp-section">{{ year.name }}</h2>
+        <ul class="news-list">
+          {% for item in year.items %}
+            {% include news_entry.liquid item=item format='%b %d' %}
+          {% endfor %}
+        </ul>
+      </section>
+    {% else %}
+      <p>No news so far...</p>
+    {% endfor %}
+  </div>
+{% endif %}

@@ -1,6 +1,6 @@
 ---
 layout: about
-title: About
+title: Home
 permalink: /
 subtitle: Fiery red, forever fearless
 profile_photo: /assets/img/head2.jpg # swap the path to change the hero portrait

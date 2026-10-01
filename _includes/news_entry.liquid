@@ -1,0 +1,13 @@
+{% comment %} One news row; `include.format` is the strftime pattern for the date column. {% endcomment %}
+<li class="news-entry">
+  <time class="news-entry__date" datetime="{{ include.item.date | date_to_xmlschema }}">
+    {{- include.item.date | date: include.format -}}
+  </time>
+  <div class="news-entry__text">
+    {% if include.item.inline %}
+      {{ include.item.content | remove: '<p>' | remove: '</p>' | emojify }}
+    {% else %}
+      <a class="news-title" href="{{ include.item.url | relative_url }}">{{ include.item.title }}</a>
+    {% endif %}
+  </div>
+</li>
