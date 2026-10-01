@@ -22,13 +22,15 @@
   border-bottom: 0;
 }
 /* Section headings: First-author / Co-authored */
-.publications h2.pub-section {
+.publications h2.pub-section,
+h2.exp-section {
   padding-bottom: 0.5rem;
   margin-top: 3rem;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--global-divider-color);
 }
-.publications h2.pub-section:first-of-type {
+.publications h2.pub-section:first-of-type,
+section:first-child > h2.exp-section {
   margin-top: 1rem;
 }
 
@@ -652,7 +654,8 @@ html[data-theme="dark"] #navbar .navbar-brand.home-hero-brand::before {
    and tight, in near-black, the way the reference sets its headings. */
 .post article > h2,
 .post article > h2 > a,
-.publications h2.pub-section {
+.publications h2.pub-section,
+h2.exp-section {
   color: var(--site-heading-color);
   font-size: 1.35rem;
   font-weight: 600;
@@ -955,6 +958,36 @@ a.quicklink:hover .quicklink__glyph {
   color: var(--global-text-color-light);
   font-size: 0.88rem;
   line-height: 1.55;
+}
+
+/* Section headings on /experience/ (and the year headings on /news/): the
+   publications heading, with a small icon in the accent colour */
+h2.exp-section {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+h2.exp-section i {
+  width: 1.1em;
+  color: var(--site-accent);
+  font-size: 0.92em;
+  text-align: center;
+}
+.exp-group,
+.news-year {
+  scroll-margin-top: 5rem;
+}
+.experience-page .experience__entry:first-child {
+  padding-top: 8px;
+}
+
+/* /news/: the year is in the heading, so the date column only needs the day */
+.news--page .news-entry {
+  padding: 0.45rem 0;
+}
+.news--page .news-entry__date {
+  flex-basis: 4rem;
 }
 
 /* Phones: logo above the text, dates on their own line under the name
