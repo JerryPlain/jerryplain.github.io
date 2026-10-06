@@ -1,6 +1,22 @@
 ---
 ---
 
+@inproceedings{nakka-etal-2026-privacyevalclaw,
+  bibtex_show = {true},
+  title       = {{P}rivacy{E}val{C}law: A Tool-Augmented Deliberative Agent for Auditing Privacy Leakage in {LLM} Jailbreak Responses},
+  author      = {Nakka, Krishna Kanth and Wang, Yujun and Zhou, Shijie and Nguyen, Tu and Gelardi, Gabriele and Zhou, Xuebing},
+  booktitle   = {Findings of the Association for Computational Linguistics: AACL-IJCNLP 2026},
+  year        = {2026},
+  publisher   = {Association for Computational Linguistics},
+  url         = {https://openreview.net/forum?id=4r0W7fUjBm},
+  abstract    = {Privacy auditing of large language models (LLMs) increasingly relies on advanced jailbreak attacks to uncover unintended disclosures of personal information; the reliability of such audits, however, hinges on evaluators that can accurately determine whether a response constitutes privacy leakage. This evaluation remains challenging because disclosures may be indirect, contextual, partial, or obfuscated, and different evaluators can interpret the same response differently. We conduct a systematic study of guard models and LLM-as-Judges and find substantial disagreement among evaluators, particularly in ambiguous cases that require additional evidence or targeted analysis to resolve. Motivated by these findings, we introduce PrivacyEvalClaw, a training-free deliberative agent for evaluating privacy leakage in LLM jailbreak responses. Rather than relying on isolated single-pass judgments, PrivacyEvalClaw treats evaluators and analysis modules as tools, adaptively gathers evidence, investigates uncertain disclosures, and reconciles conflicting signals before producing a final judgment. Our primary experiments use pairwise LLM-as-Judge evaluation of complete trajectories, showing that PrivacyEvalClaw achieves favorable win rates against competing baselines across outcome, process, and overall quality, while also producing explicit reasoning traces that make the evaluation process more transparent and auditable.},
+  pdf         = {https://openreview.net/pdf?id=4r0W7fUjBm},
+  venue       = {Conference of the Asia-Pacific Chapter of the ACL (AACL-IJCNLP)},
+  venue_note  = {Findings},
+  preview     = {privacyevalclaw.png},
+  preview_full = {privacyevalclaw_full.png},
+}
+
 @inproceedings{zhang-etal-2025-swarmagentic,
   bibtex_show = {true},
   title       = {{S}warm{A}gentic: Towards Fully Automated Agentic System Generation via Swarm Intelligence},
@@ -24,6 +40,5 @@
   venue_note  = {Main},
   preview     = {swarmagentic.png},
   preview_full = {swarmagentic_full.png},
-  description = {SwarmAgentic is a framework for fully automated agentic system generation: it constructs agents from scratch and jointly optimizes their functionality and collaboration as interdependent components through language-driven exploration. A population of candidate systems is evolved with feedback-guided updates inspired by Particle Swarm Optimization, enabling efficient search over the agentic system design space.},
   selected    = {true}
 }
