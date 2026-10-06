@@ -21,15 +21,18 @@
 .publications ol.bibliography > li:last-child {
   border-bottom: 0;
 }
-/* Section headings: First-author / Co-authored */
-.publications h2.pub-section,
+/* Section headings: publication years / experience sections */
+div.publications h2.bibliography,
 h2.exp-section {
+  padding-top: 0;
   padding-bottom: 0.5rem;
   margin-top: 3rem;
   margin-bottom: 0.5rem;
+  text-align: left;
+  border-top: 0;
   border-bottom: 1px solid var(--global-divider-color);
 }
-.publications h2.pub-section:first-of-type,
+div.publications h2.bibliography:first-of-type,
 section:first-child > h2.exp-section {
   margin-top: 1rem;
 }
@@ -676,11 +679,11 @@ html[data-theme="dark"] #navbar .navbar-brand.home-hero-brand::before {
 }
 
 /* Section headings: News, Selected Publications, Experience, and the
-   First-author / Co-authored headings on the publications page. Set small
+   year headings on the publications page. Set small
    and tight, in near-black, the way the reference sets its headings. */
 .post article > h2,
 .post article > h2 > a,
-.publications h2.pub-section,
+div.publications h2.bibliography,
 h2.exp-section {
   color: var(--site-heading-color);
   font-size: 1.35rem;
