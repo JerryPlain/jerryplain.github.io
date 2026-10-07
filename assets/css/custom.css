@@ -2,8 +2,8 @@
 
 /* ===== Publications: research-list style =====
    After wenlonghuang.com: no card, just rows divided by hairlines. A fixed
-   width teaser on the left; on the right the title as a link, the full
-   author list with my name underlined, the venue in italics with the year,
+   width teaser on the left; on the right the title as a link in serif, the
+   full author list with my name in bold, the venue in bold with the year,
    an award line in red, a row of slash-separated text links, and a short
    grey description. Markup comes from the local override in
    `_layouts/bib.liquid`. */
@@ -39,6 +39,7 @@ section:first-child > h2.exp-section {
 
 /* Teaser left at a fixed width, text right filling the rest */
 .publications {
+  --pub-meta-color: #4a4a4a;
   --pub-teaser-width: 250px;
   --pub-teaser-ratio: 8 / 5;
 }
@@ -184,41 +185,45 @@ ol.bibliography abbr.badge {
    deeper too. */
 .publications ol.bibliography > li .row .title,
 .publications ol.bibliography > li .row .title a {
-  font-size: 1.08rem;
+  font-family: var(--site-font-serif);
+  font-size: 1.12rem;
   font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  margin-bottom: 0.35rem;
   color: var(--site-heading-color);
 }
 .publications ol.bibliography .title a {
   color: inherit;
 }
 
-/* Authors: everyone listed; my name underlined; the equal-contribution
-   note small and grey */
+/* Authors: everyone listed in a quieter grey, each name kept on one line;
+   my name in bold near-black; the equal-contribution note small and grey */
 .publications ol.bibliography .author {
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--pub-meta-color);
   margin-bottom: 0.1rem;
 }
-ol.bibliography .author > em {
-  font-style: normal;
-  font-weight: 400;
-  text-decoration-line: underline;
-  text-decoration-color: currentColor;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  border-bottom: 0;
+.publications ol.bibliography .author .author-name {
+  white-space: nowrap;
+}
+.publications ol.bibliography .author .author-self {
+  font-weight: 600;
+  color: var(--site-heading-color);
 }
 
-/* Venue: italic name, then the year */
+/* Venue: bold name, then the year */
 .publications ol.bibliography .periodical {
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   font-weight: 400;
-  line-height: 1.6;
-  color: var(--global-text-color);
+  line-height: 1.65;
+  color: var(--pub-meta-color);
   margin: 0;
+}
+.publications ol.bibliography .periodical .venue {
+  font-weight: 600;
+  color: var(--site-heading-color);
 }
 .publications ol.bibliography .periodical:empty {
   display: none;
@@ -609,6 +614,9 @@ body {
 }
 html[data-theme="dark"] .pub-lightbox {
   background: rgba(22, 20, 18, 0.86);
+}
+html[data-theme="dark"] .publications {
+  --pub-meta-color: #c9c3b8;
 }
 html[data-theme="dark"] .post article a:not(.btn):not(.quicklink):not(.chat-cta):not(.thumbnail-hover-wrapper):not(h2 > a) {
   text-decoration-color: #57524b;
