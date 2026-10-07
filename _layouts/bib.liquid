@@ -143,21 +143,25 @@
           {%- endif %}
           {%- if forloop.last and author_array_limit == author_array_size %}and {% endif -%}
         {% endif %}
+        {% comment %}
+          Local override: each name sits in a no-wrap span so a line break
+          never splits first and last name; my own name is set in bold.
+        {% endcomment %}
         {%- if author_is_self -%}
-          <em>
+          <strong class="author-name author-self">
             {{- author.first }}
             {{ author_last_html -}}
-          </em>
+          </strong>
+        {%- elsif coauthor_url -%}
+          <a class="author-name" href="{{ coauthor_url }}">
+            {{- author.first }}
+            {{ author_last_html -}}
+          </a>
         {%- else -%}
-          {%- if coauthor_url -%}
-            <a href="{{ coauthor_url }}">
-              {{- author.first }}
-              {{ author_last_html -}}
-            </a>
-          {%- else -%}
+          <span class="author-name">
             {{- author.first }}
             {{ author_last_html -}}
-          {% endif %}
+          </span>
         {%- endif -%}
       {% endfor %}
       {%- assign more_authors = author_array_size | minus: author_array_limit -%}
@@ -244,16 +248,14 @@
     {% capture periodical %}{{ entrytype }}{% if entrytype_text != "" and entryyear != "" %}, {% endif %}{{ entrymonth }}{{ entryyear }}{% endcapture %}
     {% comment %}
       Local override: a `venue` field in papers.bib (the conference's name
-      with its abbreviation, e.g. "Conference on Empirical Methods in Natural
-      Language Processing (EMNLP)") is set in italics, followed by the year
-      and an optional `venue_note` ("Main", "Oral", ...). The full booktitle
+      with its abbreviation, e.g. "Conference on Robot Learning (CoRL)") is
+      set in bold, followed by the year and nothing else. The full booktitle
       stays in the data and in the Bib view.
     {% endcomment %}
     {% if entry.venue %}
       {% capture periodical -%}
-        <em>{{ entry.venue }}</em>
+        <strong class="venue">{{ entry.venue }}</strong>
         {%- if entry.year %}, {{ entry.year }}{% endif -%}
-        {%- if entry.venue_note %} ({{ entry.venue_note }}){% endif -%}
       {%- endcapture %}
     {% endif %}
     <div class="periodical">
