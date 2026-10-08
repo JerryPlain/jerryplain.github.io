@@ -385,6 +385,7 @@ filtered_bibtex_keywords:
     altmetric,
     annotation,
     arxiv,
+    author_note,
     author_role,
     award,
     award_name,
