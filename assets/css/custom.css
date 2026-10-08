@@ -198,7 +198,8 @@ ol.bibliography abbr.badge {
 }
 
 /* Authors: everyone listed in a quieter grey, each name kept on one line;
-   my name in bold near-black; the equal-contribution note small and grey */
+   my name in bold near-black; the equal-contribution note on its own
+   line, small and grey */
 .publications ol.bibliography .author {
   font-size: 0.93rem;
   line-height: 1.65;
@@ -211,6 +212,12 @@ ol.bibliography abbr.badge {
 .publications ol.bibliography .author .author-self {
   font-weight: 600;
   color: var(--site-heading-color);
+}
+ol.bibliography .author .author-note {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
 }
 
 /* Venue: bold name, then the year */
