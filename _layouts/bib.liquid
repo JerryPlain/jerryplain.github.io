@@ -46,17 +46,68 @@
             {% assign zoom_src = entry.preview_full | prepend: '/assets/img/publication_preview/' | relative_url %}
           {% endif %}
         {% endif %}
-        <div class="thumbnail-hover-wrapper">
-          <img
-            class="preview rounded"
-            src="{{ preview_src }}"
-            data-zoom-src="{{ zoom_src }}"
-            loading="eager"
-            alt="{{ entry.title | strip_html | escape }}"
-          >
+        {% comment %}
+          A `.mp4` preview is a real-robot clip: it loops silently in the
+          plate (poster from `preview_poster` while it loads), with optional
+          `preview_badge` ("Real robot") and `preview_speed` ("6×") pills on
+          top; hovering floats it larger, and clicking opens it in the
+          lightbox.
+        {% endcomment %}
+        {% assign preview_is_video = false %}
+        {% if preview_src contains '.mp4' or preview_src contains '.webm' %}
+          {% assign preview_is_video = true %}
+        {% endif %}
+        {% assign poster_src = '' %}
+        {% if entry.preview_poster %}
+          {% assign poster_src = entry.preview_poster | prepend: '/assets/img/publication_preview/' | relative_url %}
+        {% endif %}
+        <div class="thumbnail-hover-wrapper{% if preview_is_video %} thumbnail-hover-wrapper--video{% endif %}">
+          {% if preview_is_video %}
+            <video
+              class="preview rounded"
+              src="{{ preview_src }}"
+              data-zoom-src="{{ zoom_src }}"
+              {% if poster_src != '' %}
+                poster="{{ poster_src }}"
+              {% endif %}
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="auto"
+              aria-label="{{ entry.title | strip_html | escape }}"
+            ></video>
+            {% if entry.preview_badge %}
+              <span class="preview-badge"><span class="preview-badge__dot"></span>{{ entry.preview_badge }}</span>
+            {% endif %}
+            {% if entry.preview_speed %}
+              <span class="preview-speed">{{ entry.preview_speed }}</span>
+            {% endif %}
+          {% else %}
+            <img
+              class="preview rounded"
+              src="{{ preview_src }}"
+              data-zoom-src="{{ zoom_src }}"
+              loading="eager"
+              alt="{{ entry.title | strip_html | escape }}"
+            >
+          {% endif %}
           {% comment %} Desktop only: hovering the teaser floats the full figure in a white card {% endcomment %}
           <div class="thumbnail-hover-overlay" aria-hidden="true">
-            <img src="{{ zoom_src }}" loading="lazy" alt="">
+            {% if preview_is_video %}
+              <video
+                src="{{ zoom_src }}"
+                {% if poster_src != '' %}
+                  poster="{{ poster_src }}"
+                {% endif %}
+                loop
+                muted
+                playsinline
+                preload="none"
+              ></video>
+            {% else %}
+              <img src="{{ zoom_src }}" loading="lazy" alt="">
+            {% endif %}
           </div>
         </div>
       {% endif %}
@@ -249,13 +300,16 @@
     {% comment %}
       Local override: a `venue` field in papers.bib (the conference's name
       with its abbreviation, e.g. "Conference on Robot Learning (CoRL)") is
-      set in bold, followed by the year and nothing else. The full booktitle
-      stays in the data and in the Bib view.
+      set in bold, followed by the year and nothing else. `venue_year`
+      overrides that year when the conference's year differs from the one
+      the entry is filed under (e.g. a 2026 submission to ICRA 2027). The
+      full booktitle stays in the data and in the Bib view.
     {% endcomment %}
     {% if entry.venue %}
+      {% assign venue_year = entry.venue_year | default: entry.year %}
       {% capture periodical -%}
         <strong class="venue">{{ entry.venue }}</strong>
-        {%- if entry.year %}, {{ entry.year }}{% endif -%}
+        {%- if venue_year %}, {{ venue_year }}{% endif -%}
       {%- endcapture %}
     {% endif %}
     <div class="periodical">
