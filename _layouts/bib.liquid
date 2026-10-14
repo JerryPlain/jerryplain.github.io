@@ -365,18 +365,21 @@
       {%- endif -%}
     {% endcapture %}
     {% assign link_items = links_html | strip | split: '</a>' %}
-    <div class="links">
-      {%- for item in link_items -%}
-        {%- assign item_text = item | strip -%}
-        {%- if item_text != '' -%}
-          {%- unless forloop.first -%}
-            <span class="links__sep">/</span>
-          {%- endunless -%}
-          {{ item_text -}}
-          </a>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
+    {% comment %} No row at all when an entry has no links (e.g. under review) {% endcomment %}
+    {% if link_items.size > 0 %}
+      <div class="links">
+        {%- for item in link_items -%}
+          {%- assign item_text = item | strip -%}
+          {%- if item_text != '' -%}
+            {%- unless forloop.first -%}
+              <span class="links__sep">/</span>
+            {%- endunless -%}
+            {{ item_text -}}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {% endif %}
 
     {% comment %}
       Local addition: a short plain-language description (`description` in
