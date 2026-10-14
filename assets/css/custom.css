@@ -64,7 +64,8 @@ section:first-child > h2.exp-section {
    Crop teasers to roughly this shape before adding them (see
    assets/img/publication_preview/). On desktop, hovering the plate floats
    the full figure in a white card over the entry; clicking zooms it. */
-ol.bibliography img.preview {
+ol.bibliography img.preview,
+ol.bibliography video.preview {
   display: block;
   width: 100%;
   aspect-ratio: var(--pub-teaser-ratio, 8 / 5);
@@ -95,11 +96,37 @@ ol.bibliography .thumbnail-hover-overlay {
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
   pointer-events: none;
 }
-ol.bibliography .thumbnail-hover-overlay img {
+ol.bibliography .thumbnail-hover-overlay img,
+ol.bibliography .thumbnail-hover-overlay video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 6px;
+}
+/* Video teasers (real-robot clips): a dark plate with a soft lift, and a
+   smaller dark hover card so the footage plays at a readable size */
+ol.bibliography video.preview {
+  background: #000;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16) !important;
+}
+/* Pills over a video plate: a live-recording dot with the label, and the
+   playback speed */
+@keyframes preview-live {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(255, 77, 77, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0);
+  }
+}
+ol.bibliography .thumbnail-hover-wrapper--video .thumbnail-hover-overlay {
+  width: min(640px, calc(100vw - 3rem));
+  padding: 6px;
+  background: #0b0b0b;
+  border-color: #222;
 }
 @media (min-width: 992px) and (hover: hover) {
   ol.bibliography .thumbnail-hover-wrapper:hover .thumbnail-hover-overlay {
@@ -154,6 +181,15 @@ ol.bibliography .thumbnail-hover-overlay img {
 }
 .pub-lightbox.is-open .pub-lightbox__card {
   transform: none;
+}
+.pub-lightbox__card video {
+  display: block;
+  max-width: min(1200px, 94vw);
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  background: #000;
 }
 .pub-lightbox__card img {
   display: block;
@@ -526,17 +562,60 @@ html.home-hero-page.nav-solid #navbar #search-toggle .nav-link {
 html.home-hero-page.nav-solid #navbar .icon-bar {
   background-color: var(--global-text-color) !important;
 }
-/* Melt the hero's bottom edge into the page background (both themes) */
+/* Melt the hero's bottom edge into the page background (both themes).
+   The page colour on a long smootherstep ramp (t^3(6t^2-15t+10)): the alpha
+   leaves zero and arrives at one with zero slope, so there is no visible
+   line where the fade begins or where it meets the flat page. Kept short on
+   purpose: the page should only just begin to show under the hero, with
+   the hands and the black left alone. */
 .home-hero::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  /* Short enough to leave the human hand's palm out of the fade; only the
-     wrist melts into the page. */
-  height: 6rem;
-  background: linear-gradient(180deg, transparent, var(--global-bg-color));
+  height: 7rem;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--hero-fade-rgb) / 0) 0%,
+    rgb(var(--hero-fade-rgb) / 0.001) 5%,
+    rgb(var(--hero-fade-rgb) / 0.009) 10%,
+    rgb(var(--hero-fade-rgb) / 0.027) 15%,
+    rgb(var(--hero-fade-rgb) / 0.058) 20%,
+    rgb(var(--hero-fade-rgb) / 0.104) 25%,
+    rgb(var(--hero-fade-rgb) / 0.163) 30%,
+    rgb(var(--hero-fade-rgb) / 0.235) 35%,
+    rgb(var(--hero-fade-rgb) / 0.317) 40%,
+    rgb(var(--hero-fade-rgb) / 0.407) 45%,
+    rgb(var(--hero-fade-rgb) / 0.5) 50%,
+    rgb(var(--hero-fade-rgb) / 0.593) 55%,
+    rgb(var(--hero-fade-rgb) / 0.683) 60%,
+    rgb(var(--hero-fade-rgb) / 0.765) 65%,
+    rgb(var(--hero-fade-rgb) / 0.837) 70%,
+    rgb(var(--hero-fade-rgb) / 0.896) 75%,
+    rgb(var(--hero-fade-rgb) / 0.942) 80%,
+    rgb(var(--hero-fade-rgb) / 0.973) 85%,
+    rgb(var(--hero-fade-rgb) / 0.991) 90%,
+    rgb(var(--hero-fade-rgb) / 0.999) 95%,
+    rgb(var(--hero-fade-rgb) / 1) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+/* Film grain under the ramp: monochrome SVG turbulence that breaks up the
+   banding a black-to-cream ramp shows on 8-bit panels. Masked to the middle
+   of the band, where the ramp is half-transparent and the banding lives, so
+   it never draws an edge of its own on the black above or the page below. */
+.home-hero__overlay::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7rem;
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+  -webkit-mask-image: linear-gradient(180deg, transparent 22%, #000 45%, #000 65%, transparent 95%);
+  mask-image: linear-gradient(180deg, transparent 22%, #000 45%, #000 65%, transparent 95%);
   pointer-events: none;
   z-index: 1;
 }
@@ -581,6 +660,7 @@ html.home-hero-page.nav-solid #navbar .icon-bar {
    `:root:root` outspecifies the theme's own `:root` block, which loads later. */
 :root:root {
   --global-bg-color: #f6f3ec;
+  --hero-fade-rgb: 246 243 236; /* the page colour as bare channels, for the hero fade's alpha ramp */
   --global-text-color: #202020;
   --global-text-color-light: #666;
   --global-divider-color: #e3e3e3;
@@ -609,6 +689,7 @@ body {
    made for white. */
 :root:root[data-theme="dark"] {
   --global-bg-color: #161412;
+  --hero-fade-rgb: 22 20 18;
   --global-text-color: #e6e1d8;
   --global-text-color-light: #9b958b;
   --global-divider-color: #2d2a26;
@@ -725,16 +806,71 @@ h2.exp-section {
   font-size: 0.95rem;
 }
 
-/* The home-page box */
-.news--scroll .news__scroller {
-  max-height: 13.5rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 0.55rem 1rem;
+/* The home-page box: five rows tall, the rest reached by scrolling inside
+   it. home-effects.js measures the fifth row and sets the exact height
+   (rows wrap on narrow screens, so a fixed rem would cut one mid-line); the
+   max-height here is only the no-JS fallback. The vertical padding sits on
+   the frame, not the scroller, so the sixth row cannot peek through it.
+   Wheel and trackpad scrolls settle on a row boundary; a slim scrollbar
+   stays visible as the cue that there is more, and a short fade at each
+   edge softens the cut without greying the last visible row. */
+.news--scroll {
+  position: relative;
+  padding: 0.55rem 0;
   border: 1px solid var(--global-divider-color);
   border-radius: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--global-divider-color) transparent;
+}
+.news--scroll .news__scroller {
+  position: relative;
+  max-height: 10.8rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1rem;
+  scroll-snap-type: y proximity;
+}
+.news--scroll .news__scroller::-webkit-scrollbar {
+  width: 5px;
+}
+.news--scroll .news__scroller::-webkit-scrollbar-thumb {
+  background: var(--global-divider-color);
+  border-radius: 3px;
+}
+.news--scroll .news__scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--global-text-color-light);
+}
+.news--scroll .news-entry {
+  scroll-snap-align: start;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .news--scroll .news__scroller {
+    scroll-behavior: smooth;
+  }
+}
+/* Edge fades: the frame's padding plus a few pixels of the row beside it,
+   each faded in by a class the script toggles as the box scrolls. */
+.news--scroll::before,
+.news--scroll::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 8px; /* clear of the scrollbar */
+  height: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.news--scroll::before {
+  top: 1px;
+  background: linear-gradient(180deg, var(--global-bg-color) 40%, transparent);
+}
+.news--scroll::after {
+  bottom: 1px;
+  background: linear-gradient(0deg, var(--global-bg-color) 40%, transparent);
+}
+.news--scroll.news--more-above::before,
+.news--scroll.news--more-below::after {
+  opacity: 1;
 }
 
 /* Phones: the date moves above its item */
