@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-SurgKnowBench & SurgAgentGym is accepted to **NeurIPS 2026** (Evaluations and Datasets Track)!
+SurgKnowBench is accepted to **NeurIPS 2026** (Evaluations and Datasets Track)!

@@ -218,6 +218,46 @@
     sync();
   }
 
+  /* ===== News box: exactly five rows tall, scrolls for the rest ===== */
+  var newsBox = document.querySelector(".news--scroll");
+  if (newsBox) initNewsBox();
+
+  function initNewsBox() {
+    var VISIBLE = 5;
+    var scroller = newsBox.querySelector(".news__scroller");
+    var rows = scroller ? scroller.querySelectorAll(".news-entry") : [];
+    if (rows.length <= VISIBLE) return; /* everything fits; leave the CSS alone */
+
+    scroller.tabIndex = 0; /* keyboard users can arrow through the box */
+
+    /* Height = the bottom of the fifth row, measured live so wrapped rows on
+       narrow screens still land on a row boundary. (The box's vertical
+       padding is on the frame around the scroller, so nothing else counts.) */
+    function fit() {
+      var first = rows[0];
+      var last = rows[VISIBLE - 1];
+      scroller.style.maxHeight = Math.ceil(last.offsetTop + last.offsetHeight - first.offsetTop) + "px";
+      update();
+    }
+    function update() {
+      var top = scroller.scrollTop;
+      var rest = scroller.scrollHeight - scroller.clientHeight - top;
+      newsBox.classList.toggle("news--more-above", top > 2);
+      newsBox.classList.toggle("news--more-below", rest > 2);
+    }
+
+    var fitTimer;
+    scroller.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", function () {
+      clearTimeout(fitTimer);
+      fitTimer = setTimeout(fit, 120);
+    });
+    /* Re-measure once web fonts are in, since they change the row heights. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    window.addEventListener("load", fit);
+    fit();
+  }
+
   /* ===== Scroll reveal for the content below the hero ===== */
   if (!reduced && "IntersectionObserver" in window) initReveal();
 

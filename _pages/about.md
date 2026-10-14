@@ -12,8 +12,8 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 
 announcements:
   enabled: true # includes a list of news items
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: # leave blank to include all the news in the `_news` folder
+  scrollable: true # the home box shows five items and scrolls for the rest (custom.css + home-effects.js)
+  limit: # leave blank: every item is rendered, the box itself hides the rest
 
 latest_posts:
   enabled: false

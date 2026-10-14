@@ -13,10 +13,6 @@
   # at it, or at whatever newer file gets dropped in, to activate the button.
   url: ""
 
-- label: Email
-  icon: fa-solid fa-envelope
-  url: mailto:jerryplain@outlook.com
-
 - label: Google Scholar
   icon: ai ai-google-scholar
   url: https://scholar.google.com/citations?user=hfjfsC8AAAAJ
