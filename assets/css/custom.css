@@ -529,7 +529,19 @@ ol.bibliography .author .author-note {
 #navbar .navbar-brand.home-hero-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  /* Space after the mark only: a flex gap would also widen the space
+     between the first name and the surname. */
+  column-gap: 0.28em;
+}
+#navbar .navbar-brand.title::before,
+#navbar .navbar-brand.home-hero-brand::before {
+  margin-right: 0.22em;
+}
+/* The theme sets the surname lighter than the bold first name; set the
+   whole name in the first name's weight. Bootstrap's .font-weight-lighter
+   is !important, hence the same here. */
+#navbar .navbar-brand.title {
+  font-weight: 700 !important;
 }
 #navbar .navbar-brand.title::before,
 #navbar .navbar-brand.home-hero-brand::before {
