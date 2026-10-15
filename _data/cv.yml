@@ -63,14 +63,16 @@ cv:
       - title: "How to Train a Surgeon? Benchmarking Generalist Agents in Surgical Scene Understanding"
         authors:
           - G. Zhang, X. Han*, Shijie Zhou*, A. Koukash*, G. Ghazaei, J. Gu, J. Wu, Y. Zhu, N. Navab, V. Tresp
-        publisher: NeurIPS 2026 (Under Review)
+        publisher: NeurIPS (Evaluations and Datasets Track) 2026
         releaseDate: 2026
+        url: https://neurips.cc/virtual/2026/loc/sydney/poster/139078
 
-      - title: "PrivacyEvalClaw: Towards Deliberative Tool-Augmented Agent for LLM Privacy Jailbreak Evaluation"
+      - title: "PrivacyEvalClaw: A Tool-Augmented Deliberative Agent for Auditing Privacy Leakage in LLM Jailbreak Responses"
         authors:
           - K. K. Nakka, Y. Wang, Shijie Zhou, T. Nguyen, G. Gelardi, X. Zhou
-        publisher: EMNLP 2026 (Under Review)
+        publisher: AACL-IJCNLP (Findings) 2026
         releaseDate: 2026
+        url: https://openreview.net/pdf?id=4r0W7fUjBm
 
       - title: "SwarmAgentic: Towards Fully Automated Agentic System Generation via Swarm Intelligence"
         authors:
