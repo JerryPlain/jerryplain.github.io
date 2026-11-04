@@ -164,7 +164,19 @@ body::after {
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Content column: 1200px wide like the navbar, with 24px gutters */
+/* Content column: 1200px wide like the navbar, with 24px gutters.
+   The width is pinned here rather than left to main.css: main.css bakes in
+   `max_width` from _config.yml at build time, but its cache-busting hash
+   only follows the SCSS source, so after a config change browsers keep
+   serving the old file (930px) under the same URL. This file's hash does
+   change with every edit. */
+body > .container[role="main"],
+footer.sticky-bottom > .container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
 body > .container[role="main"] {
   padding-left: 24px;
   padding-right: 24px;
