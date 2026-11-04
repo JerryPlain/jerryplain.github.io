@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-SurgKnowBench is accepted to **NeurIPS 2026** (Evaluations and Datasets Track)!
+[SurgKnowBench](https://neurips.cc/virtual/2026/loc/sydney/poster/139078) is accepted to **NeurIPS 2026** (Evaluations and Datasets Track)!

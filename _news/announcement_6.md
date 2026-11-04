@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-PrivacyEvalClaw is accepted to **AACL-IJCNLP 2026** (Findings)!
+[PrivacyEvalClaw](https://krishnakanthnakka.github.io/privacyevalclaw) is accepted to **AACL-IJCNLP 2026** (Findings)!

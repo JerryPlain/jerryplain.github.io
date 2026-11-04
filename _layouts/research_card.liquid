@@ -1,0 +1,158 @@
+---
+---
+{% comment %}
+  One research card on the home page (after wenlixiao.com): the teaser on
+  the left with a role pill in its corner, and the author list sliding up
+  over it on hover; the title, venue, a one-line TL;DR and icon links on
+  the right. Rendered by jekyll-scholar through
+  `{% bibliography --template research_card %}` in _includes/research_cards.liquid.
+
+  Fields read from papers.bib: preview / preview_full / preview_poster,
+  role ("Co-First Author"), venue + venue_year, tldr, website, pdf / doi /
+  url / arxiv, code, video, author_note.
+{% endcomment %}
+
+{% comment %} Title target and the "Paper" link: the same rules as _layouts/bib.liquid {% endcomment %}
+{% assign paper_url = '' %}
+{% if entry.pdf %}
+  {% if entry.pdf contains '://' %}
+    {% assign paper_url = entry.pdf %}
+  {% else %}
+    {% assign paper_url = entry.pdf | prepend: '/assets/pdf/' | relative_url %}
+  {% endif %}
+{% elsif entry.doi %}
+  {% assign paper_url = entry.doi | prepend: 'https://doi.org/' %}
+{% elsif entry.url %}
+  {% assign paper_url = entry.url %}
+{% elsif entry.arxiv %}
+  {% assign paper_url = entry.arxiv | prepend: 'https://arxiv.org/abs/' %}
+{% endif %}
+{% assign title_url = entry.website | default: paper_url %}
+
+{% comment %} Short venue: the abbreviation in the venue's parentheses, then the year {% endcomment %}
+{% assign venue_year = entry.venue_year | default: entry.year %}
+{% if entry.venue contains '(' %}
+  {% assign venue_parts = entry.venue | split: '(' %}
+  {% assign venue_short = venue_parts | last | remove: ')' | strip %}
+  {% capture venue_line %}{{ venue_short }} {{ venue_year }}{% endcapture %}
+{% elsif entry.venue %}
+  {% capture venue_line %}{{ entry.venue }}, {{ venue_year }}{% endcapture %}
+{% else %}
+  {% assign venue_line = venue_year %}
+{% endif %}
+
+{% comment %} The author list, my own name marked; used in the hover overlay and, on touch screens, under the TL;DR {% endcomment %}
+{% capture authors_html %}
+  {%- for author in entry.author_array -%}
+    {%- assign author_last_name = author.last | regex_replace: '[*∗†‡§¶‖&^]', '' -%}
+    {%- assign author_last_html = author.last | regex_replace: '([*∗†‡§¶‖&^]+)', '<sup>\1</sup>' -%}
+    {%- assign author_is_self = false -%}
+    {%- if site.scholar.last_name contains author_last_name and site.scholar.first_name contains author.first -%}
+      {%- assign author_is_self = true -%}
+    {%- endif -%}
+    {%- unless forloop.first -%}, {% endunless -%}
+    {%- if author_is_self -%}
+      <strong class="rc-self">{{ author.first }} {{ author_last_html }}</strong>
+    {%- else -%}
+      <span class="rc-name">{{ author.first }} {{ author_last_html }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+{% endcapture %}
+
+{% assign preview_src = '' %}
+{% if entry.preview %}
+  {% if entry.preview contains '://' %}
+    {% assign preview_src = entry.preview %}
+  {% else %}
+    {% assign preview_src = entry.preview | prepend: '/assets/img/publication_preview/' | relative_url %}
+  {% endif %}
+{% endif %}
+{% assign zoom_src = preview_src %}
+{% if entry.preview_full %}
+  {% assign zoom_src = entry.preview_full | prepend: '/assets/img/publication_preview/' | relative_url %}
+{% endif %}
+{% assign preview_is_video = false %}
+{% if preview_src contains '.mp4' or preview_src contains '.webm' %}
+  {% assign preview_is_video = true %}
+{% endif %}
+
+<article class="rc">
+  <div class="rc__media thumbnail-hover-wrapper{% if preview_is_video %} rc__media--video{% endif %}">
+    {% if preview_is_video %}
+      <video
+        class="preview rc__visual"
+        src="{{ preview_src }}"
+        data-zoom-src="{{ zoom_src }}"
+        {% if entry.preview_poster %}
+          poster="{{ entry.preview_poster | prepend: '/assets/img/publication_preview/' | relative_url }}"
+        {% endif %}
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        aria-label="{{ entry.title | strip_html | escape }}"
+      ></video>
+    {% elsif preview_src != '' %}
+      <img
+        class="preview rc__visual"
+        src="{{ preview_src }}"
+        data-zoom-src="{{ zoom_src }}"
+        loading="lazy"
+        decoding="async"
+        alt="{{ entry.title | strip_html | escape }}"
+      >
+    {% endif %}
+    {% if entry.role %}
+      <span class="rc__role">{{ entry.role }}</span>
+    {% endif %}
+    <div class="rc__overlay" aria-hidden="true">
+      <div class="rc__overlay-label">Authors</div>
+      <div class="rc__overlay-names">{{ authors_html | strip }}</div>
+      {% if entry.author_note %}
+        <div class="rc__overlay-note">{{ entry.author_note }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="rc__body">
+    <h3 class="rc__title">
+      {% if title_url != '' %}
+        <a href="{{ title_url }}">{{ entry.title }}</a>
+      {% else %}
+        {{ entry.title }}
+      {% endif %}
+    </h3>
+    <div class="rc__venue">{{ venue_line | strip }}</div>
+    {% if entry.tldr %}
+      <p class="rc__tldr">TL;DR: {{ entry.tldr }}</p>
+    {% endif %}
+    <p class="rc__authors">
+      {{ authors_html | strip }}
+      {% if entry.author_note %}
+        <span class="rc__authors-note">{{ entry.author_note }}</span>
+      {% endif %}
+    </p>
+    {% capture rc_links %}
+      {%- if entry.website -%}
+        <a href="{{ entry.website }}"><i class="fa-solid fa-globe" aria-hidden="true"></i>Website</a>
+      {%- endif -%}
+      {%- if paper_url != '' and paper_url != entry.website -%}
+        <a href="{{ paper_url }}"><i class="fa-regular fa-file-lines" aria-hidden="true"></i>Paper</a>
+      {%- endif -%}
+      {%- if entry.arxiv and paper_url != entry.arxiv -%}
+        <a href="https://arxiv.org/abs/{{ entry.arxiv }}"><i class="ai ai-arxiv" aria-hidden="true"></i>arXiv</a>
+      {%- endif -%}
+      {%- if entry.code -%}
+        <a href="{{ entry.code }}"><i class="fa-solid fa-code" aria-hidden="true"></i>Code</a>
+      {%- endif -%}
+      {%- if entry.video and entry.video contains '://' -%}
+        <a href="{{ entry.video }}"><i class="fa-regular fa-circle-play" aria-hidden="true"></i>Video</a>
+      {%- endif -%}
+    {% endcapture %}
+    {% assign rc_links = rc_links | strip %}
+    {% if rc_links != '' %}
+      <div class="rc__links">{{ rc_links }}</div>
+    {% endif %}
+  </div>
+</article>

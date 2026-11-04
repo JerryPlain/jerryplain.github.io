@@ -92,6 +92,10 @@
               alt="{{ entry.title | strip_html | escape }}"
             >
           {% endif %}
+          {% comment %} The role on this paper ("Co-First Author"), pinned to the teaser {% endcomment %}
+          {% if entry.role %}
+            <span class="preview-role">{{ entry.role }}</span>
+          {% endif %}
           {% comment %} Desktop only: hovering the teaser floats the full figure in a white card {% endcomment %}
           <div class="thumbnail-hover-overlay" aria-hidden="true">
             {% if preview_is_video %}
@@ -387,6 +391,8 @@
     {% endcomment %}
     {% if entry.description %}
       <div class="short-description">{{ entry.description }}</div>
+    {% elsif entry.tldr %}
+      <div class="short-description">TL;DR: {{ entry.tldr }}</div>
     {% endif %}
     {% if site.enable_publication_badges %}
       {% assign entry_has_altmetric_badge = false %}

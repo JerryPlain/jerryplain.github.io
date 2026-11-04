@@ -1,0 +1,123 @@
+{% comment %}
+  Background on the home page (after wenlixiao.com): pill tabs over a
+  timeline. Experience merges the research and work groups of
+  _data/experience.yml; Education is its own tab.
+
+  The markup is a plain list of cards, which is what phones and no-JS
+  readers get (a vertical rail, newest first). On wider screens
+  assets/js/home-effects.js reads each item's `data-dates`, draws the
+  horizontal axis with one coloured bar per entry, and pins each card
+  above or below its bar with a dashed connector.
+{% endcomment %}
+
+{% assign exp_research = site.data.experience.research | default: empty %}
+{% assign exp_work = site.data.experience.work | default: empty %}
+{% assign tl_experience = exp_research | concat: exp_work %}
+{% assign tl_education = site.data.experience.education | default: empty %}
+
+<div class="tl" data-timeline>
+  <div class="tl__tabs" role="tablist" aria-label="Background">
+    <button
+      type="button"
+      class="tl__tab is-active"
+      role="tab"
+      id="tl-tab-experience"
+      aria-selected="true"
+      aria-controls="tl-panel-experience"
+      data-tab="experience"
+    >
+      Experience
+    </button>
+    <button
+      type="button"
+      class="tl__tab"
+      role="tab"
+      id="tl-tab-education"
+      aria-selected="false"
+      aria-controls="tl-panel-education"
+      tabindex="-1"
+      data-tab="education"
+    >
+      Education
+    </button>
+  </div>
+
+  {% assign tl_groups = 'experience,education' | split: ',' %}
+  {% for group in tl_groups %}
+    {% if group == 'experience' %}
+      {% assign tl_entries = tl_experience %}
+    {% else %}
+      {% assign tl_entries = tl_education %}
+    {% endif %}
+    <div
+      class="tl__panel{% if forloop.first %} is-active{% endif %}"
+      id="tl-panel-{{ group }}"
+      role="tabpanel"
+      aria-labelledby="tl-tab-{{ group }}"
+      data-panel="{{ group }}"
+      {% unless forloop.first %}
+        hidden
+      {% endunless %}
+    >
+      <ol class="tl__list">
+        {% for entry in tl_entries %}
+          <li class="tl__item" data-dates="{{ entry.dates }}">
+            <div class="tl__card">
+              {% if entry.logo %}
+                <span class="tl__logo">
+                  <img
+                    src="{{ entry.logo | prepend: '/assets/img/logos/' | relative_url | bust_file_cache }}"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </span>
+              {% endif %}
+              <div class="tl__text">
+                {% comment %}
+                  "Research Assistant at Physical AI Lab" reads as the title
+                  "Research Assistant" with the lab joining the organisation
+                  line, the way the reference sets "Research Intern" over
+                  "NCEL Lab, Shenzhen AIRS".
+                {% endcomment %}
+                {% assign role_parts = entry.role | split: ' at ' %}
+                {% assign role_title = role_parts | first %}
+                {% assign role_unit = '' %}
+                {% if role_parts.size > 1 %}
+                  {% assign role_unit = entry.role | remove_first: role_title | remove_first: ' at ' | append: ', ' %}
+                {% endif %}
+                <div class="tl__dates">{{ entry.dates }}</div>
+                <div class="tl__role">{{ role_title }}</div>
+                <div class="tl__org">
+                  {{ role_unit -}}
+                  {%- if entry.url -%}
+                    <a href="{{ entry.url }}" target="_blank" rel="noopener">{{ entry.organization }}</a>
+                  {%- else -%}
+                    {{ entry.organization }}
+                  {%- endif %}
+                </div>
+                {% if entry.people and entry.people.size > 0 %}
+                  {% case entry.people_label %}
+                    {% when 'Mentor', 'Mentors' %}
+                      {% assign people_lead = 'Mentored by' %}
+                    {% when 'Supervisor', 'Supervisors' %}
+                      {% assign people_lead = 'Supervised by' %}
+                    {% else %}
+                      {% assign people_lead = 'Advised by' %}
+                  {% endcase %}
+                  <div class="tl__people">
+                    {{ people_lead }}
+                    {% for person in entry.people -%}
+                      {%- if forloop.last and forloop.length > 1 %} &amp; {% elsif forloop.first == false %}, {% endif -%}
+                      {{- person.name -}}
+                    {%- endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  {% endfor %}
+</div>

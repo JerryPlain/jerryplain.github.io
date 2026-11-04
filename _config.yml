@@ -83,14 +83,14 @@ al_folio:
 # -----------------------------------------------------------------------------
 
 navbar_fixed: true
-footer_fixed: true
+footer_fixed: false
 search_enabled: true
 socials_in_search: true
 posts_in_search: true
 bib_search: true
 
 # Dimensions
-max_width: 930px
+max_width: 1200px
 
 # -----------------------------------------------------------------------------
 # Open Graph & Schema.org
@@ -408,9 +408,11 @@ filtered_bibtex_keywords:
     preview_badge,
     preview_poster,
     preview_speed,
+    role,
     selected,
     slides,
     supp,
+    tldr,
     venue,
     venue_year,
     video,
@@ -544,7 +546,7 @@ third_party_libraries:
     version: "5.5.0"
   google_fonts:
     url:
-      fonts: "https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,500,600,700|IBM+Plex+Serif:400,400i,500,600|Material+Icons&display=swap"
+      fonts: "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,200..900;1,200..900&family=Material+Icons&display=swap"
   highlightjs:
     integrity:
       css:

@@ -20,12 +20,12 @@ overrides:
     gem_version: 1.0.11
     upstream_path: _layouts/about.liquid
     upstream_sha256: 2c28eb83b71fe65f252202c11f0b4a19a9b6f1faccdc870b4f91c4ea51d0c6f1
-    local_sha256: 7dd30f028bf53f6045eef99c6a353f6758f56d7d4c22aaaf84fc7ac3e0b64b19
-    acknowledged_at: "2026-10-01"
+    local_sha256: f1547ea61d78c810e87691c41587cd166affe06ea305efee4c29b68944f74d34
+    acknowledged_at: "2026-11-04"
   _layouts/bib.liquid:
     owner: al_folio_core
     gem_version: 1.0.11
     upstream_path: _layouts/bib.liquid
     upstream_sha256: 430311d9b94adf6fb1c2fab7609f6e726efc98e2b50e7b1c4cde0ad654c04506
-    local_sha256: 852b1d7c2641c6ffb9242ae13989e8d6a6fc555c67366e8c6e5c81a89632433b
-    acknowledged_at: "2026-10-14"
+    local_sha256: 9f96c935867a839e2bc2f13452566c7a4fc2bbccf357a576ed5a30548a86bb51
+    acknowledged_at: "2026-11-04"
