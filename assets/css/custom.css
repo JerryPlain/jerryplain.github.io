@@ -344,6 +344,28 @@ footer.sticky-bottom a:hover {
 }
 
 /* Back-to-top (vanilla-back-to-top injects its own inline style; these win) */
+#back-to-top {
+  background: var(--pg-card-flat) !important;
+  border: 1px solid var(--pg-border) !important;
+  box-shadow: var(--pg-shadow) !important;
+  width: 44px !important;
+  height: 44px !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  transition:
+    transform 0.25s var(--pg-ease),
+    opacity 0.25s ease !important;
+}
+#back-to-top:hover {
+  transform: translateY(-2px);
+}
+#back-to-top svg {
+  fill: var(--pg-ink) !important;
+  width: 22px !important;
+  height: 22px !important;
+  top: 10px !important;
+  left: 10px !important;
+}
 
 /* ===== 4. Shared glass pieces ===== */
 /* The theme colours div, span, li, strong... directly rather than letting
