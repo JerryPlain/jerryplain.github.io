@@ -176,7 +176,7 @@
       var list = panel.querySelector(".tl__list");
       list.style.removeProperty("--tl-height");
       panel._tl.forEach(function (d) {
-        d.li.style.left = d.li.style.top = d.li.style.width = "";
+        d.li.style.left = d.li.style.top = d.li.style.width = d.li.style.height = "";
         d.li.classList.remove("is-hot");
       });
     }
@@ -194,8 +194,9 @@
       if (old) old.remove();
 
       var W = list.clientWidth;
-      var CW = Math.min(240, Math.max(196, (W - 48) / 4)); /* card width */
-      var GAP = 16; /* between cards in a row */
+      /* card width: a quarter of the row, 200–276px; wider cards wrap less */
+      var CW = Math.round(Math.min(276, Math.max(200, (W - 60) / 4)));
+      var GAP = 20; /* between cards in a row */
       var PADX = 10;
       var sorted = data.slice().sort(function (a, b) {
         return a.r.start - b.r.start || a.r.end - b.r.end;
@@ -240,13 +241,14 @@
         });
         return ends.length;
       };
-      var LANE = 8; /* overlapping stints run as parallel bars 8px apart */
+      var LANE = 11; /* overlapping stints run as parallel bars, 11px apart */
 
       /* Card anchors and rows: each card sits over the middle of its bar,
          alternating above and below; a card that would collide with its
          neighbour in a row takes the other row if that one is free there. */
       sorted.forEach(function (d) {
         d.li.style.width = CW + "px";
+        d.li.style.height = ""; /* measure the card's natural height */
         d.anchor = x((d.r.start + Math.min(d.r.end, t1)) / 2);
         d.xe = d.r.present ? x(t1) : x(Math.min(d.r.end, t1));
         d.h = d.li.offsetHeight;
@@ -265,27 +267,6 @@
           d.row = fitsPref || !fitsOther ? pref : 1 - pref;
           rowsEnd[d.row] = Math.max(want, rowsEnd[d.row] + GAP) + CW;
         });
-      /* Pack each row: forward pass pushes right, backward pass pulls the
-         tail back inside the width */
-      [0, 1].forEach(function (row) {
-        var r = sorted
-          .filter(function (d) {
-            return d.row === row;
-          })
-          .sort(function (a, b) {
-            return a.anchor - b.anchor;
-          });
-        var prevRight = -Infinity;
-        r.forEach(function (d) {
-          d.left = Math.max(d.anchor - CW / 2, prevRight + GAP, 0);
-          prevRight = d.left + CW;
-        });
-        for (var i = r.length - 1; i >= 0; i--) {
-          var limit = i === r.length - 1 ? W - CW : r[i + 1].left - GAP - CW;
-          r[i].left = Math.max(0, Math.min(r[i].left, limit));
-        }
-      });
-
       /* Bars: when nothing overlaps, every bar rides the one axis line, as on
          the reference. When stints overlap, the cards above get their bars
          stacked just above the axis and the cards below just under it, so
@@ -310,6 +291,63 @@
       var upReach = split && nA ? HALF + (nA - 1) * LANE : 0;
       var downReach = split && nB ? HALF + (nB - 1) * LANE : 0;
 
+      /* Re-anchor: a connector meets its bar where no bar further out (same
+         side of the axis) runs over it, so it never has to cross one. The
+         outermost bar keeps its midpoint. */
+      if (split) {
+        var visEnd = function (d) {
+          return d.r.present ? t1 : Math.min(d.r.end, t1);
+        };
+        sorted.forEach(function (d) {
+          var cover = rowItems(d.row)
+            .filter(function (o) {
+              return o.lane > d.lane;
+            })
+            .map(function (o) {
+              return [o.r.start, visEnd(o)];
+            })
+            .sort(function (p, q) {
+              return p[0] - q[0];
+            });
+          if (!cover.length) return;
+          var a = d.r.start;
+          var b = visEnd(d);
+          var free = [];
+          var cur = a;
+          cover.forEach(function (c) {
+            if (c[1] <= cur || c[0] >= b) return;
+            if (c[0] > cur) free.push([cur, c[0]]);
+            cur = Math.max(cur, c[1]);
+          });
+          if (cur < b) free.push([cur, b]);
+          free.sort(function (p, q) {
+            return q[1] - q[0] - (p[1] - p[0]);
+          });
+          if (free.length && free[0][1] - free[0][0] > 0.04) d.anchor = x((free[0][0] + free[0][1]) / 2);
+        });
+      }
+
+      /* Pack each row: forward pass pushes right, backward pass pulls the
+         tail back inside the width */
+      [0, 1].forEach(function (row) {
+        var r = sorted
+          .filter(function (d) {
+            return d.row === row;
+          })
+          .sort(function (a, b) {
+            return a.anchor - b.anchor;
+          });
+        var prevRight = -Infinity;
+        r.forEach(function (d) {
+          d.left = Math.max(d.anchor - CW / 2, prevRight + GAP, 0);
+          prevRight = d.left + CW;
+        });
+        for (var i = r.length - 1; i >= 0; i--) {
+          var limit = i === r.length - 1 ? W - CW : r[i + 1].left - GAP - CW;
+          r[i].left = Math.max(0, Math.min(r[i].left, limit));
+        }
+      });
+
       var aboveH = Math.max.apply(
         null,
         [0].concat(
@@ -333,16 +371,20 @@
       var total = bandBottom + G + belowH;
       list.style.setProperty("--tl-height", total + "px");
 
+      /* Cards in a row share one height, so both rows read as tidy bands */
       sorted.forEach(function (d) {
         d.y = !split ? bandMid : d.row === 0 ? bandMid - HALF - d.lane * LANE : bandMid + HALF + d.lane * LANE;
         d.li.style.left = d.left + "px";
-        d.li.style.top = (d.row === 0 ? aboveH - d.h : bandBottom + G) + "px";
+        d.li.style.top = (d.row === 0 ? 0 : bandBottom + G) + "px";
+        d.li.style.height = (d.row === 0 ? aboveH : belowH) + "px";
       });
 
       /* ---- the SVG behind the cards ---- */
       var svg = el("svg", { class: "tl__svg", width: W, height: total, viewBox: "0 0 " + W + " " + total, "aria-hidden": "true" });
       list.insertBefore(svg, list.firstChild);
       var gAxis = el("g", {}, svg);
+      /* labels go on last, so their paper-coloured halo breaks any connector */
+      var gLabels = el("g", { class: "tl__labels" });
       el("line", { class: "tl__axis", x1: x(t0), x2: x(t1), y1: bandMid, y2: bandMid }, gAxis);
       /* Ticks: every year; on a short range, every quarter too */
       var labelY = bandTop - 13;
@@ -354,7 +396,11 @@
           var tx = x(t);
           var major = q === 0;
           el("line", { class: "tl__tick", x1: tx, x2: tx, y1: bandMid - (major ? 5 : 3), y2: bandMid + (major ? 5 : 3) }, gAxis);
-          var lab = el("text", { class: "tl__label" + (major ? "" : " tl__label--minor"), x: tx, y: labelY }, gAxis);
+          /* Apr and Oct: a tick, no label — except the very first tick, so
+             the left end of a short range still has a date */
+          var firstTick = t - 0.25 < t0;
+          if (!major && q !== 2 && !firstTick) continue;
+          var lab = el("text", { class: "tl__label" + (major ? "" : " tl__label--minor"), x: tx, y: labelY }, gLabels);
           lab.textContent = major ? String(yr) : MONTH_LABEL[q * 3];
         }
       }
@@ -397,7 +443,7 @@
           seg.setAttribute("stroke", "url(#" + gid + ")");
         }
         /* start: a solid dot in a soft halo; end: a smaller, paler dot */
-        el("circle", { class: "tl-halo", cx: xs, cy: d.y, r: 9, fill: d.color }, g);
+        el("circle", { class: "tl-halo", cx: xs, cy: d.y, r: 8.5, fill: d.color }, g);
         el("circle", { class: "tl-dot", cx: xs, cy: d.y, r: 5.5, fill: d.color }, g);
         if (!d.r.present) el("circle", { class: "tl-dot tl-dot--end", cx: xe, cy: d.y, r: 4, fill: d.color }, g);
         var hit = el("line", { class: "tl-hit", x1: xs, x2: xe, y1: d.y, y2: d.y }, g);
@@ -408,6 +454,8 @@
           focus(panel, null);
         });
       });
+
+      svg.appendChild(gLabels);
 
       if (animate) {
         /* draw once the timeline is actually on screen */
