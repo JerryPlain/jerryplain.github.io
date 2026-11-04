@@ -34,7 +34,7 @@ I am always glad to join and contribute to solid robotics projects. If you have 
 
 <p class="pg-hobbies">
   Away from the lab I am usually
-  <span class="pg-hobby"><i class="fa-solid fa-person-hiking" aria-hidden="true"></i>hiking</span>,
+  <span class="pg-hobby"><i class="fa-solid fa-plane" aria-hidden="true"></i>travelling</span>,
   <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>listening to music</span>
   or <span class="pg-hobby"><i class="fa-solid fa-camera" aria-hidden="true"></i>behind a camera</span>.
   Some of what I have seen is in my
