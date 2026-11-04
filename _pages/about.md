@@ -26,16 +26,14 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am Shijie Zhou, a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). My research sits where AI, robotics and control meet: **robot learning, embodied intelligence and learning-based control**, towards general-purpose robots that perceive, reason about, and act reliably in the physical world.
+I am Shijie Zhou, a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I work on **robot learning, embodied intelligence and learning-based control**, towards general-purpose robots that act reliably in the real world.
 
-The question I keep coming back to: _how can we build a scalable robot-learning flywheel that unifies perception, whole-body control and dexterous manipulation, so robots hold up in unstructured, real-world environments?_ Answering it takes the whole stack, so I am working towards being a full-stack roboticist, from low-level hardware and control to high-level models.
-
-I am always glad to join and contribute to solid robotics projects. If you have an opportunity to collaborate, feel free to email me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
+The question that drives me: _how can we build a scalable robot-learning flywheel that unifies perception, whole-body control and dexterous manipulation?_ Answering it takes the whole stack, so I am becoming a full-stack roboticist, from hardware and control to high-level models.
 
 <p class="pg-hobbies">
   Away from the lab, I enjoy
   <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>music</span>
   and <span class="pg-hobby"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i>exploring the world</span>.
-  Check out some of what I have seen in my
+  Check out my
   <a class="pg-hobbies__link" href="https://jerryplain.github.io/photography/">photography gallery<span class="pg-hobbies__arrow" aria-hidden="true">&rarr;</span></a>
 </p>
