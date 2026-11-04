@@ -9,7 +9,7 @@ subtitle: Fiery red, forever fearless
 #   /assets/img/avatar/alps-half.jpg  waist up
 #   /assets/img/avatar/alps-bust.jpg  head and shoulders, looser, head higher
 #   /assets/img/head2.jpg             the sunset portrait from the old hero
-profile_photo: /assets/img/avatar/alps-head.jpg
+profile_photo: /assets/img/avatar/alps-half.jpg
 # Credited under the tagline in small, faint type, so the quote reads as a quote
 subtitle_source: Sunset
 subtitle_source_by: Caroline Polachek
