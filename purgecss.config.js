@@ -23,5 +23,8 @@ module.exports = {
     // and page chrome (scroll-progress bar, ToC) bleeds through a zoomed image.
     "medium-zoom-overlay",
     "medium-zoom-image--opened",
+    // vanilla-back-to-top (loaded from a CDN) creates #back-to-top at runtime,
+    // so the custom.css rule that restyles it as a glass button would be purged.
+    "back-to-top",
   ],
 };
