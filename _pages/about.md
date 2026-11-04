@@ -4,11 +4,12 @@ title: Home
 permalink: /
 subtitle: Fiery red, forever fearless
 # The portrait beside the intro. Alternatives cropped from the same Alps photo:
+#   /assets/img/avatar/alps-head.jpg  head and shoulders, head centred (same as Google Scholar)
 #   /assets/img/avatar/alps-full.jpg  whole figure on the stump, valley behind
 #   /assets/img/avatar/alps-half.jpg  waist up
-#   /assets/img/avatar/alps-bust.jpg  head and shoulders
+#   /assets/img/avatar/alps-bust.jpg  head and shoulders, looser, head higher
 #   /assets/img/head2.jpg             the sunset portrait from the old hero
-profile_photo: /assets/img/avatar/alps-half.jpg
+profile_photo: /assets/img/avatar/alps-head.jpg
 # Credited under the tagline in small, faint type, so the quote reads as a quote
 subtitle_source: Sunset
 subtitle_source_by: Caroline Polachek
