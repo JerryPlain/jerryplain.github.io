@@ -33,10 +33,9 @@ The question I keep coming back to: _how can we build a scalable robot-learning 
 I am always glad to join and contribute to solid robotics projects. If you have an opportunity to collaborate, feel free to email me at [jerryplain@outlook.com](mailto:jerryplain@outlook.com).
 
 <p class="pg-hobbies">
-  Away from the lab I am usually
-  <span class="pg-hobby"><i class="fa-solid fa-plane" aria-hidden="true"></i>travelling</span>,
-  <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>listening to music</span>
-  or <span class="pg-hobby"><i class="fa-solid fa-camera" aria-hidden="true"></i>behind a camera</span>.
-  Some of what I have seen is in my
+  Away from the lab, I enjoy
+  <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>music</span>
+  and <span class="pg-hobby"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i>exploring the world</span>.
+  Check out some of what I have seen in my
   <a class="pg-hobbies__link" href="https://jerryplain.github.io/photography/">photography gallery<span class="pg-hobbies__arrow" aria-hidden="true">&rarr;</span></a>
 </p>
