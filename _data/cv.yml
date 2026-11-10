@@ -62,10 +62,10 @@ cv:
     Publications:
       - title: "How to Train a Surgeon? Benchmarking Generalist Agents in Surgical Scene Understanding"
         authors:
-          - G. Zhang, X. Han*, Shijie Zhou*, A. Koukash*, G. Ghazaei, J. Gu, J. Wu, Y. Zhu, N. Navab, V. Tresp
+          - G. Zhang, X. Han*, Shijie Zhou*, A. Koukash*, J. Wu, J. Gu, Y. Zhu, N. Navab, V. Tresp, G. Ghazaei
         publisher: NeurIPS (Evaluations and Datasets Track) 2026
         releaseDate: 2026
-        url: https://neurips.cc/virtual/2026/loc/sydney/poster/139078
+        url: https://arxiv.org/abs/2611.11437
 
       - title: "PrivacyEvalClaw: A Tool-Augmented Deliberative Agent for Auditing Privacy Leakage in LLM Jailbreak Responses"
         authors:
