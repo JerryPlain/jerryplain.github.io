@@ -1,9 +1,10 @@
 /* Site customizations for Shijie's homepage — "paper & glass"
    ==========================================================================
-   After wenlixiao.com: a warm paper ground, one blurred glow behind the
-   page, frosted glass cards with a soft warm shadow, Source Serif 4 for
-   everything, and content that rises into place as it scrolls in. Kept
-   from the site's own style: the SZ monogram, the caramel accent, the
+   After wenlixiao.com: a porcelain ground, a patch of baby-blue sky glowing
+   behind the top of the page, frosted glass cards with a soft slate-blue
+   shadow, Source Serif 4 for everything, and content that rises into place
+   as it scrolls in. Kept from the site's own style: the SZ monogram, the
+   baby-blue accent (caramel until 2026-11), the
    Caroline Polachek motto, the "Let's chat" card, the QR-code quick links
    and the visitor globe.
 
@@ -21,26 +22,36 @@
    `:root:root` outspecifies the theme's own `:root` block, which loads
    later; the dark block below outspecifies the theme's dark block too. */
 :root:root {
-  --pg-bg: #f4f1ea;
-  --pg-bg-rgb: 244 241 234;
-  --pg-card: rgb(251 249 244 / 0.8);
-  --pg-card-hover: rgb(251 249 244 / 0.92);
-  --pg-card-flat: #f9f7f1; /* the card as an opaque colour, for edge fades */
-  --pg-pill: rgb(251 249 244 / 0.85);
+  --pg-bg: #f4f6f8;
+  --pg-bg-rgb: 244 246 248;
+  --pg-card: rgb(255 255 255 / 0.72);
+  --pg-card-hover: rgb(255 255 255 / 0.9);
+  --pg-card-flat: #fafbfc; /* the card as an opaque colour, for edge fades */
+  --pg-pill: rgb(255 255 255 / 0.8);
   --pg-border: rgb(255 255 255 / 0.6);
   --pg-border-hi: rgb(255 255 255 / 0.85);
-  --pg-shadow: 0 8px 40px rgb(70 55 40 / 0.08), 0 2px 8px rgb(70 55 40 / 0.04);
-  --pg-shadow-hover: 0 12px 48px rgb(70 55 40 / 0.14), 0 4px 12px rgb(70 55 40 / 0.06);
-  --pg-shadow-sm: 0 2px 8px rgb(70 55 40 / 0.06);
+  --pg-shadow: 0 8px 40px rgb(var(--pg-shade-rgb) / 0.08), 0 2px 8px rgb(var(--pg-shade-rgb) / 0.04);
+  --pg-shadow-hover: 0 12px 48px rgb(var(--pg-shade-rgb) / 0.14), 0 4px 12px rgb(var(--pg-shade-rgb) / 0.06);
+  --pg-shadow-sm: 0 2px 8px rgb(var(--pg-shade-rgb) / 0.06);
   --pg-ink: #1a2332;
   --pg-text: #4a5568;
   --pg-body: #374151;
   --pg-muted: #6b7a8d;
   --pg-faint: #8b95a5;
-  --pg-rule: rgb(70 55 40 / 0.09);
-  --pg-accent: #a5643a; /* the caramel, deepened enough to read as text */
-  --pg-accent-soft: #c58b5c; /* the site's caramel, for marks and rules */
-  --pg-glow: rgb(233 226 212 / 0.4);
+  --pg-rule: rgb(var(--pg-shade-rgb) / 0.09);
+  /* Baby blue in three strengths: --pg-sky is the colour itself (glow,
+     selection, highlighter); --pg-accent-soft a step deeper so small glyphs
+     and rules still register on paper; --pg-accent a denim deep enough to
+     read as text (4.6:1 on the paper). */
+  --pg-shade-rgb: 44 70 108; /* shadows: slate with a little blue in it */
+  --pg-sky-rgb: 184 215 242;
+  --pg-sky: rgb(var(--pg-sky-rgb));
+  --pg-accent-rgb: 64 111 158;
+  --pg-accent: rgb(var(--pg-accent-rgb));
+  --pg-accent-soft-rgb: 128 177 222;
+  --pg-accent-soft: rgb(var(--pg-accent-soft-rgb));
+  --pg-glow-rgb: var(--pg-sky-rgb);
+  --pg-glow-a: 0.62;
   --pg-grain-opacity: 0.035;
   --pg-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -56,31 +67,31 @@
   --fs-small: 0.875rem;
   --fs-micro: 0.75rem;
 
-  --global-bg-color: #f4f1ea;
+  --global-bg-color: #f4f6f8;
   --global-text-color: #1a2332;
   --global-text-color-light: #6b7a8d;
-  --global-divider-color: rgb(70 55 40 / 0.1);
-  --global-card-bg-color: #fbf9f4;
-  --global-theme-color: #a5643a;
-  --global-hover-color: #a5643a;
+  --global-divider-color: rgb(var(--pg-shade-rgb) / 0.1);
+  --global-card-bg-color: #ffffff;
+  --global-theme-color: #406f9e;
+  --global-hover-color: #406f9e;
   --global-footer-bg-color: transparent;
   --global-footer-text-color: #8b95a5;
   --global-footer-link-color: #6b7a8d;
-  --site-accent: #a5643a;
+  --site-accent: #406f9e;
   --site-heading-color: #1a2332;
   --site-font-serif: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
   --site-font-sans: var(--site-font-serif);
 }
 
-/* Dark: the same warm register turned down (#16130e), glass as a 4% white
-   film, text in white at falling opacities. The theme's theme.js sets
+/* Dark: a night-sky ink (#0f141a) under a faint blue glow, glass as a 4%
+   white film, text in white at falling opacities. The theme's theme.js sets
    html[data-theme]; the navbar toggle cycles system → light → dark. */
 :root:root[data-theme="dark"] {
-  --pg-bg: #16130e;
-  --pg-bg-rgb: 22 19 14;
+  --pg-bg: #0f141a;
+  --pg-bg-rgb: 15 20 26;
   --pg-card: rgb(255 255 255 / 0.04);
   --pg-card-hover: rgb(255 255 255 / 0.06);
-  --pg-card-flat: #1f1c17;
+  --pg-card-flat: #171d25;
   --pg-pill: rgb(255 255 255 / 0.06);
   --pg-border: rgb(255 255 255 / 0.07);
   --pg-border-hi: rgb(255 255 255 / 0.1);
@@ -93,22 +104,26 @@
   --pg-muted: rgb(255 255 255 / 0.45);
   --pg-faint: rgb(255 255 255 / 0.32);
   --pg-rule: rgb(255 255 255 / 0.07);
-  --pg-accent: #d29a72;
-  --pg-accent-soft: #c89472;
-  --pg-glow: rgb(48 38 22 / 0.35);
+  --pg-shade-rgb: 0 0 0;
+  --pg-sky-rgb: 169 205 238;
+  --pg-accent-rgb: 169 205 238; /* at night the baby blue itself reads as text */
+  --pg-accent-soft-rgb: 128 177 222;
+  --pg-glow-rgb: 70 125 185;
+  --pg-glow-a: 0.26;
   --pg-grain-opacity: 0.05;
 
-  --global-bg-color: #16130e;
+  --global-bg-color: #0f141a;
   --global-text-color: rgb(255 255 255 / 0.86);
   --global-text-color-light: rgb(255 255 255 / 0.45);
   --global-divider-color: rgb(255 255 255 / 0.08);
-  --global-card-bg-color: #1f1c17;
-  --global-code-bg-color: #221e18;
-  --global-theme-color: #d29a72;
-  --global-hover-color: #d29a72;
+  --global-card-bg-color: #171d25;
+  --global-code-bg-color: #19212a;
+  --global-theme-color: #a9cdee;
+  --global-hover-color: #a9cdee;
   --global-footer-bg-color: transparent;
   --global-footer-text-color: rgb(255 255 255 / 0.32);
   --global-footer-link-color: rgb(255 255 255 / 0.5);
+  --site-accent: #a9cdee;
   --site-heading-color: rgb(255 255 255 / 0.9);
 }
 
@@ -121,11 +136,16 @@ body {
   font-family: var(--site-font-serif);
   font-weight: 400;
   color: var(--global-text-color);
-  background: var(--pg-bg);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
+}
+/* The paper colour lives on html; body stays clear so the sky glow and the
+   grain below (z -1) show through. (`html body` outranks main.css, which
+   loads later and paints body with --global-bg-color.) */
+html body {
+  background: transparent;
 }
 body.fixed-top-nav {
   padding-top: 64px;
@@ -135,12 +155,14 @@ strong {
   font-weight: 600;
 }
 ::selection {
-  background: rgb(197 139 92 / 0.25);
+  background: rgb(var(--pg-sky-rgb) / 0.6);
 }
 
-/* One wide warm glow fixed behind the top of the page, and a faint paper
-   grain over the whole ground. Both sit behind the content (z -1), so the
-   glass cards blur them: grainy paper, smooth glass. */
+/* Baby-blue daylight washing down from the top of the page and easing into
+   the paper (one hue, cosine-eased stops, so there is no edge or band; it
+   scrolls away with the intro rather than following the reader), and a
+   faint paper grain over the whole ground. Both sit behind the content
+   (z -1), so the glass cards blur them: grainy paper, smooth glass. */
 body::before,
 body::after {
   content: "";
@@ -149,14 +171,25 @@ body::after {
   z-index: -1;
 }
 body::before {
-  top: -60px;
-  left: 50%;
-  width: min(900px, 100vw);
-  height: 500px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: var(--pg-glow);
-  filter: blur(160px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1000px;
+  background: radial-gradient(
+    ellipse 85% 100% at 50% 0%,
+    rgb(var(--pg-glow-rgb) / var(--pg-glow-a)) 0%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.976)) 10%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.905)) 20%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.794)) 30%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.655)) 40%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.5)) 50%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.345)) 60%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.206)) 70%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.095)) 80%,
+    rgb(var(--pg-glow-rgb) / calc(var(--pg-glow-a) * 0.024)) 90%,
+    rgb(var(--pg-glow-rgb) / 0) 100%
+  );
 }
 body::after {
   inset: 0;
@@ -189,16 +222,49 @@ body > .container[role="main"] {
   min-height: 64px;
   padding: 0;
   opacity: 1;
-  background: rgb(var(--pg-bg-rgb) / 0.82) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.15);
-  backdrop-filter: blur(14px) saturate(1.15);
-  border-bottom: 1px solid rgb(255 255 255 / 0.35);
-  box-shadow: 0 1px 0 rgb(70 55 40 / 0.05);
+  background: transparent !important;
+  border-bottom: 0;
 }
-html[data-theme="dark"] #navbar.navbar {
-  background: rgb(var(--pg-bg-rgb) / 0.55) !important;
+/* The bar's frosting, tint and hairline live on a layer of their own that fades
+   in over the first 160px of scroll, so at the top of the page the sky runs
+   on under the bar without a seam. Browsers without scroll-driven animations
+   simply keep the tinted bar. */
+#navbar.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgb(var(--pg-bg-rgb) / 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border-bottom: 1px solid rgb(255 255 255 / 0.55);
+  box-shadow: 0 1px 0 rgb(var(--pg-shade-rgb) / 0.05);
+}
+html[data-theme="dark"] #navbar.navbar::before {
+  background: rgb(var(--pg-bg-rgb) / 0.6);
   border-bottom-color: rgb(255 255 255 / 0.06);
   box-shadow: none;
+}
+@supports (animation-timeline: scroll()) {
+  #navbar.navbar::before {
+    animation: pg-bar-in linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 160px;
+  }
+}
+/* an opened mobile menu always gets the full bar behind it */
+#navbar.navbar:has(.navbar-collapse.show, .navbar-collapse.collapsing)::before {
+  animation: none;
+  opacity: 1;
+}
+@keyframes pg-bar-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 #navbar > .container {
   max-width: 1200px;
@@ -231,7 +297,7 @@ html[data-theme="dark"] #navbar.navbar {
   height: 1.5em;
   margin-right: 0.3em;
   background: url("/assets/img/sz-mark.svg") center / contain no-repeat;
-  filter: drop-shadow(0 1px 2px rgb(70 55 40 / 0.14));
+  filter: drop-shadow(0 1px 2px rgb(var(--pg-shade-rgb) / 0.14));
   transition: transform 0.3s var(--pg-ease);
 }
 #navbar .navbar-brand.title:hover::before {
@@ -299,17 +365,17 @@ html[data-theme="dark"] #navbar .navbar-brand.title::before {
   }
 }
 
-/* Reading-progress bar under the navbar: a hairline of caramel */
+/* Reading-progress bar under the navbar: a hairline of baby blue */
 progress#progress {
   top: 64px;
   height: 2px;
   z-index: 1031;
 }
 progress#progress::-webkit-progress-value {
-  background: linear-gradient(90deg, rgb(197 139 92 / 0.25), rgb(197 139 92 / 0.85));
+  background: linear-gradient(90deg, rgb(var(--pg-sky-rgb) / 0.4), rgb(var(--pg-accent-soft-rgb)));
 }
 progress#progress::-moz-progress-bar {
-  background: linear-gradient(90deg, rgb(197 139 92 / 0.25), rgb(197 139 92 / 0.85));
+  background: linear-gradient(90deg, rgb(var(--pg-sky-rgb) / 0.4), rgb(var(--pg-accent-soft-rgb)));
 }
 .progress-container {
   top: 64px;
@@ -408,12 +474,16 @@ footer.sticky-bottom a:hover {
   box-shadow: var(--pg-shadow);
 }
 
-/* Section headings on the home page: small and bold, lots of air below */
+/* Section headings on the home page: small and bold, lots of air below,
+   with a hairline of sky running out from the word and fading away */
 .pg-section {
   padding: 64px 0;
   scroll-margin-top: 64px;
 }
 .pg-section__title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   margin: 0 0 40px;
   font-family: var(--site-font-serif);
   font-size: var(--fs-section);
@@ -421,6 +491,18 @@ footer.sticky-bottom a:hover {
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: var(--pg-ink);
+}
+.pg-section__title::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  max-width: 240px;
+  background: linear-gradient(90deg, rgb(var(--pg-accent-soft-rgb) / 0.75), rgb(var(--pg-accent-soft-rgb) / 0));
+  transform-origin: left center;
+  transition: max-width 0.6s var(--pg-ease);
+}
+.pg-section__title:hover::after {
+  max-width: 320px;
 }
 .pg-section__title a {
   color: inherit;
@@ -458,15 +540,22 @@ footer.sticky-bottom a:hover {
 }
 a.quicklink:hover,
 .pg-more a:hover {
-  color: var(--pg-ink);
+  color: var(--pg-accent);
+  text-decoration: none;
   background: var(--pg-card-hover);
-  box-shadow: 0 4px 16px rgb(70 55 40 / 0.1);
+  border-color: rgb(var(--pg-sky-rgb));
+  box-shadow:
+    0 0 0 3px rgb(var(--pg-sky-rgb) / 0.28),
+    0 6px 18px rgb(var(--pg-accent-rgb) / 0.12);
   transform: translateY(-2px);
 }
 html[data-theme="dark"] a.quicklink:hover,
 html[data-theme="dark"] .pg-more a:hover {
   background: rgb(255 255 255 / 0.1);
-  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  border-color: rgb(var(--pg-sky-rgb) / 0.35);
+  box-shadow:
+    0 0 0 3px rgb(var(--pg-sky-rgb) / 0.08),
+    0 4px 16px rgb(0 0 0 / 0.25);
 }
 
 /* Scroll reveal. home-effects.js tags elements with .sr, so nothing is
@@ -502,13 +591,20 @@ html[data-theme="dark"] .pg-more a:hover {
   height: 256px;
   border-radius: 50%;
   overflow: hidden;
-  border: 4px solid rgb(255 255 255 / 0.7);
-  box-shadow: 0 8px 32px rgb(70 55 40 / 0.12);
+  border: 5px solid rgb(255 255 255 / 0.9);
+  /* white mat, a fine ring of sky just outside it, a halo, then the shadow */
+  box-shadow:
+    0 0 0 1px rgb(var(--pg-accent-soft-rgb) / 0.55),
+    0 0 0 9px rgb(var(--pg-sky-rgb) / 0.22),
+    0 18px 44px rgb(var(--pg-shade-rgb) / 0.16);
   background: var(--pg-card-flat);
 }
 html[data-theme="dark"] .pg-intro__portrait {
   border-color: rgb(255 255 255 / 0.1);
-  box-shadow: 0 8px 32px rgb(0 0 0 / 0.3);
+  box-shadow:
+    0 0 0 1px rgb(var(--pg-sky-rgb) / 0.3),
+    0 0 0 9px rgb(var(--pg-sky-rgb) / 0.05),
+    0 8px 32px rgb(0 0 0 / 0.3);
 }
 .pg-intro__portrait img {
   display: block;
@@ -577,7 +673,8 @@ html[data-theme="dark"] .pg-intro__portrait {
   color: var(--pg-ink);
 }
 /* Hobbies: an aside under a hairline, smaller and quieter than the bio,
-   each pastime with a small caramel glyph, and a way into the gallery */
+   each pastime with a small baby-blue glyph, and a way into the gallery,
+   underlined with a highlighter stroke of sky that fills in on hover */
 .pg-intro__bio p.pg-hobbies {
   margin-top: 1.25rem;
   padding-top: 1.1rem;
@@ -596,14 +693,24 @@ html[data-theme="dark"] .pg-intro__portrait {
   color: var(--pg-accent-soft);
 }
 .pg-intro__bio a.pg-hobbies__link {
+  margin: 0 -0.15em;
+  padding: 0 0.15em;
+  border-radius: 3px;
   white-space: nowrap;
   font-weight: 500;
   color: var(--pg-accent);
-  text-decoration-color: rgb(165 100 58 / 0.35);
+  text-decoration: none;
+  background: linear-gradient(rgb(var(--pg-sky-rgb) / 0.75), rgb(var(--pg-sky-rgb) / 0.75)) 0 90% / 100% 0.32em no-repeat;
+  transition:
+    background-size 0.35s var(--pg-ease),
+    color 0.2s ease;
 }
 .pg-intro__bio a.pg-hobbies__link:hover {
-  color: var(--pg-accent);
-  text-decoration-color: currentColor;
+  color: var(--pg-ink);
+  background-size: 100% 88%;
+}
+html[data-theme="dark"] .pg-intro__bio a.pg-hobbies__link {
+  background-image: linear-gradient(rgb(var(--pg-sky-rgb) / 0.22), rgb(var(--pg-sky-rgb) / 0.22));
 }
 .pg-intro__bio .pg-hobbies__arrow {
   display: inline-block;
@@ -622,7 +729,7 @@ html[data-theme="dark"] .pg-intro__portrait {
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  text-decoration-color: rgb(74 85 104 / 0.45);
+  text-decoration-color: rgb(var(--pg-accent-soft-rgb) / 0.8);
   transition:
     color 0.2s ease,
     text-decoration-color 0.2s ease;
@@ -637,7 +744,7 @@ html[data-theme="dark"] .post article a:where(:not(.quicklink, .thumbnail-hover-
 .chat-invite a:not(.chat-cta):hover,
 .news-entry__text a:hover,
 .post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta)):hover {
-  color: var(--pg-ink);
+  color: var(--pg-accent);
   text-decoration-color: currentColor;
 }
 
@@ -694,12 +801,12 @@ html[data-theme="dark"] .post article a:where(:not(.quicklink, .thumbnail-hover-
 .chat-invite__text b {
   color: var(--pg-ink);
 }
-/* The closing line is a personal aside: quieter, set off by a caramel rule */
+/* The closing line is a personal aside: quieter, set off by a baby-blue rule */
 .chat-invite__note {
   grid-area: note;
   margin: 0;
   padding-left: 0.85rem;
-  border-left: 2px solid rgb(197 139 92 / 0.6);
+  border-left: 2px solid rgb(var(--pg-accent-soft-rgb) / 0.8);
   font-size: var(--fs-meta);
   font-style: italic;
   line-height: 1.55;
@@ -732,9 +839,13 @@ html[data-theme="dark"] .post article a:where(:not(.quicklink, .thumbnail-hover-
     box-shadow 0.25s ease;
 }
 .chat-cta:hover {
-  background: var(--pg-accent);
+  /* the ink button turns to sky, its text to ink */
+  background: rgb(var(--pg-sky-rgb));
+  color: var(--pg-ink) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgb(165 100 58 / 0.3);
+  box-shadow:
+    0 0 0 4px rgb(var(--pg-sky-rgb) / 0.3),
+    0 8px 22px rgb(var(--pg-accent-rgb) / 0.22);
 }
 html[data-theme="dark"] .chat-cta {
   background: rgb(255 255 255 / 0.9);
@@ -742,7 +853,7 @@ html[data-theme="dark"] .chat-cta {
 }
 html[data-theme="dark"] .chat-cta:hover {
   background: var(--pg-accent);
-  color: #16130e !important;
+  color: var(--pg-bg) !important;
 }
 .chat-cta > span,
 .chat-cta > i {
@@ -887,7 +998,7 @@ html[data-theme="dark"] .chat-cta:hover {
   overflow: hidden;
   border-radius: 16px;
   background: #fff;
-  box-shadow: 0 0 0 1px rgb(70 55 40 / 0.06);
+  box-shadow: 0 0 0 1px rgb(var(--pg-shade-rgb) / 0.06);
   cursor: zoom-in;
   isolation: isolate; /* keeps the rounded clip while the teaser scales */
   transition: transform 0.35s var(--pg-ease);
@@ -960,7 +1071,7 @@ html[data-theme="dark"] .chat-cta:hover {
 }
 .rc .rc__overlay .rc-self {
   font-weight: 700;
-  color: #e0b896;
+  color: #bfdcf6;
 }
 @media (hover: hover) {
   .rc:hover .rc__overlay {
@@ -1125,8 +1236,8 @@ html[data-theme="dark"] .rc__links a {
     margin-bottom: 0.6rem;
     padding: 1px 10px;
     border-radius: 999px;
-    background: rgb(197 139 92 / 0.12);
-    border: 1px solid rgb(197 139 92 / 0.25);
+    background: rgb(var(--pg-accent-soft-rgb) / 0.12);
+    border: 1px solid rgb(var(--pg-accent-soft-rgb) / 0.25);
     color: var(--pg-accent);
     font-size: 0.8125rem;
   }
@@ -1266,7 +1377,7 @@ html[data-theme="dark"] .tl__tab.is-active {
   height: 40px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0 0 0 1px rgb(70 55 40 / 0.07);
+  box-shadow: 0 0 0 1px rgb(var(--pg-shade-rgb) / 0.07);
   overflow: hidden;
 }
 .tl__logo img {
@@ -1378,7 +1489,7 @@ html[data-theme="dark"] .tl__tab.is-active {
 }
 .tl--chart .tl__card {
   height: 100%;
-  box-shadow: 0 4px 20px rgb(70 55 40 / 0.06);
+  box-shadow: 0 4px 20px rgb(var(--pg-shade-rgb) / 0.06);
 }
 html[data-theme="dark"] .tl--chart .tl__card {
   box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
@@ -1662,7 +1773,7 @@ h2.exp-section i {
   padding: 8px 10px;
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 0 0 1px rgb(70 55 40 / 0.06);
+  box-shadow: 0 0 0 1px rgb(var(--pg-shade-rgb) / 0.06);
 }
 .experience__logo img {
   display: block;
@@ -1795,7 +1906,7 @@ h2.exp-section i {
   object-fit: cover;
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 0 0 1px rgb(70 55 40 / 0.06) !important;
+  box-shadow: 0 0 0 1px rgb(var(--pg-shade-rgb) / 0.06) !important;
   cursor: zoom-in;
 }
 .publications ol.bibliography video.preview {
@@ -1823,7 +1934,7 @@ h2.exp-section i {
   background: #fff;
   border: 1px solid var(--pg-border);
   border-radius: 18px;
-  box-shadow: 0 24px 60px rgb(70 55 40 / 0.22);
+  box-shadow: 0 24px 60px rgb(var(--pg-shade-rgb) / 0.22);
   pointer-events: none;
 }
 .publications .thumbnail-hover-overlay img,
@@ -2044,7 +2155,7 @@ html[data-theme="dark"] .publications ol.bibliography div.bibtex.hidden.open {
   color: var(--pg-ink);
 }
 #bibsearch:focus {
-  outline: 2px solid rgb(197 139 92 / 0.45);
+  outline: 2px solid rgb(var(--pg-accent-soft-rgb) / 0.45);
   outline-offset: 1px;
 }
 
@@ -2104,7 +2215,7 @@ html[data-theme="dark"] .publications ol.bibliography div.bibtex.hidden.open {
   background: #fff;
   border: 1px solid var(--pg-border);
   border-radius: 20px;
-  box-shadow: 0 30px 80px rgb(70 55 40 / 0.25);
+  box-shadow: 0 30px 80px rgb(var(--pg-shade-rgb) / 0.25);
   transform: scale(0.96) translateY(8px);
   transition: transform 0.35s var(--pg-ease);
 }
