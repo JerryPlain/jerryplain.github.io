@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I started my research internship at Huawei Munich Research Center!
+I started my research internship at [Huawei Munich Research Center](https://huaweiresearchcentergermanyaustria.teamtailor.com/departments/r-d-engineering-and-security-technology-laboratory-heisenberg-research-center-munich)!

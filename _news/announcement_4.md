@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I started as a Research Assistant at the Tresp Lab at LMU Munich!
+I started as a Research Assistant at the [Tresp Lab](https://tresp-lab.github.io/) at LMU Munich!
