@@ -288,8 +288,8 @@ html[data-theme="dark"] #navbar.navbar::before {
 #navbar .navbar-brand.title .font-weight-bold {
   font-weight: inherit !important;
 }
-/* The SZ monogram (assets/img/sz-mark.svg): a seal-like rounded frame with
-   an S and a red Z, the same mark as the favicon. */
+/* The SZ monogram (assets/img/sz-mark.svg): a blue S and a red Z inside a
+   round ring running from TUM blue to CMU red, the same mark as the favicon. */
 #navbar .navbar-brand.title::before {
   content: "";
   flex: 0 0 auto;
