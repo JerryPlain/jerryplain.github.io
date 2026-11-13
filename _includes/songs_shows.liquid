@@ -1,0 +1,394 @@
+{% comment %}
+  Playlist & Watchlist: a yearly list in the spirit of the year-end favourites
+  posts, built from _data/favorites.yml. One tab per year (newest first,
+  shown once there are two); each year is a quiet tracklist with covers
+  (an optional song of the year sits beside it on a record sleeve), then
+  the shows as poster cards. The first year's blocks carry the ids #music
+  and #shows, which the homepage links to.
+{% endcomment %}
+{% assign fav = site.data.favorites %}
+<div class="ss">
+  {% if fav.epigraph %}
+    {% comment %} One line, set like the homepage motto: the lyric in italics, lines parted by a light slash, then the credit. {% endcomment %}
+    <p class="ss-epigraph" data-reveal>
+      <q class="ss-epigraph__quote">
+        {%- for line in fav.epigraph.lines -%}
+          {{ line }}
+          {%- unless forloop.last -%}
+            <span class="ss-epigraph__sep"> / </span>
+          {%- endunless -%}
+        {%- endfor -%}
+      </q>
+      <span class="ss-epigraph__credit"
+        >&mdash; <cite>{{ fav.epigraph.song }}</cite>, {{ fav.epigraph.artist -}}
+      </span>
+    </p>
+  {% endif %}
+
+  {% if fav.years.size > 1 %}
+    <div class="tl__tabs ss-tabs" role="tablist" aria-label="Year" data-reveal>
+      {% for y in fav.years %}
+        <button
+          type="button"
+          class="tl__tab{% if forloop.first %} is-active{% endif %}"
+          role="tab"
+          id="ss-tab-{{ y.year }}"
+          aria-controls="ss-{{ y.year }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          data-year="{{ y.year }}"
+        >
+          {{ y.year }}
+        </button>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for y in fav.years %}
+    {% if forloop.first %}
+      {% assign music_id = 'music' %}
+      {% assign shows_id = 'shows' %}
+    {% else %}
+      {% assign music_id = 'music-' | append: y.year %}
+      {% assign shows_id = 'shows-' | append: y.year %}
+    {% endif %}
+    <section
+      class="ss-year"
+      id="ss-{{ y.year }}"
+      role="tabpanel"
+      aria-labelledby="ss-tab-{{ y.year }}"
+      {% unless forloop.first %}
+        hidden
+      {% endunless %}
+    >
+      <header class="ss-year__head">
+        <h2 class="ss-year__num">{{ y.year }}</h2>
+        {% if y.note %}
+          <p class="ss-year__note">{{ y.note }}</p>
+        {% endif %}
+      </header>
+
+      {% assign total = y.songs.size %}
+      {% if total > 0 and fav.genres %}
+        {% comment %}
+          Donut of the year's songs by genre: an SVG ring whose circumference
+          is 100 units (r = 15.9155), so each segment's dash length is simply
+          its percentage, less a gap; the offset starts it at 12 o'clock. A
+          thin ring with round ends over a hairline track, like a dial.
+        {% endcomment %}
+        <div class="ss-block ss-genres-block">
+          <h3 class="ss-label">Genres</h3>
+          <div class="ss-genres pg-card" data-total="{{ total }}">
+            <div class="ss-donut">
+              <svg viewBox="0 0 42 42" role="img" aria-labelledby="ss-donut-title-{{ y.year }}">
+                <title id="ss-donut-title-{{ y.year }}">My {{ y.year }} songs by genre</title>
+                <circle class="ss-donut__track" cx="21" cy="21" r="15.9155"></circle>
+                {% assign start = 0.0 %}
+                {% for g in fav.genres %}
+                  {% assign gs = y.songs | where: 'genre', g.key %}
+                  {% if gs.size > 0 %}
+                    {% assign pct = gs.size | times: 100.0 | divided_by: total %}
+                    {% comment %} round caps add 1.1 at each end; 3.4 leaves a ~1.2 gap {% endcomment %}
+                    {% assign dash = pct | minus: 3.4 %}
+                    {% assign rest = 100.0 | minus: dash %}
+                    {% assign offset = 25.0 | minus: start | minus: 1.7 %}
+                    <circle
+                      class="ss-donut__seg"
+                      data-genre="{{ g.key }}"
+                      cx="21"
+                      cy="21"
+                      r="15.9155"
+                      style="--c: {{ g.color }}; --c-dark: {{ g.dark | default: g.color }}"
+                      stroke-dasharray="{{ dash | round: 3 }} {{ rest | round: 3 }}"
+                      stroke-dashoffset="{{ offset | round: 3 }}"
+                    >
+                      <title>{{ g.name }}: {{ gs.size }} of {{ total }} ({{ pct | round }}%)</title>
+                    </circle>
+                    {% assign start = start | plus: pct %}
+                  {% endif %}
+                {% endfor %}
+              </svg>
+              <div class="ss-donut__center" aria-hidden="true">
+                <b>{{ total }}</b>
+                <span>songs</span>
+              </div>
+            </div>
+            <ul class="ss-legend">
+              {% for g in fav.genres %}
+                {% assign gs = y.songs | where: 'genre', g.key %}
+                {% if gs.size > 0 %}
+                  {% assign pct = gs.size | times: 100.0 | divided_by: total %}
+                  <li
+                    class="ss-legend__item"
+                    data-genre="{{ g.key }}"
+                    data-pct="{{ pct | round }}%"
+                    tabindex="0"
+                    style="--c: {{ g.color }}; --c-dark: {{ g.dark | default: g.color }}; --w: {{ pct | round: 2 }}%"
+                  >
+                    <span class="ss-legend__swatch" aria-hidden="true"></span>
+                    <span class="ss-legend__name">{{ g.name }}</span>
+                    <span class="ss-legend__n">
+                      {{- gs.size }}
+                      {% if gs.size == 1 %}song{% else %}songs{% endif %}
+                      <b>{{ pct | round }}%</b>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if y.songs and y.songs.size > 0 %}
+        <div class="ss-block" id="{{ music_id }}">
+          <h3 class="ss-label">
+            Songs <span>{{ y.songs.size }}</span>
+          </h3>
+          {% assign pick = y.songs | where: 'pick', true | first %}
+          <div class="ss-music{% unless pick %} ss-music--plain{% endunless %}">
+            {% if pick %}
+              <figure class="ss-pick pg-card">
+                <div class="ss-sleeve" style="--tone: {{ pick.tone | default: 205 }}">
+                  <div class="ss-vinyl" aria-hidden="true">
+                    <span>{{ y.year }}</span>
+                  </div>
+                  <div class="ss-cover">
+                    {% if pick.cover %}
+                      <img src="{{ pick.cover | relative_url }}" alt="{{ pick.title }} cover" loading="lazy">
+                    {% else %}
+                      <span class="ss-cover__artist">{{ pick.artist }}</span>
+                      <span class="ss-cover__title">{{ pick.title }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <figcaption class="ss-pick__body">
+                  <span class="ss-eyebrow">Song of the year</span>
+                  <span class="ss-pick__title">{{ pick.title }}</span>
+                  <span class="ss-pick__artist">{{ pick.artist }}</span>
+                  {% if pick.note %}
+                    <p class="ss-pick__note">{{ pick.note }}</p>
+                  {% endif %}
+                  {% if pick.url %}
+                    <a class="ss-listen" href="{{ pick.url }}" target="_blank" rel="noopener"> Listen <span aria-hidden="true">&rarr;</span> </a>
+                  {% endif %}
+                </figcaption>
+              </figure>
+            {% endif %}
+
+            {% comment %}
+              Without a song of the year the tracklist gets the full width and
+              runs down two columns (column by column, so the numbers read down);
+              the row count goes in --rows, and the first track of the second
+              column is marked so it draws no rule above itself.
+            {% endcomment %}
+            {% assign listed = y.songs | where_exp: 's', 's.pick != true' %}
+            {% assign rows = listed.size | plus: 1 | divided_by: 2 %}
+            {% assign col2 = rows | plus: 1 %}
+            {% assign two_cols = false %}
+            {% if pick == null and listed.size > 5 %}{% assign two_cols = true %}{% endif %}
+            <ol
+              class="ss-tracks pg-card{% if two_cols %} ss-tracks--cols{% endif %}"
+              {% if two_cols %}
+                style="--rows: {{ rows }}"
+              {% endif %}
+            >
+              {% assign n = 0 %}
+              {% for s in listed %}
+                {% assign n = n | plus: 1 %}
+                {% if s.url %}
+                  {% assign link = s.url %}
+                {% else %}
+                  {% assign q = s.title | append: ' ' | append: s.artist | uri_escape %}
+                  {% assign link = 'https://open.spotify.com/search/' | append: q %}
+                {% endif %}
+                <li
+                  class="ss-track{% if two_cols and n == col2 %} is-col-top{% endif %}"
+                  {% if s.genre %}
+                    data-genre="{{ s.genre }}"
+                  {% endif %}
+                >
+                  <span class="ss-track__n">
+                    {%- if n < 10 %}0{% endif -%}
+                    {{- n -}}
+                  </span>
+                  <span class="ss-track__art" style="--tone: {{ s.tone | default: 210 }}">
+                    {% if s.cover %}
+                      <img src="{{ s.cover | relative_url }}" alt="" loading="lazy" width="48" height="48">
+                    {% else %}
+                      <span aria-hidden="true">{{ s.title | slice: 0 }}</span>
+                    {% endif %}
+                  </span>
+                  <span class="ss-track__main">
+                    <span class="ss-track__title">{{ s.title }}</span>
+                    <span class="ss-track__artist">{{ s.artist }}</span>
+                    {% if s.note -%}
+                      <span class="ss-track__note">{{ s.note }}</span>
+                    {%- endif %}
+                  </span>
+                  {% if link contains 'spotify' %}
+                    {% assign icon = 'fa-brands fa-spotify' %}
+                  {% elsif link contains 'apple' %}
+                    {% assign icon = 'fa-brands fa-apple' %}
+                  {% elsif link contains 'youtu' %}
+                    {% assign icon = 'fa-brands fa-youtube' %}
+                  {% else %}
+                    {% assign icon = 'fa-solid fa-arrow-up-right-from-square' %}
+                  {% endif %}
+                  <a
+                    class="ss-track__link"
+                    href="{{ link }}"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Listen to {{ s.title }} by {{ s.artist }}"
+                    ><i class="{{ icon }}" aria-hidden="true"></i
+                  ></a>
+                </li>
+              {% endfor %}
+            </ol>
+          </div>
+          {% if y.playlist %}
+            <p class="ss-playlist">
+              <a class="quicklink" href="{{ y.playlist.url }}" target="_blank" rel="noopener">
+                {% if y.playlist.url contains 'apple' %}
+                  <i class="fa-brands fa-apple" aria-hidden="true"></i>
+                {% elsif y.playlist.url contains 'youtu' %}
+                  <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                {% else %}
+                  <i class="fa-brands fa-spotify" aria-hidden="true"></i>
+                {% endif %}
+                The whole {{ y.year }} playlist on {{ y.playlist.label | default: 'Spotify' }}
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if y.shows and y.shows.size > 0 %}
+        <div class="ss-block" id="{{ shows_id }}">
+          <h3 class="ss-label">
+            Shows <span>{{ y.shows.size }}</span>
+          </h3>
+          {% assign picked = y.shows | where: 'pick', true %}
+          {% assign rest = y.shows | where_exp: 's', 's.pick != true' %}
+          {% assign shows = picked | concat: rest %}
+          <ul class="ss-shows pg-card">
+            {% for s in shows %}
+              <li class="ss-show{% if s.pick %} ss-show--pick{% endif %}">
+                <div class="ss-poster{% unless s.poster %} ss-poster--type{% endunless %}" style="--tone: {{ s.tone | default: 210 }}">
+                  {% if s.poster %}
+                    <img src="{{ s.poster | relative_url }}" alt="{{ s.title }} poster" loading="lazy">
+                  {% else %}
+                    <span class="ss-poster__title">{{ s.title }}</span>
+                  {% endif %}
+                  {% if s.pick -%}
+                    <span class="ss-badge">Show of the year</span>
+                  {%- endif %}
+                </div>
+                <div class="ss-show__title">
+                  {% if s.url %}
+                    <a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a>
+                  {% else %}
+                    {{ s.title }}
+                  {% endif %}
+                </div>
+                {% if s.detail %}
+                  <div class="ss-show__detail">{{ s.detail }}</div>
+                {% endif %}
+                {% if s.note %}
+                  <p class="ss-show__note">{{ s.note }}</p>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </section>
+  {% endfor %}
+
+  <p class="ss-ask" data-reveal>
+    Got a song or a show for me?
+    <a class="ss-ask__link" href="mailto:{{ site.data.socials.email }}">Tell me<span aria-hidden="true">&nbsp;&rarr;</span></a>
+  </p>
+</div>
+
+<script>
+  // Year tabs: show one year at a time; a link to #2025 (or to that year's
+  // #music-2025 / #shows-2025) opens the right year.
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.ss-tabs .tl__tab'));
+    if (!tabs.length) return;
+    function show(year, focus) {
+      tabs.forEach(function (t) {
+        var on = t.getAttribute('data-year') === String(year);
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById('ss-' + t.getAttribute('data-year')).hidden = !on;
+        if (on && focus) t.focus();
+      });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () {
+        show(t.getAttribute('data-year'));
+        history.replaceState(null, '', '#' + t.getAttribute('data-year'));
+      });
+      t.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) show(tabs[(i + d + tabs.length) % tabs.length].getAttribute('data-year'), true);
+      });
+    });
+    function fromHash() {
+      var m = location.hash.match(/(\d{4})/);
+      if (m && document.getElementById('ss-' + m[1])) {
+        show(m[1]);
+        var el = document.getElementById(location.hash.slice(1));
+        if (el && el.scrollIntoView) el.scrollIntoView();
+      }
+    }
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+  })();
+
+  // Genres: pointing at a legend row or a ring segment brings that genre
+  // forward (ring, legend and the matching songs) and puts its share in the
+  // middle of the ring.
+  (function () {
+    document.querySelectorAll('.ss-year').forEach(function (year) {
+      var box = year.querySelector('.ss-genres');
+      if (!box) return;
+      var num = box.querySelector('.ss-donut__center b');
+      var cap = box.querySelector('.ss-donut__center span');
+      var total = box.getAttribute('data-total');
+      var parts = year.querySelectorAll('[data-genre]');
+      function focus(key) {
+        var item = key && box.querySelector('.ss-legend__item[data-genre="' + key + '"]');
+        year.classList.toggle('ss-has-focus', !!item);
+        parts.forEach(function (el) {
+          el.classList.toggle('is-on', !!item && el.getAttribute('data-genre') === key);
+        });
+        num.textContent = item ? item.getAttribute('data-pct') : total;
+        cap.textContent = item ? item.querySelector('.ss-legend__name').textContent : 'songs';
+      }
+      box.querySelectorAll('.ss-legend__item, .ss-donut__seg').forEach(function (el) {
+        var key = el.getAttribute('data-genre');
+        el.addEventListener('mouseenter', function () {
+          focus(key);
+        });
+        el.addEventListener('mouseleave', function () {
+          focus(null);
+        });
+        // Keyboard focus only on the legend rows: a focus listener on an SVG
+        // shape makes Chrome treat it as focusable, and a click would then
+        // draw the browser's focus ring round the whole ring.
+        if (el.classList.contains('ss-legend__item')) {
+          el.addEventListener('focus', function () {
+            focus(key);
+          });
+          el.addEventListener('blur', function () {
+            focus(null);
+          });
+        }
+      });
+    });
+  })();
+</script>

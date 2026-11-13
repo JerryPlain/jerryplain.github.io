@@ -33,8 +33,11 @@ The question that drives me: _how can we build a scalable robot-learning flywhee
 
 <p class="pg-hobbies">
   Away from the lab, I enjoy
-  <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>music</span>
-  and <span class="pg-hobby"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i>exploring the world</span>.
+  <span class="pg-hobby"><i class="fa-solid fa-headphones" aria-hidden="true"></i>music</span>,
+  <span class="pg-hobby"><i class="fa-solid fa-tv" aria-hidden="true"></i>TV shows</span>
+  and <span class="pg-hobby"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i>exploring the world</span>.<br>
   Check out my
-  <a class="pg-hobbies__link" href="https://jerryplain.github.io/photography/">photography gallery<span class="pg-hobbies__arrow" aria-hidden="true">&rarr;</span></a>
+  <a class="pg-hobbies__link" href="{{ '/playlist-and-watchlist/' | relative_url }}">playlist &amp; watchlist</a>
+  and my
+  <a class="pg-hobbies__link" href="https://jerryplain.github.io/photography/">photography gallery</a>.
 </p>

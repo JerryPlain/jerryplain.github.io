@@ -1,0 +1,204 @@
+# Playlist & Watchlist (/playlist-and-watchlist/): one entry per year, newest first.
+#
+# Per year:
+#   year      the tab label (tabs only appear once there are two years)
+#   note      optional: a line or two about the year, shown beside it
+#   playlist  optional: { label: Spotify, url: ... }, a "listen to the whole year" link
+#   songs     title, artist, genre (a key from `genres`); optional:
+#               cover  a square image under assets/img/favorites/<year>/ (360px is plenty)
+#               tone   a hue 0-360 for the stand-in tile when there is no cover
+#               url    a Spotify / Apple Music / YouTube link (default: a Spotify search)
+#               note   one line
+#               pick   true for the song of the year, shown large on a record sleeve
+#   shows     title; optional: detail ("Season 2 · Apple TV+"), note, url,
+#             poster (a 2:3 image under assets/img/favorites/<year>/), tone (a hue),
+#             pick: true (the show of the year, listed first)
+#
+# Covers are the official artwork (Apple's catalogue via the iTunes Search API;
+# She's the Best via Deezer). Agnes Kong is listed on Apple as 江語 / Jiang Yu.
+# Show posters and networks come from TVmaze (api.tvmaze.com), cropped to 2:3.
+
+# epigraph: a few lyric lines above the years; the last one gets the
+# highlighter, like the line that is playing in a lyrics view.
+epigraph:
+  lines:
+    - We'll move to India forever
+    - Passed down like folk songs
+    - Our love lasts so long
+  song: seven
+  artist: Taylor Swift
+  album: folklore
+
+# genres: the donut at the top of each year counts songs by their `genre` key.
+# Listed in a fixed order, so a genre keeps its colour from year to year
+# (light / dark steps checked with the dataviz palette validator: lightness,
+# chroma, colour-blind separation). Classified from the Apple Music genre tags
+# plus press descriptions: 54 Ultra = retro soul / '60s pop; Holly Humberstone,
+# Ashe and 江語 = indie / alternative pop; Tinashe = R&B; Troye Sivan's She's
+# the Best and ADÉLA's PRIMA = dance-pop / electropop.
+genres:
+  - key: indie
+    name: Indie & Alt-pop
+    color: "#2f6db5"
+    dark: "#4f8bd4"
+  - key: soul
+    name: Retro Soul & ’60s Pop
+    color: "#e0523f"
+    dark: "#e5604c"
+  - key: rnb
+    name: R&B
+    color: "#7d6fd6"
+    dark: "#8c80e0"
+  - key: dance
+    name: Dance & Electropop
+    color: "#0f9a8f"
+    dark: "#1aa497"
+  - key: pop
+    name: Pop
+    color: "#c98a1c"
+    dark: "#b98219"
+
+years:
+  - year: 2026
+    songs:
+      - title: Honeymoon
+        artist: 54 Ultra
+        genre: soul
+        cover: /assets/img/favorites/2026/honeymoon.jpg
+      - title: It's Getting Better
+        artist: Cass Elliot
+        genre: soul
+        cover: /assets/img/favorites/2026/mamas-big-ones.jpg
+      - title: The Best I Could Do Is Leave
+        artist: Agnes Kong
+        genre: indie
+        cover: /assets/img/favorites/2026/birth.jpg
+      - title: Lucy
+        artist: Holly Humberstone
+        genre: indie
+        cover: /assets/img/favorites/2026/cruel-world.jpg
+      - title: Too Cute To Be Lonely
+        artist: Holly Humberstone
+        genre: indie
+        cover: /assets/img/favorites/2026/cruel-world.jpg
+      - title: Melatonin
+        artist: Tinashe
+        genre: rnb
+        cover: /assets/img/favorites/2026/popstar.jpg
+      - title: Embarrassingly
+        artist: Troye Sivan
+        genre: dance
+        cover: /assets/img/favorites/2026/shes-the-best.jpg
+      - title: Flashbacks
+        artist: Tinashe
+        genre: rnb
+        cover: /assets/img/favorites/2026/popstar.jpg
+      - title: Babylon
+        artist: Taylor Swift
+        genre: pop
+        cover: /assets/img/favorites/2026/the-life-of-a-showgirl.jpg
+      - title: Funeral
+        artist: Ashe
+        genre: indie
+        cover: /assets/img/favorites/2026/the-girl-of-your-dreams.jpg
+      - title: Nicole Kidman
+        artist: ADÉLA
+        genre: dance
+        cover: /assets/img/favorites/2026/prima.jpg
+    shows:
+      - title: Hacks
+        detail: 绝望写手 · HBO Max
+        poster: /assets/img/favorites/2026/show-hacks.jpg
+      - title: Furious
+        detail: 狂怒追缉 · Hulu
+        poster: /assets/img/favorites/2026/show-furious.jpg
+      - title: The Affair Was Just the Beginning
+        detail: 现在不是出轨的问题 · Coupang Play
+        poster: /assets/img/favorites/2026/show-the-affair-was-just-the-beginning.jpg
+      - title: All Her Fault
+        detail: Peacock
+        poster: /assets/img/favorites/2026/show-all-her-fault.jpg
+      - title: Douglas Is Cancelled
+        detail: 道格拉斯被取消 · ITV
+        poster: /assets/img/favorites/2026/show-douglas-is-cancelled.jpg
+      - title: Person of Interest
+        detail: 疑犯追踪 · CBS
+        poster: /assets/img/favorites/2026/show-person-of-interest.jpg
+      - title: The Capture
+        detail: 真相捕捉 · BBC One
+        poster: /assets/img/favorites/2026/show-the-capture.jpg
+      - title: Slow Horses
+        detail: 流人 · Apple TV
+        poster: /assets/img/favorites/2026/show-slow-horses.jpg
+      - title: "Dopesick"
+        detail: 成瘾剂量 · Hulu
+        poster: /assets/img/favorites/2026/show-dopesick.jpg
+      - title: "Dead to Me"
+        detail: 麻木不仁 · Netflix
+        poster: /assets/img/favorites/2026/show-dead-to-me.jpg
+      - title: "Baby Reindeer"
+        detail: 驯鹿宝贝 · Netflix
+        poster: /assets/img/favorites/2026/show-baby-reindeer.jpg
+      - title: "Gilmore Girls"
+        detail: 吉尔摩女孩 · The WB
+        poster: /assets/img/favorites/2026/show-gilmore-girls.jpg
+
+  - year: 2025
+    shows:
+      - title: "Wednesday"
+        detail: 星期三 · Netflix
+        poster: /assets/img/favorites/2025/show-wednesday.jpg
+      - title: "Love, Death & Robots"
+        detail: 爱，死亡和机器人 · Netflix
+        poster: /assets/img/favorites/2025/show-love-death-robots.jpg
+      - title: "House of Cards"
+        detail: 纸牌屋 · Netflix
+        poster: /assets/img/favorites/2025/show-house-of-cards.jpg
+      - title: "Money Heist"
+        detail: 纸钞屋 · Netflix
+        poster: /assets/img/favorites/2025/show-money-heist.jpg
+      - title: "Devious Maids"
+        detail: 蛇蝎女佣 · Lifetime
+        poster: /assets/img/favorites/2025/show-devious-maids.jpg
+      - title: "Why Women Kill"
+        detail: 致命女人 · Paramount+
+        poster: /assets/img/favorites/2025/show-why-women-kill.jpg
+      - title: "Big Little Lies"
+        detail: 大小谎言 · HBO
+        poster: /assets/img/favorites/2025/show-big-little-lies.jpg
+      - title: "Squid Game"
+        detail: 鱿鱼游戏 · Netflix
+        poster: /assets/img/favorites/2025/show-squid-game.jpg
+      - title: "Criminal Minds"
+        detail: 犯罪心理 · CBS
+        poster: /assets/img/favorites/2025/show-criminal-minds.jpg
+      - title: "Severance"
+        detail: 人生切割术 · Apple TV
+        poster: /assets/img/favorites/2025/show-severance.jpg
+      - title: "Young Sheldon"
+        detail: 小谢尔顿 · CBS
+        poster: /assets/img/favorites/2025/show-young-sheldon.jpg
+      - title: "The Big Bang Theory"
+        detail: 生活大爆炸 · CBS
+        poster: /assets/img/favorites/2025/show-the-big-bang-theory.jpg
+      - title: "Stranger Things"
+        detail: 怪奇物语 · Netflix
+        poster: /assets/img/favorites/2025/show-stranger-things.jpg
+      - title: "Friends"
+        detail: 老友记 · NBC
+        poster: /assets/img/favorites/2025/show-friends.jpg
+      - title: "Succession"
+        detail: 继承之战 · HBO
+        poster: /assets/img/favorites/2025/show-succession.jpg
+      - title: "Breaking Bad"
+        detail: 绝命毒师 · AMC
+        poster: /assets/img/favorites/2025/show-breaking-bad.jpg
+      - title: "Prison Break"
+        detail: 越狱 · FOX
+        poster: /assets/img/favorites/2025/show-prison-break.jpg
+      - title: "The White Lotus"
+        detail: 白莲花度假村 · HBO
+        poster: /assets/img/favorites/2025/show-the-white-lotus.jpg
+      - title: "The Morning Show"
+        detail: 早间新闻 · Apple TV
+        poster: /assets/img/favorites/2025/show-the-morning-show.jpg
