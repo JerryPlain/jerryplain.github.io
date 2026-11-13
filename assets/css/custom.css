@@ -674,7 +674,8 @@ html[data-theme="dark"] .pg-intro__portrait {
 }
 /* Hobbies: an aside under a hairline, smaller and quieter than the bio,
    each pastime with a small baby-blue glyph, and a way into the gallery,
-   underlined with a highlighter stroke of sky that fills in on hover */
+   plain blue at rest, with a highlighter stroke of sky that sweeps up
+   behind it on hover */
 .pg-intro__bio p.pg-hobbies {
   margin-top: 1.25rem;
   padding-top: 1.1rem;
@@ -700,7 +701,7 @@ html[data-theme="dark"] .pg-intro__portrait {
   font-weight: 500;
   color: var(--pg-accent);
   text-decoration: none;
-  background: linear-gradient(rgb(var(--pg-sky-rgb) / 0.75), rgb(var(--pg-sky-rgb) / 0.75)) 0 90% / 100% 0.32em no-repeat;
+  background: linear-gradient(rgb(var(--pg-sky-rgb) / 0.75), rgb(var(--pg-sky-rgb) / 0.75)) 0 92% / 100% 0 no-repeat;
   transition:
     background-size 0.35s var(--pg-ease),
     color 0.2s ease;
