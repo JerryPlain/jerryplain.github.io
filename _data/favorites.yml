@@ -170,60 +170,63 @@ years:
 
   - year: 2025
     shows:
-      - title: "Wednesday"
-        detail: 星期三 · Netflix
-        poster: /assets/img/favorites/2025/show-wednesday.jpg
-      - title: "Love, Death & Robots"
-        detail: 爱，死亡和机器人 · Netflix
-        poster: /assets/img/favorites/2025/show-love-death-robots.jpg
       - title: "House of Cards"
         detail: 纸牌屋 · Netflix
         poster: /assets/img/favorites/2025/show-house-of-cards.jpg
       - title: "Money Heist"
         detail: 纸钞屋 · Netflix
         poster: /assets/img/favorites/2025/show-money-heist.jpg
-      - title: "Devious Maids"
-        detail: 蛇蝎女佣 · Lifetime
-        poster: /assets/img/favorites/2025/show-devious-maids.jpg
-      - title: "Why Women Kill"
-        detail: 致命女人 · Paramount+
-        poster: /assets/img/favorites/2025/show-why-women-kill.jpg
       - title: "Big Little Lies"
         detail: 大小谎言 · HBO
         poster: /assets/img/favorites/2025/show-big-little-lies.jpg
-      - title: "Squid Game"
-        detail: 鱿鱼游戏 · Netflix
-        poster: /assets/img/favorites/2025/show-squid-game.jpg
       - title: "Criminal Minds"
         detail: 犯罪心理 · CBS
         poster: /assets/img/favorites/2025/show-criminal-minds.jpg
-      - title: "Severance"
-        detail: 人生切割术 · Apple TV
-        poster: /assets/img/favorites/2025/show-severance.jpg
-      - title: "Young Sheldon"
-        detail: 小谢尔顿 · CBS
-        poster: /assets/img/favorites/2025/show-young-sheldon.jpg
-      - title: "The Big Bang Theory"
-        detail: 生活大爆炸 · CBS
-        poster: /assets/img/favorites/2025/show-the-big-bang-theory.jpg
-      - title: "Stranger Things"
-        detail: 怪奇物语 · Netflix
-        poster: /assets/img/favorites/2025/show-stranger-things.jpg
-      - title: "Friends"
-        detail: 老友记 · NBC
-        poster: /assets/img/favorites/2025/show-friends.jpg
       - title: "Succession"
         detail: 继承之战 · HBO
         poster: /assets/img/favorites/2025/show-succession.jpg
       - title: "Breaking Bad"
         detail: 绝命毒师 · AMC
         poster: /assets/img/favorites/2025/show-breaking-bad.jpg
-      - title: "Prison Break"
-        detail: 越狱 · FOX
-        poster: /assets/img/favorites/2025/show-prison-break.jpg
       - title: "The White Lotus"
         detail: 白莲花度假村 · HBO
         poster: /assets/img/favorites/2025/show-the-white-lotus.jpg
       - title: "The Morning Show"
         detail: 早间新闻 · Apple TV
         poster: /assets/img/favorites/2025/show-the-morning-show.jpg
+
+  - year: 2024
+    shows:
+      - title: "Wednesday"
+        detail: 星期三 · Netflix
+        poster: /assets/img/favorites/2024/show-wednesday.jpg
+      - title: "Love, Death & Robots"
+        detail: 爱，死亡和机器人 · Netflix
+        poster: /assets/img/favorites/2024/show-love-death-robots.jpg
+      - title: "Devious Maids"
+        detail: 蛇蝎女佣 · Lifetime
+        poster: /assets/img/favorites/2024/show-devious-maids.jpg
+      - title: "Why Women Kill"
+        detail: 致命女人 · Paramount+
+        poster: /assets/img/favorites/2024/show-why-women-kill.jpg
+      - title: "Squid Game"
+        detail: 鱿鱼游戏 · Netflix
+        poster: /assets/img/favorites/2024/show-squid-game.jpg
+      - title: "Severance"
+        detail: 人生切割术 · Apple TV
+        poster: /assets/img/favorites/2024/show-severance.jpg
+      - title: "Young Sheldon"
+        detail: 小谢尔顿 · CBS
+        poster: /assets/img/favorites/2024/show-young-sheldon.jpg
+      - title: "The Big Bang Theory"
+        detail: 生活大爆炸 · CBS
+        poster: /assets/img/favorites/2024/show-the-big-bang-theory.jpg
+      - title: "Stranger Things"
+        detail: 怪奇物语 · Netflix
+        poster: /assets/img/favorites/2024/show-stranger-things.jpg
+      - title: "Friends"
+        detail: 老友记 · NBC
+        poster: /assets/img/favorites/2024/show-friends.jpg
+      - title: "Prison Break"
+        detail: 越狱 · FOX
+        poster: /assets/img/favorites/2024/show-prison-break.jpg
