@@ -2467,19 +2467,29 @@ html[data-theme="dark"] .ss-track:hover {
   content: "\2014\2002";
   color: var(--pg-faint);
 }
-.ss a.ss-track__link {
+/* the whole row is one button: it opens the chooser (no default service) */
+.ss-track__hit {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 14px;
+  width: 100%;
+  margin: 0;
+  padding: 0 14px 0 0;
+  border: 0;
   border-radius: 12px;
+  background: none;
+  font: inherit;
   font-size: 0.9375rem;
   color: var(--pg-accent);
-  text-decoration: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.ss-track__link i {
+.ss-track__hit i {
   color: inherit;
   opacity: 0;
   transform: translateX(-4px);
@@ -2487,16 +2497,94 @@ html[data-theme="dark"] .ss-track:hover {
     opacity 0.25s ease,
     transform 0.25s var(--pg-ease);
 }
-.ss-track:hover .ss-track__link i,
-.ss-track__link:focus-visible i {
+.ss-track:hover .ss-track__hit i,
+.ss-track__hit:focus-visible i {
   opacity: 1;
   transform: none;
 }
 @media (hover: none) {
-  .ss-track__link i {
+  .ss-track__hit i {
     opacity: 0.45;
     transform: none;
   }
+}
+.ss-track.is-open {
+  background: rgb(var(--pg-sky-rgb) / 0.24);
+}
+html[data-theme="dark"] .ss-track.is-open {
+  background: rgb(var(--pg-sky-rgb) / 0.07);
+}
+.ss-track.is-open::before,
+.ss-track.is-open + .ss-track::before {
+  opacity: 0;
+}
+.ss-track.is-open .ss-track__hit i {
+  opacity: 0;
+}
+/* a title long enough to reach the chooser fades out just before it */
+.ss-track.is-open .ss-track__main {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ss-cut, 0px) - 40px), transparent calc(100% - var(--ss-cut, 0px) - 8px));
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--ss-cut, 0px) - 40px), transparent calc(100% - var(--ss-cut, 0px) - 8px));
+}
+/* the chooser: a small pill that slides in at the row's right end */
+.ss-on {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--pg-rule);
+  border-radius: 999px;
+  background: var(--pg-card-flat);
+  box-shadow: var(--pg-shadow-sm);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(8px, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--pg-ease),
+    visibility 0s linear 0.3s;
+}
+.ss-track.is-open .ss-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--pg-ease),
+    visibility 0s;
+}
+.ss a.ss-on__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--pg-ink);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.ss a.ss-on__link:hover,
+.ss a.ss-on__link:focus-visible {
+  background: rgb(var(--pg-sky-rgb) / 0.4);
+}
+html[data-theme="dark"] .ss a.ss-on__link:hover,
+html[data-theme="dark"] .ss a.ss-on__link:focus-visible {
+  background: rgb(var(--pg-sky-rgb) / 0.12);
+}
+.ss-on__link i,
+.ss-on__link span {
+  color: inherit;
+}
+.ss-on__link i {
+  font-size: 1.05em;
 }
 /* no song of the year: the list takes the width and runs down two columns */
 .post article ol.ss-tracks--cols {
@@ -2648,6 +2736,13 @@ html[data-theme="dark"] .ss-track:hover {
   }
   .ss-track__artist::before {
     content: none;
+  }
+  /* the chooser keeps to its two logos, so it covers less of the title */
+  .ss-on__link span {
+    display: none;
+  }
+  .ss a.ss-on__link {
+    padding: 7px 11px;
   }
   .post article ul.ss-shows {
     grid-template-columns: repeat(3, minmax(0, 1fr));
