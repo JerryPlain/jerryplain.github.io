@@ -168,9 +168,27 @@
                   {% if pick.note %}
                     <p class="ss-pick__note">{{ pick.note }}</p>
                   {% endif %}
-                  {% if pick.url %}
-                    <a class="ss-listen" href="{{ pick.url }}" target="_blank" rel="noopener"> Listen <span aria-hidden="true">&rarr;</span> </a>
-                  {% endif %}
+                  {% assign q = pick.title | append: ' ' | append: pick.artist %}
+                  {% assign q_apple = q | url_encode %}
+                  {% assign q_spotify = q | uri_escape %}
+                  <span class="ss-listen-row">
+                    <a
+                      class="ss-listen"
+                      href="{% if pick.apple %}{{ pick.apple }}{% else %}https://music.apple.com/us/search?term={{ q_apple }}{% endif %}"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Apple Music <span aria-hidden="true">&rarr;</span>
+                    </a>
+                    <a
+                      class="ss-listen"
+                      href="{% if pick.spotify %}{{ pick.spotify }}{% else %}https://open.spotify.com/search/{{ q_spotify }}{% endif %}"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Spotify <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  </span>
                 </figcaption>
               </figure>
             {% endif %}
@@ -195,12 +213,25 @@
               {% assign n = 0 %}
               {% for s in listed %}
                 {% assign n = n | plus: 1 %}
-                {% if s.url %}
-                  {% assign link = s.url %}
+                {% comment %}
+                  No default service: a click on the row opens a small chooser,
+                  Apple Music or Spotify. Each goes to the song when the data
+                  has its link, and to a search for it otherwise.
+                {% endcomment %}
+                {% assign q = s.title | append: ' ' | append: s.artist %}
+                {% if s.apple %}
+                  {% assign l_apple = s.apple %}
                 {% else %}
-                  {% assign q = s.title | append: ' ' | append: s.artist | uri_escape %}
-                  {% assign link = 'https://open.spotify.com/search/' | append: q %}
+                  {% assign q_apple = q | url_encode %}
+                  {% assign l_apple = 'https://music.apple.com/us/search?term=' | append: q_apple %}
                 {% endif %}
+                {% if s.spotify %}
+                  {% assign l_spotify = s.spotify %}
+                {% else %}
+                  {% assign q_spotify = q | uri_escape %}
+                  {% assign l_spotify = 'https://open.spotify.com/search/' | append: q_spotify %}
+                {% endif %}
+                {% assign on_id = 'ss-on-' | append: y.year | append: '-' | append: n %}
                 <li
                   class="ss-track{% if two_cols and n == col2 %} is-col-top{% endif %}"
                   {% if s.genre %}
@@ -225,23 +256,23 @@
                       <span class="ss-track__note">{{ s.note }}</span>
                     {%- endif %}
                   </span>
-                  {% if link contains 'spotify' %}
-                    {% assign icon = 'fa-brands fa-spotify' %}
-                  {% elsif link contains 'apple' %}
-                    {% assign icon = 'fa-brands fa-apple' %}
-                  {% elsif link contains 'youtu' %}
-                    {% assign icon = 'fa-brands fa-youtube' %}
-                  {% else %}
-                    {% assign icon = 'fa-solid fa-arrow-up-right-from-square' %}
-                  {% endif %}
-                  <a
-                    class="ss-track__link"
-                    href="{{ link }}"
-                    target="_blank"
-                    rel="noopener"
+                  <button
+                    type="button"
+                    class="ss-track__hit"
+                    aria-expanded="false"
+                    aria-controls="{{ on_id }}"
                     aria-label="Listen to {{ s.title }} by {{ s.artist }}"
-                    ><i class="{{ icon }}" aria-hidden="true"></i
-                  ></a>
+                  >
+                    <i class="fa-solid fa-headphones-simple" aria-hidden="true"></i>
+                  </button>
+                  <span class="ss-on" id="{{ on_id }}" role="group" aria-label="Listen on">
+                    <a class="ss-on__link" href="{{ l_apple }}" target="_blank" rel="noopener"
+                      ><i class="fa-brands fa-apple" aria-hidden="true"></i><span>Apple Music</span></a
+                    >
+                    <a class="ss-on__link" href="{{ l_spotify }}" target="_blank" rel="noopener"
+                      ><i class="fa-brands fa-spotify" aria-hidden="true"></i><span>Spotify</span></a
+                    >
+                  </span>
                 </li>
               {% endfor %}
             </ol>
@@ -347,6 +378,53 @@
     }
     fromHash();
     window.addEventListener('hashchange', fromHash);
+  })();
+
+  // Listen: a click on a song row opens its chooser (Apple Music or
+  // Spotify); one at a time. A second click, a click elsewhere, Escape or
+  // tabbing out of the row closes it.
+  (function () {
+    var open = null;
+    function set(row, on) {
+      if (on) {
+        // how far the chooser reaches over the title, so a long line fades
+        // out before it instead of being cut (offsets ignore the slide-in)
+        var main = row.querySelector('.ss-track__main');
+        var pill = row.querySelector('.ss-on');
+        var cut = main.offsetLeft + main.offsetWidth - pill.offsetLeft;
+        row.style.setProperty('--ss-cut', Math.max(cut, 0) + 'px');
+      }
+      row.classList.toggle('is-open', on);
+      row.querySelector('.ss-track__hit').setAttribute('aria-expanded', on ? 'true' : 'false');
+      open = on ? row : null;
+    }
+    document.querySelectorAll('.ss-track').forEach(function (row) {
+      var hit = row.querySelector('.ss-track__hit');
+      if (!hit) return;
+      hit.addEventListener('click', function () {
+        var was = open === row;
+        if (open) set(open, false);
+        if (!was) set(row, true);
+      });
+      row.querySelectorAll('.ss-on__link').forEach(function (a) {
+        a.addEventListener('click', function () {
+          set(row, false);
+        });
+      });
+      row.addEventListener('focusout', function (e) {
+        if (open === row && e.relatedTarget && !row.contains(e.relatedTarget)) set(row, false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (open && !open.contains(e.target)) set(open, false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && open) {
+        var hit = open.querySelector('.ss-track__hit');
+        set(open, false);
+        hit.focus();
+      }
+    });
   })();
 
   // Genres: pointing at a legend row or a ring segment brings that genre

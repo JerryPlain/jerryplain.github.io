@@ -5,17 +5,22 @@
 #   note      optional: a line or two about the year, shown beside it
 #   playlist  optional: { label: Spotify, url: ... }, a "listen to the whole year" link
 #   songs     title, artist, genre (a key from `genres`); optional:
-#               cover  a square image under assets/img/favorites/<year>/ (360px is plenty)
-#               tone   a hue 0-360 for the stand-in tile when there is no cover
-#               url    a Spotify / Apple Music / YouTube link (default: a Spotify search)
-#               note   one line
-#               pick   true for the song of the year, shown large on a record sleeve
+#               cover    a square image under assets/img/favorites/<year>/ (360px is plenty)
+#               tone     a hue 0-360 for the stand-in tile when there is no cover
+#               apple    the song on Apple Music (default: an Apple Music search)
+#               spotify  the song on Spotify (default: a Spotify search)
+#                        A click on the row offers both; neither is the default.
+#               note     one line
+#               pick     true for the song of the year, shown large on a record sleeve
 #   shows     title; optional: detail ("Season 2 · Apple TV+"), note, url,
 #             poster (a 2:3 image under assets/img/favorites/<year>/), tone (a hue),
 #             pick: true (the show of the year, listed first)
 #
 # Covers are the official artwork (Apple's catalogue via the iTunes Search API;
 # She's the Best via Deezer). Agnes Kong is listed on Apple as 江語 / Jiang Yu.
+# Apple Music links are the catalogue's trackViewUrl from the same API; Apple's
+# search API does not list Embarrassingly or MONOLITH, so those two fall back
+# to an Apple Music search.
 # Show posters and networks come from TVmaze (api.tvmaze.com), cropped to 2:3.
 
 # epigraph: a few lyric lines above the years; the last one gets the
@@ -70,26 +75,32 @@ years:
         artist: 54 Ultra
         genre: soul
         cover: /assets/img/favorites/2026/honeymoon.jpg
+        apple: https://music.apple.com/us/album/honeymoon/6832730100?i=6832730101
       - title: It's Getting Better
         artist: Cass Elliot
         genre: soul
         cover: /assets/img/favorites/2026/mamas-big-ones.jpg
+        apple: https://music.apple.com/us/album/its-getting-better/1415197628?i=1415197757
       - title: The Best I Could Do Is Leave
         artist: Agnes Kong
         genre: indie
         cover: /assets/img/favorites/2026/birth.jpg
+        apple: https://music.apple.com/us/album/the-best-i-could-do-is-leave/6810603169?i=6810603999
       - title: Lucy
         artist: Holly Humberstone
         genre: indie
         cover: /assets/img/favorites/2026/cruel-world.jpg
+        apple: https://music.apple.com/us/album/lucy/1859629846?i=1859630234
       - title: Too Cute To Be Lonely
         artist: Holly Humberstone
         genre: indie
         cover: /assets/img/favorites/2026/cruel-world.jpg
+        apple: https://music.apple.com/us/album/too-cute-to-be-lonely/6805958199?i=6805958228
       - title: Melatonin
         artist: Tinashe
         genre: rnb
         cover: /assets/img/favorites/2026/popstar.jpg
+        apple: https://music.apple.com/us/album/melatonin/6789739137?i=6789739143
       - title: Embarrassingly
         artist: Troye Sivan
         genre: dance
@@ -98,30 +109,37 @@ years:
         artist: Tinashe
         genre: rnb
         cover: /assets/img/favorites/2026/popstar.jpg
+        apple: https://music.apple.com/us/album/flashbacks/6789739137?i=6789739150
       - title: Babylon
         artist: Taylor Swift
         genre: pop
         cover: /assets/img/favorites/2026/the-life-of-a-showgirl.jpg
+        apple: https://music.apple.com/us/album/babylon/6814995859?i=6814996163
       - title: Funeral
         artist: Ashe
         genre: indie
         cover: /assets/img/favorites/2026/the-girl-of-your-dreams.jpg
+        apple: https://music.apple.com/us/album/funeral/6805240956?i=6805241191
       - title: Nicole Kidman
         artist: ADÉLA
         genre: dance
         cover: /assets/img/favorites/2026/prima.jpg
+        apple: https://music.apple.com/us/album/nicole-kidman/6807192580?i=6807192825
       - title: honeybee
         artist: Olivia Rodrigo
         genre: pop
         cover: /assets/img/favorites/2026/you-seem-pretty-sad.jpg
+        apple: https://music.apple.com/us/album/honeybee/6779097512?i=6779097536
       - title: SINCERITY
         artist: SAILORR
         genre: rnb
         cover: /assets/img/favorites/2026/from-floridas-finest.jpg
+        apple: https://music.apple.com/us/album/sincerity/1832078705?i=1832078707
       - title: Make Them Cry
         artist: Drake
         genre: hiphop
         cover: /assets/img/favorites/2026/iceman.jpg
+        apple: https://music.apple.com/us/album/make-them-cry/6769649287?i=6769649298
       - title: MONOLITH
         artist: Melanie Martinez
         genre: indie
@@ -130,6 +148,7 @@ years:
         artist: Absolutely
         genre: pop
         cover: /assets/img/favorites/2026/i-just-dont-know-you-yet.jpg
+        apple: https://music.apple.com/us/album/i-just-dont-know-you-yet/1822796543?i=1822796694
     shows:
       - title: Hacks
         detail: 绝望写手 · HBO Max
