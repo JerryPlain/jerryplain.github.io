@@ -1,15 +1,19 @@
 ---
 ---
 {% comment %}
-  One research card on the home page (after wenlixiao.com): the teaser on
-  the left with a role pill in its corner, and the author list sliding up
-  over it on hover; the title, venue, a one-line TL;DR and icon links on
-  the right. Rendered by jekyll-scholar through
-  `{% bibliography --template research_card %}` in _includes/research_cards.liquid.
+  One research card (after wenlixiao.com): the teaser on the left with a
+  role pill in its corner, and the author list sliding up over it on hover;
+  the title, venue, a one-line TL;DR and icon links on the right. Rendered
+  by jekyll-scholar through `{% bibliography --template research_card %}`,
+  for the selected papers on the home page (_layouts/about.liquid) and for
+  every paper on /publications/. A page that sets `paper_panels: true` in
+  its front matter (the publications page) also gets Abstract and BibTeX
+  links, which unfold their panels under the links (assets/js/common.js).
 
   Fields read from papers.bib: preview / preview_full / preview_poster,
   role ("Co-First Author"), venue + venue_year, tldr, website, pdf / doi /
-  url / arxiv, code, video, author_note.
+  url / arxiv, code, video, author_note; with panels, abstract and
+  bibtex_show.
 {% endcomment %}
 
 {% comment %} Title target and the "Paper" link: the same rules as _layouts/bib.liquid {% endcomment %}
@@ -76,7 +80,7 @@
   {% assign preview_is_video = true %}
 {% endif %}
 
-<article class="rc">
+<article class="rc" id="{{ entry.key }}">
   <div class="rc__media thumbnail-hover-wrapper{% if preview_is_video %} rc__media--video{% endif %}">
     {% if preview_is_video %}
       <video
@@ -149,10 +153,30 @@
       {%- if entry.video and entry.video contains '://' -%}
         <a href="{{ entry.video }}"><i class="fa-regular fa-circle-play" aria-hidden="true"></i>Video</a>
       {%- endif -%}
+      {%- if page.paper_panels and entry.abstract -%}
+        <a class="abstract" role="button" href="#"><i class="fa-solid fa-align-left" aria-hidden="true"></i>Abstract</a>
+      {%- endif -%}
+      {%- if page.paper_panels and entry.bibtex_show -%}
+        <a class="bibtex" role="button" href="#"><i class="fa-solid fa-quote-right" aria-hidden="true"></i>BibTeX</a>
+      {%- endif -%}
     {% endcapture %}
     {% assign rc_links = rc_links | strip %}
     {% if rc_links != '' %}
       <div class="rc__links">{{ rc_links }}</div>
+    {% endif %}
+    {% if page.paper_panels %}
+      {% if entry.abstract %}
+        <div class="abstract hidden">
+          <p>{{ entry.abstract }}</p>
+        </div>
+      {% endif %}
+      {% if entry.bibtex_show %}
+        <div class="bibtex hidden">
+          {% highlight bibtex %}
+          {{- entry.bibtex | hideCustomBibtex -}}
+        {% endhighlight %}
+        </div>
+      {% endif %}
     {% endif %}
   </div>
 </article>

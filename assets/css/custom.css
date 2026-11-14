@@ -462,8 +462,7 @@ footer.sticky-bottom a:hover {
 .rc,
 .tl__card,
 .news--page .news-list,
-.experience__entry,
-.publications ol.bibliography > li {
+.experience__entry {
   background: var(--pg-card);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -723,10 +722,12 @@ html[data-theme="dark"] .pg-intro__bio a.pg-hobbies__link {
 .pg-intro__bio a.pg-hobbies__link:hover .pg-hobbies__arrow {
   transform: translateX(3px);
 }
+/* Underlined text links in prose. Research cards (.rc) keep their own
+   plain titles and icon links, also on /publications/. */
 .pg-intro__bio a,
 .chat-invite a:not(.chat-cta),
 .news-entry__text a,
-.post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta)) {
+.post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta, .rc a)) {
   color: inherit;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -739,13 +740,13 @@ html[data-theme="dark"] .pg-intro__bio a.pg-hobbies__link {
 html[data-theme="dark"] .pg-intro__bio a,
 html[data-theme="dark"] .chat-invite a:not(.chat-cta),
 html[data-theme="dark"] .news-entry__text a,
-html[data-theme="dark"] .post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta)) {
+html[data-theme="dark"] .post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta, .rc a)) {
   text-decoration-color: rgb(255 255 255 / 0.25);
 }
 .pg-intro__bio a:hover,
 .chat-invite a:not(.chat-cta):hover,
 .news-entry__text a:hover,
-.post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta)):hover {
+.post article a:where(:not(.quicklink, .thumbnail-hover-wrapper, .chat-cta, .rc a)):hover {
   color: var(--pg-accent);
   text-decoration-color: currentColor;
 }
@@ -1851,293 +1852,76 @@ h2.exp-section i {
   }
 }
 
-/* /publications/: one glass card per paper. A fixed-width teaser on the
-   left; title in serif, authors with my name in ink, venue in bold, then
-   slash-separated links, the TL;DR, and Abs / Bib panels that unfold.
-   Markup: _layouts/bib.liquid. */
-.publications {
-  --pub-teaser-width: 280px;
-  --pub-teaser-ratio: 8 / 5;
-}
+/* /publications/: the same research cards as the home page (markup:
+   _layouts/research_card.liquid), one per paper under the year headings.
+   Abstract and BibTeX sit with the other icon links and unfold a panel
+   under them (assets/js/common.js toggles `.open`). */
 .publications ol.bibliography {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
+  gap: 32px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .publications ol.bibliography > li {
   margin: 0;
-  padding: 22px;
-  transition:
-    transform 0.3s var(--pg-ease),
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
+  padding: 0;
+  border: 0;
 }
-.publications ol.bibliography > li:hover {
-  transform: translateY(-2px);
-  background: var(--pg-card-hover);
-  box-shadow: var(--pg-shadow-hover);
+/* With a panel open the card grows tall: the teaser stays at the top
+   instead of drifting to the middle */
+.publications .rc:has(.hidden.open) {
+  align-items: flex-start;
 }
-.publications ol.bibliography > li > .row {
-  margin: 0;
-}
-@media (min-width: 576px) {
-  .publications ol.bibliography > li > .row {
-    align-items: flex-start;
-    flex-wrap: nowrap;
-  }
-  .publications ol.bibliography > li > .row > .col-sm-2 {
-    flex: 0 0 var(--pub-teaser-width);
-    max-width: var(--pub-teaser-width);
-    padding: 0;
-  }
-  .publications ol.bibliography > li > .row > .col-sm-8 {
-    flex: 1 1 auto;
-    max-width: none;
-    min-width: 0;
-    padding: 0 0 0 28px;
+/* Phones stack teaser over text in a centred column, where the text would
+   shrink-wrap to the widest unbroken line, the BibTeX: hold it to the card */
+@media (max-width: 767.98px) {
+  .publications .rc__body {
+    align-self: stretch;
   }
 }
-.publications ol.bibliography img.preview,
-.publications ol.bibliography video.preview {
-  display: block;
-  width: 100%;
-  aspect-ratio: var(--pub-teaser-ratio);
-  object-fit: cover;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 0 0 1px rgb(var(--pg-shade-rgb) / 0.06) !important;
-  cursor: zoom-in;
-}
-.publications ol.bibliography video.preview {
-  background: #000;
-}
-.publications ol.bibliography > li .abbr {
-  margin-bottom: 0;
-}
-.publications ol.bibliography abbr.badge {
-  max-width: 6rem;
-}
-.publications .thumbnail-hover-wrapper {
-  position: relative;
-  display: block;
-}
-/* Hovering a teaser floats the full figure in a card over the entry */
-.publications .thumbnail-hover-overlay {
-  display: none;
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  z-index: 300;
-  width: min(880px, calc(100vw - 3rem));
-  padding: 8px;
-  background: #fff;
-  border: 1px solid var(--pg-border);
-  border-radius: 18px;
-  box-shadow: 0 24px 60px rgb(var(--pg-shade-rgb) / 0.22);
-  pointer-events: none;
-}
-.publications .thumbnail-hover-overlay img,
-.publications .thumbnail-hover-overlay video {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-}
-.publications .thumbnail-hover-wrapper--video .thumbnail-hover-overlay {
-  width: min(640px, calc(100vw - 3rem));
-  padding: 6px;
-  background: #0b0b0b;
-  border-color: #222;
-}
-@media (min-width: 992px) and (hover: hover) {
-  .publications .thumbnail-hover-wrapper:hover .thumbnail-hover-overlay {
-    display: block;
-    animation: pub-overlay-in 0.22s var(--pg-ease);
-  }
-  /* Lift the hovered card above its siblings so the overlay is never clipped */
-  .publications ol.bibliography > li:hover {
-    position: relative;
-    z-index: 20;
-  }
-}
-@keyframes pub-overlay-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px) scale(0.99);
-  }
-}
-/* Pills over a teaser: the role, a live-recording dot, the playback speed */
-.publications .preview-role,
-.publications .preview-badge,
-.publications .preview-speed {
-  position: absolute;
-  z-index: 2;
-  top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: rgb(0 0 0 / 0.72);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.6;
-  pointer-events: none;
-}
-.publications .preview-role,
-.publications .preview-badge {
-  left: 10px;
-}
-.publications .preview-badge ~ .preview-role {
-  top: 38px;
-}
-.publications .preview-speed {
-  right: 10px;
-}
-.publications .preview-badge__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ff4d4d;
-  animation: preview-live 1.6s ease-out infinite;
-}
-@keyframes preview-live {
-  0% {
-    box-shadow: 0 0 0 0 rgb(255 77 77 / 0.6);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 6px rgb(255 77 77 / 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .publications .preview-badge__dot {
-    animation: none;
-  }
-}
-@media (max-width: 575px) {
-  .publications ol.bibliography > li {
-    padding: 16px;
-  }
-  .publications ol.bibliography > li .abbr {
-    margin-bottom: 1rem;
-  }
-}
-/* Title: the anchor of each entry. The theme sets the weight with a more
-   specific selector, hence the depth. */
-.publications ol.bibliography > li .row .title,
-.publications ol.bibliography > li .row .title a {
-  margin-bottom: 0.4rem;
-  font-family: var(--site-font-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  color: var(--pg-ink);
-}
-.post article .publications ol.bibliography .title a {
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-.post article .publications ol.bibliography .title a:hover {
-  color: var(--pg-accent);
-}
-.publications ol.bibliography .author {
-  margin-bottom: 0.15rem;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--pg-muted);
-}
-.publications ol.bibliography .author .author-name {
-  white-space: nowrap;
-}
-.publications ol.bibliography .author .author-self {
-  font-weight: 600;
-  color: var(--pg-ink);
-}
-.publications ol.bibliography .author .author-note {
-  display: block;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--pg-faint);
-}
-.post article .publications ol.bibliography .author a {
-  text-decoration-color: transparent;
-}
-.publications ol.bibliography .periodical {
-  margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--pg-muted);
-}
-.publications ol.bibliography .periodical .venue {
-  font-weight: 600;
-  color: var(--pg-text);
-}
-.publications ol.bibliography .periodical:empty {
-  display: none;
-}
-.publications ol.bibliography .award-line {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-}
-.award-highlight {
-  color: #d9443c;
-}
-html[data-theme="dark"] .award-highlight {
-  color: #f0655c;
-}
-.publications ol.bibliography .links {
-  margin-top: 0.35rem;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-}
-.publications ol.bibliography .links a {
-  cursor: pointer;
-}
-.publications ol.bibliography .links__sep {
-  margin: 0 0.4em;
-  color: var(--pg-faint);
-}
-.publications ol.bibliography .short-description {
-  margin: 0.5rem 0 0;
-  font-size: var(--fs-meta);
-  line-height: 1.6;
-  color: var(--pg-text);
-}
-/* collapsed panels: the theme's page-coloured dashed border would show as
-   a stray line against the card */
-.publications ol.bibliography .hidden:not(.open) {
+/* The theme's panel rules load later and are one step more specific than
+   a plain `.publications ol.bibliography …` (they drew a black border and
+   a magenta code tint), hence the `li .rc` */
+.publications ol.bibliography li .rc .hidden:not(.open) {
   border-color: transparent !important;
 }
-.publications ol.bibliography .hidden.open {
-  margin-top: 0.75rem;
+.publications ol.bibliography li .rc .hidden.open {
+  margin-top: 1rem;
 }
-.publications ol.bibliography div.abstract.hidden.open,
-.publications ol.bibliography div.bibtex.hidden.open {
+.publications ol.bibliography li .rc div.abstract.hidden.open,
+.publications ol.bibliography li .rc div.bibtex.hidden.open {
   border: 1px solid var(--pg-rule);
   border-radius: 14px;
-  background: rgb(255 255 255 / 0.35);
+  background: rgb(var(--pg-sky-rgb) / 0.12);
 }
-html[data-theme="dark"] .publications ol.bibliography div.abstract.hidden.open,
-html[data-theme="dark"] .publications ol.bibliography div.bibtex.hidden.open {
-  background: rgb(0 0 0 / 0.15);
+html[data-theme="dark"] .publications ol.bibliography li .rc div.abstract.hidden.open,
+html[data-theme="dark"] .publications ol.bibliography li .rc div.bibtex.hidden.open {
+  background: rgb(0 0 0 / 0.18);
 }
-.publications ol.bibliography .bibtex pre,
-.publications ol.bibliography .bibtex figure {
+.publications ol.bibliography li .rc .hidden p {
+  margin: 0;
+  padding: 14px 18px;
+  font-size: var(--fs-small);
+  line-height: 1.75;
+  text-align: left;
+  text-wrap: pretty;
+  color: var(--pg-text);
+}
+.publications ol.bibliography li .rc .bibtex figure {
   max-width: 100%;
+  margin: 0;
   overflow-x: auto;
 }
-.publications ol.bibliography .hidden p {
-  font-size: 0.875rem;
+.publications ol.bibliography li .rc .bibtex pre {
+  margin: 0;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.8125rem;
   line-height: 1.6;
-  text-align: left;
 }
 /* The filter box above the list */
 #bibsearch,
