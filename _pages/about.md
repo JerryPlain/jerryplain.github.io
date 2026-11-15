@@ -29,7 +29,7 @@ latest_posts:
 
 I am Shijie Zhou, a Master's student in Robotics, Cognition, Intelligence at the [Technical University of Munich](https://www.tum.de/en/). I work on **robot learning, embodied intelligence and learning-based control**, towards general-purpose robots that act reliably in the real world.
 
-The question that drives me: _how can we build a scalable robot-learning flywheel that unifies perception, whole-body control and dexterous manipulation?_ Answering it takes the whole stack, so I am becoming a full-stack roboticist, from hardware and control to high-level models.
+The question that drives me: _how can we build a scalable robot-learning flywheel that unifies perception, whole-body control and dexterous manipulation?_ Answering it takes the whole stack, so I am becoming a [full-stack roboticist](https://jerryplain.github.io/fullstack_robotics/), from hardware and control to high-level models.
 
 <p class="pg-hobbies">
   Away from the lab, I enjoy
