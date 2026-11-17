@@ -497,13 +497,13 @@ footer.sticky-bottom {
   border-top: 1px solid var(--pg-rule);
   background: transparent;
   font-size: var(--fs-small);
-  color: var(--pg-faint);
+  color: var(--pg-muted);
 }
 footer.sticky-bottom .container {
-  color: var(--pg-faint);
+  color: var(--pg-muted);
 }
 footer.sticky-bottom a {
-  color: var(--pg-muted);
+  color: var(--pg-text);
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 3px;
