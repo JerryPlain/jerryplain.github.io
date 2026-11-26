@@ -2102,153 +2102,182 @@ html[data-theme="dark"] .publications ol.bibliography li .rc div.bibtex.hidden.o
   font-style: italic;
 }
 
-/* genres: a thin dial of a donut and an editorial legend (name, a dotted
-   leader, the share); pointing at a genre brings it forward in the ring, the
-   legend and the tracklist */
+/* genres: level meters in the site's one blue. A tally on the left, parted
+   by a fading sky hairline; on the right one row per genre, biggest first:
+   the name, a run of slots (one per song of the year: a hairline when
+   empty, a lit bar for each of the genre's songs, deepening towards the
+   right like a meter), the count and the share. At night the lit bars glow
+   like the stardust and the last one in each row is the brightest.
+   Pointing at a row brings that genre forward here and in the tracklist. */
 .ss-genres {
-  display: grid;
-  grid-template-columns: 184px minmax(0, 1fr);
-  align-items: center;
-  gap: 56px;
-  padding: 32px 40px;
-}
-.ss-donut {
   position: relative;
-  width: 184px;
-  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 48px;
+  padding: 30px 40px;
 }
-.ss-donut {
+.ss-tally {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: center;
   -webkit-user-select: none;
   user-select: none;
 }
-.ss-donut svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  outline: none;
-}
-.ss-donut__track {
-  fill: none;
-  stroke: rgb(var(--pg-shade-rgb) / 0.08);
-  stroke-width: 0.35;
-}
-html[data-theme="dark"] .ss-donut__track {
-  stroke: rgb(255 255 255 / 0.1);
-}
-.ss-donut__seg {
-  fill: none;
-  stroke: var(--c);
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  transition:
-    opacity 0.25s ease,
-    stroke-width 0.3s var(--pg-ease);
-}
-html[data-theme="dark"] .ss-donut__seg {
-  stroke: var(--c-dark);
-}
-.ss-donut__center {
+/* the parting hairline, sky in the middle and fading out at both ends */
+.ss-tally::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 40px;
-  text-align: center;
-  pointer-events: none;
+  top: 4px;
+  right: -24px;
+  bottom: 4px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--pg-accent-soft-rgb) / 0),
+    rgb(var(--pg-accent-soft-rgb) / 0.55) 50%,
+    rgb(var(--pg-accent-soft-rgb) / 0)
+  );
 }
-.ss-donut__center b {
-  font-size: 2.375rem;
+.ss-tally__n {
+  font-size: 3.25rem;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--pg-ink);
 }
-.ss-donut__center span {
-  max-width: 6rem;
-  margin-top: 5px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: 0.08em;
+.ss-tally__unit {
+  margin-top: 8px;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--pg-accent);
+}
+.ss-tally__sub {
+  margin-top: 4px;
+  font-size: var(--fs-small);
+  font-style: italic;
+  line-height: 1.35;
   color: var(--pg-muted);
 }
-.post article ul.ss-legend {
+.post article ul.ss-meters {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  max-width: 720px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.ss-legend__item {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 8px 0;
+.ss-meter {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr) 1.5rem 2.75rem;
+  align-items: center;
+  column-gap: 20px;
+  margin: 0 -14px;
+  padding: 9px 14px;
+  border-radius: 12px;
   outline: none;
   cursor: default;
-  transition: opacity 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    background-color 0.25s ease;
 }
-.ss-legend__swatch {
-  flex: 0 0 auto;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c);
-  transform: translateY(-1px);
+.ss-meter.is-on,
+.ss-meter:focus-visible {
+  background: rgb(var(--pg-sky-rgb) / 0.14);
 }
-html[data-theme="dark"] .ss-legend__swatch {
-  background: var(--c-dark);
+html[data-theme="dark"] .ss-meter.is-on,
+html[data-theme="dark"] .ss-meter:focus-visible {
+  background: rgb(var(--pg-sky-rgb) / 0.05);
 }
-.ss-legend__name {
+.ss-meter__name {
+  overflow: hidden;
   font-size: var(--fs-body);
   font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--pg-ink);
 }
-/* a dotted leader from the name to the share */
-.ss-legend__item::after {
-  content: "";
-  order: 2;
-  flex: 1 1 auto;
-  min-width: 24px;
-  border-bottom: 1px dotted rgb(var(--pg-shade-rgb) / 0.28);
-  transform: translateY(-4px);
+.ss-meter__bar {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  align-items: center;
+  gap: 5px;
+  height: 14px;
 }
-html[data-theme="dark"] .ss-legend__item::after {
-  border-bottom-color: rgb(255 255 255 / 0.18);
+/* an empty slot: a hairline, fading out towards the end of the row like
+   the section titles' rule */
+.ss-meter__bar i {
+  display: block;
+  height: 1px;
+  border-radius: 1px;
+  background: rgb(var(--pg-shade-rgb) / calc(0.2 - 0.15 * var(--e, 0)));
 }
-.ss-legend__n {
-  order: 3;
-  min-width: 8.5rem;
+html[data-theme="dark"] .ss-meter__bar i {
+  background: rgb(255 255 255 / calc(0.14 - 0.1 * var(--e, 0)));
+}
+/* a lit slot: one of the genre's songs; --k (its place against the
+   biggest genre, 0 to 1) deepens the blue towards the top of the scale */
+.ss-meter__bar i.on {
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(var(--pg-accent-soft-rgb));
+  background: color-mix(in oklab, rgb(var(--pg-accent-soft-rgb)), rgb(var(--pg-accent-rgb)) calc(var(--k) * 100%));
+  box-shadow: 0 1px 4px rgb(var(--pg-accent-soft-rgb) / 0.35);
+  transition:
+    opacity 0.5s ease var(--d, 0s),
+    transform 0.6s var(--pg-ease) var(--d, 0s),
+    box-shadow 0.3s ease;
+}
+/* at night: from a deep steel blue up to the baby blue */
+html[data-theme="dark"] .ss-meter__bar i.on {
+  background: rgb(var(--pg-sky-rgb) / 0.75);
+  background: color-mix(in oklab, rgb(74 116 160), rgb(var(--pg-sky-rgb)) calc(var(--k) * 100%));
+  box-shadow: 0 0 6px rgb(var(--pg-sky-rgb) / calc(0.12 + 0.3 * var(--k)));
+}
+/* the head of each row: its own blue, lit a little brighter, like a glint */
+html[data-theme="dark"] .ss-meter__bar i.peak {
+  background: color-mix(in oklab, color-mix(in oklab, rgb(74 116 160), rgb(var(--pg-sky-rgb)) calc(var(--k) * 100%)), #fff 38%);
+  box-shadow:
+    0 0 6px rgb(var(--pg-sky-rgb) / 0.55),
+    0 0 14px rgb(var(--pg-sky-rgb) / 0.25);
+}
+.ss-meter.is-on .ss-meter__bar i.on {
+  box-shadow: 0 1px 8px rgb(var(--pg-accent-soft-rgb) / 0.6);
+}
+html[data-theme="dark"] .ss-meter.is-on .ss-meter__bar i.on {
+  box-shadow:
+    0 0 8px rgb(var(--pg-sky-rgb) / 0.6),
+    0 0 18px rgb(var(--pg-sky-rgb) / 0.25);
+}
+/* the first time the card comes into view, the bars light up left to
+   right, each row a beat after the one above (JS adds .is-armed, then
+   .is-lit; without JS or with reduced motion they are simply lit) */
+.ss-genres.is-armed:not(.is-lit) .ss-meter__bar i.on {
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: none;
+}
+.ss-meter__n,
+.ss-meter__pct {
   text-align: right;
-  font-size: var(--fs-small);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
   white-space: nowrap;
+}
+.ss-meter__n {
+  font-size: var(--fs-small);
   color: var(--pg-faint);
 }
-.ss-legend__n b {
-  display: inline-block;
-  min-width: 2.8em;
-  margin-left: 0.7em;
-  text-align: right;
-  font-size: var(--fs-lead);
+.ss-meter__pct {
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--pg-ink);
 }
-.ss-has-focus .ss-donut__seg:not(.is-on) {
-  opacity: 0.22;
-}
-.ss-has-focus .ss-donut__seg.is-on {
-  stroke-width: 3;
-}
-.ss-has-focus .ss-legend__item:not(.is-on) {
-  opacity: 0.4;
+.ss-has-focus .ss-meter:not(.is-on) {
+  opacity: 0.38;
 }
 .ss-has-focus .ss-track:not(.is-on) {
   opacity: 0.32;
@@ -2893,14 +2922,51 @@ html[data-theme="dark"] .ss a.ss-on__link:focus-visible {
   }
 }
 @media (max-width: 767.98px) {
+  /* the tally becomes a line over the meters; each meter goes under its
+     name, with the count and share on the name's line */
   .ss-genres {
     grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    gap: 22px;
-    padding: 24px 20px;
+    gap: 14px;
+    padding: 22px 20px 16px;
   }
-  .post article ul.ss-legend {
-    width: 100%;
+  .ss-tally {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  .ss-tally::after {
+    display: none;
+  }
+  .ss-tally__n {
+    font-size: 2.25rem;
+  }
+  .ss-tally__unit,
+  .ss-tally__sub {
+    margin-top: 0;
+  }
+  .ss-meter {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "name n pct"
+      "bar bar bar";
+    row-gap: 6px;
+    column-gap: 12px;
+    margin: 0 -10px;
+    padding: 8px 10px;
+  }
+  .ss-meter__name {
+    grid-area: name;
+  }
+  .ss-meter__bar {
+    grid-area: bar;
+    gap: 4px;
+  }
+  .ss-meter__n {
+    grid-area: n;
+  }
+  .ss-meter__pct {
+    grid-area: pct;
   }
 }
 @media (max-width: 575.98px) {

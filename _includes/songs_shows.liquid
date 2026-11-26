@@ -70,69 +70,70 @@
       {% assign total = y.songs.size %}
       {% if total > 0 and fav.genres %}
         {% comment %}
-          Donut of the year's songs by genre: an SVG ring whose circumference
-          is 100 units (r = 15.9155), so each segment's dash length is simply
-          its percentage, less a gap; the offset starts it at 12 o'clock. A
-          thin ring with round ends over a hairline track, like a dial.
+          The year's songs by genre, as level meters in the site's one blue:
+          every row has a slot per song of the year, and a genre lights as
+          many as it has songs (each lit slot is one of them, named in its
+          tooltip), so the rows read like the bars of a hi-fi meter. --k is a
+          lit slot's place against the biggest genre (the blue deepens to it),
+          --e an empty slot's place along the row (the hairline fades out). Rows run
+          from the biggest genre down; ties keep the order of `genres`. The
+          tally on the left changes to a genre while it is pointed at.
         {% endcomment %}
+        {% assign n_genres = 0 %}
+        {% assign top = 1 %}
+        {% for g in fav.genres %}
+          {% assign gs = y.songs | where: 'genre', g.key %}
+          {% if gs.size > 0 %}{% assign n_genres = n_genres | plus: 1 %}{% endif %}
+          {% if gs.size > top %}{% assign top = gs.size %}{% endif %}
+        {% endfor %}
         <div class="ss-block ss-genres-block">
           <h3 class="ss-label">Genres</h3>
-          <div class="ss-genres pg-card" data-total="{{ total }}">
-            <div class="ss-donut">
-              <svg viewBox="0 0 42 42" role="img" aria-labelledby="ss-donut-title-{{ y.year }}">
-                <title id="ss-donut-title-{{ y.year }}">My {{ y.year }} songs by genre</title>
-                <circle class="ss-donut__track" cx="21" cy="21" r="15.9155"></circle>
-                {% assign start = 0.0 %}
+          <div class="ss-genres pg-card" data-total="{{ total }}" data-genres="{{ n_genres }}">
+            <div class="ss-tally" aria-hidden="true">
+              <b class="ss-tally__n">{{ total }}</b>
+              <span class="ss-tally__unit">songs</span>
+              <span class="ss-tally__sub">{{ n_genres }} genres</span>
+            </div>
+            <ul class="ss-meters" aria-label="My {{ y.year }} songs by genre">
+              {% assign row = 0 %}
+              {% for c in (1..total) reversed %}
                 {% for g in fav.genres %}
                   {% assign gs = y.songs | where: 'genre', g.key %}
-                  {% if gs.size > 0 %}
-                    {% assign pct = gs.size | times: 100.0 | divided_by: total %}
-                    {% comment %} round caps add 1.1 at each end; 3.4 leaves a ~1.2 gap {% endcomment %}
-                    {% assign dash = pct | minus: 3.4 %}
-                    {% assign rest = 100.0 | minus: dash %}
-                    {% assign offset = 25.0 | minus: start | minus: 1.7 %}
-                    <circle
-                      class="ss-donut__seg"
+                  {% if gs.size == c %}
+                    {% assign pct = c | times: 100.0 | divided_by: total | round %}
+                    <li
+                      class="ss-meter"
                       data-genre="{{ g.key }}"
-                      cx="21"
-                      cy="21"
-                      r="15.9155"
-                      style="--c: {{ g.color }}; --c-dark: {{ g.dark | default: g.color }}"
-                      stroke-dasharray="{{ dash | round: 3 }} {{ rest | round: 3 }}"
-                      stroke-dashoffset="{{ offset | round: 3 }}"
+                      data-count="{{ c }}"
+                      tabindex="0"
+                      aria-label="{{ g.name }}: {{ c }} of {{ total }} songs, {{ pct }}%"
                     >
-                      <title>{{ g.name }}: {{ gs.size }} of {{ total }} ({{ pct | round }}%)</title>
-                    </circle>
-                    {% assign start = start | plus: pct %}
+                      <span class="ss-meter__name">{{ g.name }}</span>
+                      <span class="ss-meter__bar" style="--slots: {{ total }}" aria-hidden="true">
+                        {%- for i in (1..total) -%}
+                          {%- if i <= c -%}
+                            {%- assign s = gs[forloop.index0] -%}
+                            {%- assign k = i | times: 1.0 | divided_by: top | round: 3 -%}
+                            {%- comment -%} lights up left to right, each row a beat after the last {%- endcomment -%}
+                            {%- assign d_row = row | times: 0.07 -%}
+                            {%- assign d = i | minus: 1 | times: 0.045 | plus: d_row | round: 3 -%}
+                            <i
+                              class="on{% if i == c %} peak{% endif %}"
+                              style="--k: {{ k }}; --d: {{ d }}s"
+                              title="{{ s.title }} · {{ s.artist }}"
+                            ></i>
+                          {%- else -%}
+                            {%- assign e = i | times: 1.0 | divided_by: total | round: 3 -%}
+                            <i style="--e: {{ e }}"></i>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </span>
+                      <span class="ss-meter__n">{{ c }}</span>
+                      <span class="ss-meter__pct">{{ pct }}%</span>
+                    </li>
+                    {% assign row = row | plus: 1 %}
                   {% endif %}
                 {% endfor %}
-              </svg>
-              <div class="ss-donut__center" aria-hidden="true">
-                <b>{{ total }}</b>
-                <span>songs</span>
-              </div>
-            </div>
-            <ul class="ss-legend">
-              {% for g in fav.genres %}
-                {% assign gs = y.songs | where: 'genre', g.key %}
-                {% if gs.size > 0 %}
-                  {% assign pct = gs.size | times: 100.0 | divided_by: total %}
-                  <li
-                    class="ss-legend__item"
-                    data-genre="{{ g.key }}"
-                    data-pct="{{ pct | round }}%"
-                    tabindex="0"
-                    style="--c: {{ g.color }}; --c-dark: {{ g.dark | default: g.color }}; --w: {{ pct | round: 2 }}%"
-                  >
-                    <span class="ss-legend__swatch" aria-hidden="true"></span>
-                    <span class="ss-legend__name">{{ g.name }}</span>
-                    <span class="ss-legend__n">
-                      {{- gs.size }}
-                      {% if gs.size == 1 %}song{% else %}songs{% endif %}
-                      <b>{{ pct | round }}%</b>
-                    </span>
-                  </li>
-                {% endif %}
               {% endfor %}
             </ul>
           </div>
@@ -427,45 +428,61 @@
     });
   })();
 
-  // Genres: pointing at a legend row or a ring segment brings that genre
-  // forward (ring, legend and the matching songs) and puts its share in the
-  // middle of the ring.
+  // Genres: pointing at a meter brings that genre forward (its row and the
+  // matching songs) and turns the tally into that genre's count. The meters
+  // light up once, left to right, the first time the card comes into view.
   (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var io =
+      !reduced && 'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                en.target.classList.add('is-lit');
+                io.unobserve(en.target);
+              });
+            },
+            { threshold: 0.3 }
+          )
+        : null;
     document.querySelectorAll('.ss-year').forEach(function (year) {
       var box = year.querySelector('.ss-genres');
       if (!box) return;
-      var num = box.querySelector('.ss-donut__center b');
-      var cap = box.querySelector('.ss-donut__center span');
-      var total = box.getAttribute('data-total');
-      var parts = year.querySelectorAll('[data-genre]');
-      function focus(key) {
-        var item = key && box.querySelector('.ss-legend__item[data-genre="' + key + '"]');
-        year.classList.toggle('ss-has-focus', !!item);
-        parts.forEach(function (el) {
-          el.classList.toggle('is-on', !!item && el.getAttribute('data-genre') === key);
-        });
-        num.textContent = item ? item.getAttribute('data-pct') : total;
-        cap.textContent = item ? item.querySelector('.ss-legend__name').textContent : 'songs';
+      if (io) {
+        box.classList.add('is-armed');
+        io.observe(box);
       }
-      box.querySelectorAll('.ss-legend__item, .ss-donut__seg').forEach(function (el) {
-        var key = el.getAttribute('data-genre');
-        el.addEventListener('mouseenter', function () {
-          focus(key);
+      var num = box.querySelector('.ss-tally__n');
+      var unit = box.querySelector('.ss-tally__unit');
+      var sub = box.querySelector('.ss-tally__sub');
+      var total = box.getAttribute('data-total');
+      var genres = box.getAttribute('data-genres') + ' genres';
+      var parts = year.querySelectorAll('[data-genre]');
+      function focus(row) {
+        var key = row && row.getAttribute('data-genre');
+        var n = row && row.getAttribute('data-count');
+        year.classList.toggle('ss-has-focus', !!row);
+        parts.forEach(function (el) {
+          el.classList.toggle('is-on', !!row && el.getAttribute('data-genre') === key);
         });
-        el.addEventListener('mouseleave', function () {
+        num.textContent = row ? n : total;
+        unit.textContent = row && n === '1' ? 'song' : 'songs';
+        sub.textContent = row ? row.querySelector('.ss-meter__name').textContent : genres;
+      }
+      box.querySelectorAll('.ss-meter').forEach(function (row) {
+        row.addEventListener('mouseenter', function () {
+          focus(row);
+        });
+        row.addEventListener('mouseleave', function () {
           focus(null);
         });
-        // Keyboard focus only on the legend rows: a focus listener on an SVG
-        // shape makes Chrome treat it as focusable, and a click would then
-        // draw the browser's focus ring round the whole ring.
-        if (el.classList.contains('ss-legend__item')) {
-          el.addEventListener('focus', function () {
-            focus(key);
-          });
-          el.addEventListener('blur', function () {
-            focus(null);
-          });
-        }
+        row.addEventListener('focus', function () {
+          focus(row);
+        });
+        row.addEventListener('blur', function () {
+          focus(null);
+        });
       });
     });
   })();

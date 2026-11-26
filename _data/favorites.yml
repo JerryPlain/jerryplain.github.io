@@ -34,39 +34,27 @@ epigraph:
   artist: Taylor Swift
   album: folklore
 
-# genres: the donut at the top of each year counts songs by their `genre` key.
-# Listed in a fixed order, so a genre keeps its colour from year to year
-# (light / dark steps checked with the dataviz palette validator: lightness,
-# chroma, colour-blind separation). Classified from the Apple Music genre tags
-# plus press descriptions: 54 Ultra = retro soul / '60s pop; Holly Humberstone,
-# Ashe, 江語 and Melanie Martinez (HADES) = indie / alternative pop; Tinashe
-# and SAILORR = R&B; Troye Sivan's She's the Best and ADÉLA's PRIMA = dance-pop
-# / electropop; Olivia Rodrigo and Absolutely = pop; Drake = hip-hop.
+# genres: the level meters at the top of each year count songs by their
+# `genre` key, biggest genre first (ties keep this order); all in the site's
+# blue, so a new genre needs only a key and a name. Classified from the Apple
+# Music genre tags plus press descriptions: 54 Ultra = retro soul / '60s pop;
+# Holly Humberstone, Ashe, 江語 and Melanie Martinez (HADES) = indie /
+# alternative pop; Tinashe and SAILORR = R&B; Troye Sivan's She's the Best and
+# ADÉLA's PRIMA = dance-pop / electropop; Olivia Rodrigo and Absolutely = pop;
+# Drake = hip-hop.
 genres:
   - key: indie
     name: Indie & Alt-pop
-    color: "#2f6db5"
-    dark: "#4f8bd4"
   - key: soul
     name: Retro Soul & ’60s Pop
-    color: "#e0523f"
-    dark: "#e5604c"
   - key: rnb
     name: R&B
-    color: "#7d6fd6"
-    dark: "#8c80e0"
   - key: dance
     name: Dance & Electropop
-    color: "#0f9a8f"
-    dark: "#1aa497"
   - key: pop
     name: Pop
-    color: "#c98a1c"
-    dark: "#b98219"
   - key: hiphop
     name: Hip-Hop
-    color: "#c2457f"
-    dark: "#d0568f"
 
 years:
   - year: 2026
