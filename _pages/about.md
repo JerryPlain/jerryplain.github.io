@@ -7,10 +7,11 @@ subtitle: Fiery red, forever fearless
 #   /assets/img/avatar/alps-head.jpg  head and shoulders, head centred (same as Google Scholar)
 #   /assets/img/avatar/alps-full.jpg  whole figure on the stump, valley behind
 #   /assets/img/avatar/alps-half.jpg  waist up, wider (alps-half-close is this 1.2x closer,
-#                                     alps-half-closer 1.35x)
+#                                     alps-half-closer 1.35x with the hands at the edge)
 #   /assets/img/avatar/alps-bust.jpg  head and shoulders, looser, head higher
 #   /assets/img/head2.jpg             the sunset portrait from the old hero
-profile_photo: /assets/img/avatar/alps-half-closer.jpg
+# In use: alps-chest, chest up, 1.36x closer than alps-half, framed so no hands show
+profile_photo: /assets/img/avatar/alps-chest.jpg
 # Credited under the tagline in small, faint type, so the quote reads as a quote
 subtitle_source: Sunset
 subtitle_source_by: Caroline Polachek
