@@ -62,7 +62,7 @@ cv:
     Publications:
       - title: "How to Train a Surgeon? Benchmarking Generalist Agents in Surgical Scene Understanding"
         authors:
-          - G. Zhang, X. Han*, Shijie Zhou*, A. Koukash*, J. Wu, J. Gu, Y. Zhu, N. Navab, V. Tresp, G. Ghazaei
+          - G. Zhang, X. Han*, Shijie Zhou*, A. Koukash*, J. Wu, J. Gu, Y. Zhu, N. Navab, G. Ghazaei, V. Tresp
         publisher: NeurIPS (Evaluations and Datasets Track) 2026
         releaseDate: 2026
         url: https://arxiv.org/abs/2611.11437
