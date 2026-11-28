@@ -4,11 +4,10 @@
   _data/experience.yml; Education is its own tab.
 
   The markup is a plain list of cards, which is what phones and no-JS
-  readers get (a vertical rail, newest first). From 768px up
-  assets/js/home-effects.js reads each item's `data-dates`, lines the cards
-  up oldest to newest, and builds a time scrubber under them: a ruler, one
-  coloured lane per entry, and a playhead to drag through time that lights
-  the cards it passes.
+  readers get (a vertical rail, newest first). On wider screens
+  assets/js/home-effects.js reads each item's `data-dates`, draws the
+  horizontal axis with one coloured bar per entry, and pins each card
+  above or below its bar with a dashed connector.
 {% endcomment %}
 
 {% assign exp_research = site.data.experience.research | default: empty %}
