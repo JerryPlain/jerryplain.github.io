@@ -9,9 +9,11 @@
 
 - label: CV
   icon: fa-regular fa-file-lines
-  # A July 2026 PDF already sits at /assets/pdf/CV_Shijie_Zhou.pdf — point this
-  # at it, or at whatever newer file gets dropped in, to activate the button.
-  url: ""
+  # For now this opens the "Coming soon" page (_pages/cv.md), in the same tab.
+  # When the CV is ready, point url at the PDF (a July 2026 one already sits at
+  # /assets/pdf/CV_Shijie_Zhou.pdf), drop same_tab, and delete _pages/cv.md.
+  url: /cv/
+  same_tab: true
 
 - label: Google Scholar
   icon: ai ai-google-scholar

@@ -14,7 +14,7 @@
         <a
           class="quicklink"
           href="{% if link.url contains 'mailto:' or link.url contains '://' %}{{ link.url }}{% else %}{{ link.url | relative_url }}{% endif %}"
-          {% unless link.url contains 'mailto:' %}
+          {% unless link.url contains 'mailto:' or link.same_tab %}
             target="_blank"
             rel="noopener"
           {% endunless %}
