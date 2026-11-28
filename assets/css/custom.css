@@ -291,6 +291,51 @@ body::after {
     animation: none;
   }
 }
+/* A meteor (night only, spawned by stardust.js): a hairline tail brightening
+   to a pale head with a baby-blue halo. The box's right end is the head, at
+   (--x, --y); it turns about the head to its heading (--a), then flies --d
+   along it, fading in fast and out slowly. */
+.pg-meteor {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--len);
+  height: 1.5px;
+  margin: -0.75px 0 0 calc(var(--len) * -1);
+  border-radius: 1px;
+  background: linear-gradient(to right, rgb(var(--pg-star-halo-rgb) / 0), rgb(var(--pg-star-halo-rgb) / 0.5) 65%, rgb(var(--pg-star-core-rgb)));
+  transform-origin: 100% 50%;
+  opacity: 0;
+  animation: pg-meteor var(--t) linear forwards;
+}
+.pg-meteor::after {
+  content: "";
+  position: absolute;
+  right: -1.5px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  background: rgb(var(--pg-star-core-rgb));
+  box-shadow: 0 0 6px 2px rgb(var(--pg-star-halo-rgb) / 0.7);
+}
+@keyframes pg-meteor {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(0);
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(var(--d));
+  }
+}
 
 /* Content column: 1200px wide like the navbar, with 24px gutters.
    The width is pinned here rather than left to main.css: main.css bakes in

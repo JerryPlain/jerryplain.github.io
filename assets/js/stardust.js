@@ -39,6 +39,49 @@
       sky.appendChild(star);
     });
     document.body.prepend(sky);
+    meteors(sky);
+  }
+
+  // At night a meteor now and then crosses the strip, as on the photography
+  // site's night sky: one at a time, every 4–9 s, diving down and away from
+  // either side. Only while the strip is in view and the tab is visible; by
+  // day the sky keeps to its stars, and reduced motion gets none. Each is a
+  // CSS-animated streak, removed when it fades out.
+  function meteors(sky) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    function rand(a, b) {
+      return a + Math.random() * (b - a);
+    }
+    function fly() {
+      var night = document.documentElement.getAttribute("data-theme") === "dark";
+      if (night && !document.hidden && window.scrollY < 480) {
+        var k = Math.min(1, sky.clientWidth / 1200); // shorter flights on phones
+        var fromLeft = Math.random() < 0.5;
+        var dip = rand(18, 32);
+        var m = document.createElement("i");
+        m.className = "pg-meteor";
+        m.style.cssText =
+          "--x:" +
+          (fromLeft ? rand(4, 55) : rand(45, 96)).toFixed(1) +
+          "%;--y:" +
+          Math.round(rand(40, 230)) +
+          "px;--a:" +
+          (fromLeft ? dip : 180 - dip).toFixed(1) +
+          "deg;--len:" +
+          Math.round(rand(90, 160) * k) +
+          "px;--d:" +
+          Math.round(rand(300, 460) * k) +
+          "px;--t:" +
+          rand(0.9, 1.3).toFixed(2) +
+          "s";
+        m.addEventListener("animationend", function () {
+          m.remove();
+        });
+        sky.appendChild(m);
+      }
+      setTimeout(fly, rand(4000, 9000));
+    }
+    setTimeout(fly, rand(1500, 4000));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
