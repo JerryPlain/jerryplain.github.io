@@ -99,7 +99,7 @@
 {% endif %}
 {% comment %} Local addition: lightbox for publication figures (see _layouts/bib.liquid) {% endcomment %}
 <script src="{{ '/assets/js/pub-figure.js' | relative_url | bust_file_cache }}" defer></script>
-{% comment %} Local addition: a few twinkling stars in the sky wash (see custom.css, "Stardust") {% endcomment %}
+{% comment %} Local addition: a few twinkling stars and meteors in the night sky (see custom.css, "Stardust") {% endcomment %}
 <script src="{{ '/assets/js/stardust.js' | relative_url | bust_file_cache }}" defer></script>
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
 {% if page.layout == 'cv' and site.plugins contains 'al_folio_cv' and site.al_folio.features.cv.enabled != false %}
@@ -110,6 +110,8 @@
 {% if site.enable_darkmode %}
   <!-- Dark Mode -->
   <script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
+  {% comment %} Local addition: light by day, dark by night on the visitor's clock (see theme-clock.js) {% endcomment %}
+  <script src="{{ '/assets/js/theme-clock.js' | relative_url | bust_file_cache }}"></script>
   <link
     defer
     rel="stylesheet"

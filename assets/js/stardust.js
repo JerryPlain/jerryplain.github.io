@@ -1,5 +1,6 @@
-// Stardust: a handful of stars caught in the baby-blue sky at the top of
-// every page (styled in custom.css under "Stardust"). Placed by hand in the
+// Stardust: a handful of stars in the night sky at the top of every page,
+// shown at night only (styled in custom.css under "Stardust"; by day the
+// sky is left clear). Placed by hand in the
 // strip of open sky under the navbar and in the margins, so at desktop
 // width none sits on the intro or on a sub-page's title. x is a share of the
 // window's width, y px from the top, s the size in px; "g" marks a
