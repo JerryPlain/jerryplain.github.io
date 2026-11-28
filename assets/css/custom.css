@@ -683,7 +683,8 @@ html[data-theme="dark"] .pg-more a:hover {
   flex: 0 0 auto;
   width: 256px;
   height: 256px;
-  border-radius: 50%;
+  /* a squircle: a square softened most of the way to a circle */
+  border-radius: 34%;
   overflow: hidden;
   border: 5px solid rgb(255 255 255 / 0.9);
   /* white mat, a fine ring of sky just outside it, a halo, then the shadow */
