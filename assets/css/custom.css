@@ -54,8 +54,6 @@
   --pg-glow-rgb: var(--pg-sky-rgb);
   --pg-glow-a: 0.62;
   --pg-grain-opacity: 0.035;
-  --pg-star-core-rgb: 255 255 255; /* stardust: a white point… */
-  --pg-star-halo-rgb: var(--pg-accent-soft-rgb); /* …in a baby-blue halo */
   --pg-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Type scale: one step per role, so nothing jumps or shrinks out of line.
@@ -202,12 +200,15 @@ body::after {
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Stardust: fifteen stars caught in the sky wash, placed by hand in
+/* Stardust: fifteen stars in the night sky, placed by hand in
    assets/js/stardust.js — small dots and four glints, kept to the open sky
    and the margins. Like the wash they sit behind everything (z -1), scroll
    away with the intro and fade out downward. Each twinkles slowly on its
-   own period and phase; by day a white point in a baby-blue halo, by night
-   a pale star. */
+   own period and phase: a pale point in a baby-blue halo. Night only; by
+   day the sky is left clear. */
+:root:not([data-theme="dark"]) .pg-stars {
+  display: none;
+}
 .pg-stars {
   position: absolute;
   top: 0;
