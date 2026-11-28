@@ -856,12 +856,6 @@ html[data-theme="dark"] .news-entry__text a {
   font-size: 0.8em;
   letter-spacing: 0.02em;
 }
-.quicklink--pending {
-  color: var(--pg-faint);
-  border-style: dashed;
-  box-shadow: none;
-  cursor: default;
-}
 
 /* "Let's chat": a glass card with the invitation and the personal aside on
    the left and one solid call to action on the right */
@@ -2724,6 +2718,39 @@ html[data-theme="dark"] .ss a.ss-on__link:focus-visible {
     gap: 22px 14px;
     padding: 20px 18px 22px;
   }
+}
+
+/* /cv/: a "Coming soon" card until the CV PDF is linked */
+.cv-soon {
+  max-width: 560px;
+  margin: 24px auto 0;
+  padding: 48px 32px 40px;
+  text-align: center;
+}
+.cv-soon__icon {
+  font-size: 2.25rem;
+  color: var(--pg-accent-soft);
+}
+.post article p.cv-soon__title {
+  margin: 1rem 0 0.5rem;
+  font-family: var(--site-font-serif);
+  font-size: var(--fs-section);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--pg-ink);
+}
+.post article p.cv-soon__text {
+  margin: 0 auto;
+  max-width: 400px;
+  font-size: var(--fs-body);
+  color: var(--pg-muted);
+}
+.post article p.cv-soon__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 1.75rem 0 0;
 }
 
 /* ===== 7. Lightbox (assets/js/pub-figure.js) =====
