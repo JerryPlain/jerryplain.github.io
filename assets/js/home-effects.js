@@ -86,19 +86,19 @@
   }
 
   /* ===== 3. Background timeline =====
-     From 768px up the panel becomes a scrubber: the cards in a row, then a
-     ruler with one lane per entry under a playhead that can be dragged,
-     clicked to, flicked (it coasts), or stepped with the arrow keys. The
-     playhead is one number, --p (0–1, on the panel); the lanes and the
+     With JS the panel becomes a scrubber: a ruler with one lane per entry
+     under a playhead that can be dragged, clicked or tapped to, flicked (it
+     coasts), or stepped with the arrow keys, and the cards beside it — in a
+     row under the cards on wide screens, above a column of them on phones.
+     The playhead is one number, --p (0–1, on the panel); the lanes and the
      cards' progress lines fill up to it in CSS, and the cards it covers
      light up. It sweeps from the first start to today the first time each
-     tab comes into view; ▶ replays it. Below 768px, and without JS, the
-     cards stay a vertical rail, newest first. */
+     tab comes into view; ▶ replays it. Without JS the cards stay a
+     vertical rail, newest first. */
   var tl = root.querySelector("[data-timeline]");
   if (tl) initTimeline(tl);
 
   function initTimeline(tl) {
-    var wide = window.matchMedia("(min-width: 768px)");
     var tabs = Array.prototype.slice.call(tl.querySelectorAll(".tl__tab"));
     var panels = Array.prototype.slice.call(tl.querySelectorAll(".tl__panel"));
     /* One hue per entry, in start order: Experience walks blue → indigo →
@@ -187,18 +187,7 @@
         d.li.style.setProperty("--c-rgb", hexRgb(d.color));
       });
       panel._tl = data;
-      panel._list = panel.querySelector(".tl__list");
-      order(panel, true);
     });
-
-    /* The rail reads newest first, the scrubber left to right in time */
-    function order(panel, newestFirst) {
-      var arr = panel._tl.slice();
-      if (newestFirst) arr.reverse();
-      arr.forEach(function (d) {
-        panel._list.appendChild(d.li);
-      });
-    }
 
     function build(panel) {
       var data = panel._tl;
@@ -216,7 +205,11 @@
         return (t - t0) / span;
       };
       var S = { panel: panel, data: data, t0: t0, t1: t1, span: span, p: 1, month: null, raf: 0 };
-      order(panel, false);
+      /* the cards go oldest first, like the lanes */
+      var list = panel.querySelector(".tl__list");
+      data.forEach(function (d) {
+        list.appendChild(d.li);
+      });
       panel.classList.add("tl--scrub");
 
       var wrap = make("div", "tl__scrub");
@@ -233,20 +226,23 @@
       make("span", "tl__base-fill", ruler);
       var short = span < 3;
       var labelled = 0;
+      S.labels = [];
       for (var m = Math.ceil(t0 * 12 - 1e-6); m <= monthOf(t1); m++) {
         var mo = ((m % 12) + 12) % 12;
         var f = frac(m / 12);
         var tick = make("span", mo === 0 ? "tl__tick tl__tick--year" : mo % 3 === 0 ? "tl__tick tl__tick--quarter" : "tl__tick", ruler);
         tick.style.left = pct(f);
-        if (f > 0.93 || (mo !== 0 && !(short && mo % 3 === 0))) continue;
+        if (mo !== 0 && !(short && mo % 3 === 0)) continue;
         var lab = make("span", mo === 0 ? "tl__label tl__label--year" : "tl__label", ruler);
         /* a month label before the first year label carries its year */
         lab.textContent = mo === 0 ? String(m / 12) : MONTH_LABEL[mo] + (labelled === 0 ? " " + Math.floor(m / 12) : "");
         lab.style.left = pct(f);
+        S.labels.push({ el: lab, f: f, year: mo === 0 });
         labelled++;
       }
       make("span", "tl__tick tl__tick--year tl__tick--now", ruler).style.left = "100%";
-      make("span", "tl__now", ruler).textContent = "Now";
+      S.nowLabel = make("span", "tl__now", ruler);
+      S.nowLabel.textContent = "Now";
 
       /* Lanes: one per entry, oldest on top, the logo at its start */
       var lanes = make("div", "tl__lanes", rail);
@@ -276,10 +272,10 @@
           img.alt = "";
         }
         d.lane = lane;
-        lane.addEventListener("mouseenter", function () {
-          if (!S.dragging) focus(panel, d);
+        lane.addEventListener("pointerenter", function (e) {
+          if (e.pointerType === "mouse" && !S.dragging) focus(panel, d);
         });
-        lane.addEventListener("mouseleave", function () {
+        lane.addEventListener("pointerleave", function () {
           focus(panel, null);
         });
 
@@ -325,11 +321,9 @@
         }
         return p;
       };
-      rail.addEventListener("pointerdown", function (e) {
-        if (e.button !== 0) return;
+      var grab = function (e) {
         stop(S);
         S.dragging = true;
-        S.rect = rail.getBoundingClientRect();
         S.samples = [];
         try {
           rail.setPointerCapture(e.pointerId);
@@ -338,6 +332,18 @@
         tl.classList.add("tl--scrubbed");
         ghost.classList.remove("is-on");
         focus(panel, null);
+      };
+      /* A mouse scrubs from the press. A finger might be scrolling the
+         page (the rail leaves vertical pans to the browser), so it scrubs
+         only once it moves sideways, and a tap glides the playhead over. */
+      rail.addEventListener("pointerdown", function (e) {
+        if (e.button !== 0) return;
+        S.rect = rail.getBoundingClientRect();
+        if (e.pointerType !== "mouse") {
+          S.down = { x: e.clientX };
+          return;
+        }
+        grab(e);
         knob.focus({ preventScroll: true });
         setP(S, snap(pAt(e.clientX, S.rect)));
         e.preventDefault();
@@ -345,7 +351,11 @@
       rail.addEventListener("pointermove", function (e) {
         if (!S.dragging) {
           if (e.pointerType === "mouse") hover(S, e.clientX);
-          return;
+          else if (S.down && Math.abs(e.clientX - S.down.x) > 6) {
+            S.down = null;
+            grab(e);
+          }
+          if (!S.dragging) return;
         }
         var p = pAt(e.clientX, S.rect);
         S.samples.push({ p: p, t: e.timeStamp });
@@ -353,12 +363,19 @@
         setP(S, snap(p));
       });
       var release = function (e) {
-        if (!S.dragging) return;
+        if (!S.dragging) {
+          if (S.down && e.type === "pointerup") {
+            tl.classList.add("tl--scrubbed");
+            glide(S, snap(Math.max(0, Math.min(1, pAt(e.clientX, S.rect)))), 420, easeOut);
+          }
+          S.down = null;
+          return;
+        }
         S.dragging = false;
         panel.classList.remove("tl--dragging");
         /* a flick keeps the playhead coasting, slowing as it goes */
         var sm = S.samples;
-        if (sm.length > 1 && e.timeStamp - sm[sm.length - 1].t < 70) {
+        if (e.type === "pointerup" && sm.length > 1 && e.timeStamp - sm[sm.length - 1].t < 70) {
           var dt = sm[sm.length - 1].t - sm[0].t;
           var v = dt > 0 ? (sm[sm.length - 1].p - sm[0].p) / dt : 0;
           if (Math.abs(v) > 0.0004) coast(S, v);
@@ -390,7 +407,7 @@
         else sweep(S);
       });
 
-      /* Start at the far left and sweep in once the panel is on screen;
+      /* Start at the far left and sweep in once the track is on screen;
          with reduced motion, or after a first sweep, sit at today */
       if (reduced || panel._swept) setP(S, 1);
       else {
@@ -411,9 +428,9 @@
                 if (!S.dragging && S.p === 0) sweep(S);
               }, 250);
             },
-            { threshold: 0.4 }
+            { threshold: 0.6 }
           );
-          S.io.observe(panel);
+          S.io.observe(wrap);
         } else {
           panel._swept = true;
           setP(S, 1);
@@ -534,34 +551,42 @@
       S.ghost.classList.add("is-on");
     }
 
-    function teardown(panel) {
-      var S = panel._s;
-      if (!S) return;
-      stop(S);
-      if (S.io) S.io.disconnect();
-      S.wrap.remove();
-      panel.classList.remove("tl--scrub", "tl--now", "tl--focus", "tl--dragging");
-      panel.style.removeProperty("--p");
-      panel._tl.forEach(function (d) {
-        d.li.classList.remove("is-active", "is-past", "is-future", "is-hot");
-        if (d.prog) d.prog.remove();
-        d.state = null;
-      });
-      panel._s = null;
-      order(panel, true);
-    }
-
     function layout(panel) {
-      if (!panel._tl.length) return;
-      if (!wide.matches) {
-        teardown(panel);
-        return;
-      }
-      if (panel.hidden) return;
+      if (!panel._tl.length || panel.hidden) return;
       var S = panel._s || (panel._s = build(panel));
       S.W = S.rail.clientWidth;
       S.KW = S.knob.offsetWidth;
+      fitLabels(S);
       setP(S, S.p);
+    }
+
+    /* Ruler labels that would touch a neighbour or "Now" step aside, years
+       before months, so a narrow track keeps just what fits */
+    function fitLabels(S) {
+      var W = S.W;
+      var taken = [[W - 7 - S.nowLabel.offsetWidth - 8, Infinity]];
+      S.labels.forEach(function (l) {
+        l.el.classList.remove("is-hidden");
+      });
+      S.labels
+        .filter(function (l) {
+          return l.year;
+        })
+        .concat(
+          S.labels.filter(function (l) {
+            return !l.year;
+          })
+        )
+        .forEach(function (l) {
+          var half = l.el.offsetWidth / 2 + 6;
+          var a = l.f * W - half;
+          var b = l.f * W + half;
+          var clash = taken.some(function (t) {
+            return a < t[1] && b > t[0];
+          });
+          if (clash) l.el.classList.add("is-hidden");
+          else taken.push([a, b]);
+        });
     }
 
     /* Hovering a card or a lane lights that pair and dims the rest; a
@@ -576,10 +601,11 @@
     }
     panels.forEach(function (panel) {
       panel._tl.forEach(function (d) {
-        d.li.addEventListener("mouseenter", function () {
-          if (panel._s && !panel._s.dragging) focus(panel, d);
+        /* a mouse only: a tap on a phone shouldn't leave the others dimmed */
+        d.li.addEventListener("pointerenter", function (e) {
+          if (e.pointerType === "mouse" && panel._s && !panel._s.dragging) focus(panel, d);
         });
-        d.li.addEventListener("mouseleave", function () {
+        d.li.addEventListener("pointerleave", function () {
           focus(panel, null);
         });
         d.li.addEventListener("click", function (e) {
@@ -638,7 +664,6 @@
       clearTimeout(rt);
       rt = setTimeout(relayout, 120);
     });
-    if (wide.addEventListener) wide.addEventListener("change", relayout);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
     window.addEventListener("load", relayout);
     relayout();
