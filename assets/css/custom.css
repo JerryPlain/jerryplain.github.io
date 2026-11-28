@@ -1547,32 +1547,27 @@ html[data-theme="dark"] .tl__tab.is-active {
   box-shadow: 0 0 0 3px var(--pg-bg);
 }
 
-/* Scrubber (768px and up, built by home-effects.js). --p, the playhead
+/* Scrubber (built by home-effects.js). --p, the playhead
    (0–1), is set on the panel; each lane and card carries --s (where its
    stint starts on the track) and --w (how much of the track it spans), so
    the fills below are pure CSS. */
 .tl__hint {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  font-size: var(--fs-small);
+  font-style: italic;
+  color: var(--pg-faint);
+  transition: opacity 0.5s ease;
 }
-@media (min-width: 768px) {
-  .tl__hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-left: auto;
-    font-size: var(--fs-small);
-    font-style: italic;
-    color: var(--pg-faint);
-    transition: opacity 0.5s ease;
-  }
-  .tl__hint::before {
-    content: "\2194";
-    font-style: normal;
-    color: var(--pg-accent-soft);
-  }
-  .tl--scrubbed .tl__hint {
-    opacity: 0;
-  }
+.tl__hint::before {
+  content: "\2194";
+  font-style: normal;
+  color: var(--pg-accent-soft);
+}
+.tl--scrubbed .tl__hint {
+  opacity: 0;
 }
 
 /* the cards: one row, left to right in time */
@@ -1639,12 +1634,10 @@ html[data-theme="dark"] .tl--scrub .tl__item.is-active .tl__card {
     0 16px 44px rgb(var(--c-rgb) / 0.22),
     0 2px 8px rgb(0 0 0 / 0.3);
 }
-.tl--scrub .tl__item:hover,
 .tl--scrub .tl__item.is-hot {
   opacity: 1;
   filter: none;
 }
-.tl--scrub .tl__item:hover .tl__card,
 .tl--scrub .tl__item.is-hot .tl__card {
   transform: translateY(-6px);
   box-shadow: var(--pg-shadow-hover);
@@ -1701,12 +1694,6 @@ html[data-theme="dark"] .tl--scrub .tl__item.is-active .tl__card {
     transform 0.2s var(--pg-ease),
     box-shadow 0.2s ease;
 }
-.tl__play:hover {
-  transform: scale(1.07);
-  box-shadow:
-    0 0 0 4px rgb(var(--pg-sky-rgb) / 0.55),
-    0 6px 18px rgb(26 35 50 / 0.22);
-}
 .tl__play:focus-visible {
   outline: 2px solid var(--pg-accent-soft);
   outline-offset: 3px;
@@ -1715,11 +1702,6 @@ html[data-theme="dark"] .tl__play {
   background: rgb(255 255 255 / 0.92);
   color: #1a2332;
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.35);
-}
-html[data-theme="dark"] .tl__play:hover {
-  box-shadow:
-    0 0 0 4px rgb(var(--pg-sky-rgb) / 0.18),
-    0 6px 18px rgb(0 0 0 / 0.35);
 }
 .tl__play svg {
   display: none;
@@ -1819,6 +1801,9 @@ html[data-theme="dark"] .tl__tick--year {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   color: var(--pg-faint);
+}
+.tl__label.is-hidden {
+  visibility: hidden;
 }
 .tl__label--year {
   font-weight: 700;
@@ -2012,14 +1997,12 @@ html[data-theme="dark"] .tl__knob {
 html[data-theme="dark"] .tl__knob::after {
   border-top-color: rgb(255 255 255 / 0.92);
 }
-.tl__knob:hover,
 .tl--dragging .tl__knob {
   transform: scale(1.08);
   box-shadow:
     0 0 0 4px rgb(var(--pg-sky-rgb) / 0.55),
     0 10px 24px rgb(26 35 50 / 0.26);
 }
-html[data-theme="dark"] .tl__knob:hover,
 html[data-theme="dark"] .tl--dragging .tl__knob {
   box-shadow:
     0 0 0 4px rgb(var(--pg-sky-rgb) / 0.2),
@@ -2028,6 +2011,31 @@ html[data-theme="dark"] .tl--dragging .tl__knob {
 .tl__knob:focus-visible {
   outline: 2px solid var(--pg-accent-soft);
   outline-offset: 3px;
+}
+/* hover lifts only where there is a mouse, so a tap leaves nothing stuck */
+@media (hover: hover) {
+  .tl__play:hover {
+    transform: scale(1.07);
+    box-shadow:
+      0 0 0 4px rgb(var(--pg-sky-rgb) / 0.55),
+      0 6px 18px rgb(26 35 50 / 0.22);
+  }
+  html[data-theme="dark"] .tl__play:hover {
+    box-shadow:
+      0 0 0 4px rgb(var(--pg-sky-rgb) / 0.18),
+      0 6px 18px rgb(0 0 0 / 0.35);
+  }
+  .tl__knob:hover {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 0 4px rgb(var(--pg-sky-rgb) / 0.55),
+      0 10px 24px rgb(26 35 50 / 0.26);
+  }
+  html[data-theme="dark"] .tl__knob:hover {
+    box-shadow:
+      0 0 0 4px rgb(var(--pg-sky-rgb) / 0.2),
+      0 10px 24px rgb(0 0 0 / 0.4);
+  }
 }
 .tl__knob-text,
 .tl__knob-text * {
@@ -2122,6 +2130,33 @@ html[data-theme="dark"] .tl--dragging .tl__knob {
   .tl--scrub .tl__item {
     flex-basis: calc(50% - 8px);
     max-width: none;
+  }
+}
+/* phones: the track first, the cards in a column under it, lighting up
+   top to bottom as the playhead runs */
+@media (max-width: 767.98px) {
+  .tl__panel.tl--scrub {
+    display: flex;
+    flex-direction: column;
+  }
+  .tl--scrub .tl__scrub {
+    order: -1;
+    column-gap: 20px;
+    margin: 0 0 22px;
+  }
+  .tl--scrub .tl__list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+  .tl--scrub .tl__item {
+    flex: none;
+  }
+  .tl--scrub .tl__item.is-future {
+    transform: scale(0.97);
+  }
+  .tl__rail {
+    margin-right: 16px;
   }
 }
 
