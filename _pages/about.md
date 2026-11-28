@@ -10,8 +10,11 @@ subtitle: Fiery red, forever fearless
 #                                     alps-half-closer 1.35x with the hands at the edge)
 #   /assets/img/avatar/alps-bust.jpg  head and shoulders, looser, head higher
 #   /assets/img/head2.jpg             the sunset portrait from the old hero
-# In use: alps-chest, chest up, 1.36x closer than alps-half, framed so no hands show
-profile_photo: /assets/img/avatar/alps-chest.jpg
+#   /assets/img/avatar/alps-chest.jpg chest up, 1.36x closer than alps-half; fine in a circle,
+#                                     but a square frame's corners would show a hand
+# In use: alps-chest-square, alps-half box (105,45,515,455), a little closer than
+# alps-chest and cut off above both hands, so the squircle's corners stay clean
+profile_photo: /assets/img/avatar/alps-chest-square.jpg
 # Credited under the tagline in small, faint type, so the quote reads as a quote
 subtitle_source: Sunset
 subtitle_source_by: Caroline Polachek
