@@ -1,8 +1,8 @@
 /* Home page behaviour (loaded only by _layouts/about.liquid):
      1. scroll reveal: sections rise 32px and fade in as they enter
      2. the news card: exactly five rows tall, scrolls for the rest
-     3. the Background timeline: tabs, and on wide screens a horizontal
-        axis with one coloured bar per entry and the cards pinned to it
+     3. the Background timeline: tabs, and from 768px a scrubber, a
+        draggable playhead over one lane per entry that lights the cards
      4. the research deck on phones: dots that follow the swipe
    Everything here is an enhancement; without it the page reads top to
    bottom as plain cards. */
@@ -85,17 +85,24 @@
     })();
   }
 
-  /* ===== 3. Background timeline ===== */
+  /* ===== 3. Background timeline =====
+     From 768px up the panel becomes a scrubber: the cards in a row, then a
+     ruler with one lane per entry under a playhead that can be dragged,
+     clicked to, flicked (it coasts), or stepped with the arrow keys. The
+     playhead is one number, --p (0–1, on the panel); the lanes and the
+     cards' progress lines fill up to it in CSS, and the cards it covers
+     light up. It sweeps from the first start to today the first time each
+     tab comes into view; ▶ replays it. Below 768px, and without JS, the
+     cards stay a vertical rail, newest first. */
   var tl = root.querySelector("[data-timeline]");
   if (tl) initTimeline(tl);
 
   function initTimeline(tl) {
-    var SVGNS = "http://www.w3.org/2000/svg";
-    var wide = window.matchMedia("(min-width: 1024px)"); /* the chart needs room for ~4 cards */
+    var wide = window.matchMedia("(min-width: 768px)");
     var tabs = Array.prototype.slice.call(tl.querySelectorAll(".tl__tab"));
     var panels = Array.prototype.slice.call(tl.querySelectorAll(".tl__panel"));
-    /* One hue per entry, in start order, as on the reference: Experience
-       walks blue → indigo → violet → cyan, Education emerald → lime. */
+    /* One hue per entry, in start order: Experience walks blue → indigo →
+       violet → cyan, Education emerald → lime. */
     var PALETTES = {
       experience: ["#3b82f6", "#6366f1", "#8b5cf6", "#06b6d4"],
       education: ["#10b981", "#14b8a6", "#22c55e", "#84cc16"],
@@ -104,7 +111,12 @@
     var MONTH_LABEL = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var today = new Date();
     var NOW = today.getFullYear() + (today.getMonth() + today.getDate() / 31) / 12;
-    var drawn = {}; /* panels whose bars have already drawn in once */
+    var SWEEP_MS = 3200; /* the whole range, start to today */
+    var SNAP = 0.35 / 12; /* the playhead clicks onto a start or end this close (years) */
+    var ICONS =
+      '<svg class="tl__i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7z"/></svg>' +
+      '<svg class="tl__i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg>' +
+      '<svg class="tl__i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 9.2A7 7 0 1 1 5 13.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4.6 4.8v4.8h4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     /* "Oct 2025 - Present" → { start: 2025.75, end: NOW, present: true }.
        A start month counts from its first day, an end month to its last. */
@@ -125,383 +137,456 @@
       if (!b) b = { t: a.t + 1 / 12 };
       return { start: a.t, end: Math.max(b.t, a.t + 1 / 24), present: !!b.present };
     }
-
-    function el(name, attrs, parent) {
-      var n = document.createElementNS(SVGNS, name);
-      for (var k in attrs) n.setAttribute(k, attrs[k]);
+    function hexRgb(h) {
+      var n = parseInt(h.slice(1), 16);
+      return (n >> 16) + " " + ((n >> 8) & 255) + " " + (n & 255);
+    }
+    function make(tag, cls, parent) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
       if (parent) parent.appendChild(n);
       return n;
     }
+    function pct(f) {
+      return (f * 100).toFixed(3) + "%";
+    }
+    function monthOf(t) {
+      return Math.floor(t * 12 + 1e-6);
+    }
+    function monthText(m) {
+      return MONTH_LABEL[((m % 12) + 12) % 12] + " " + Math.floor(m / 12);
+    }
+    var easeInOut = function (k) {
+      return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    };
+    var easeOut = function (k) {
+      return 1 - Math.pow(1 - k, 3);
+    };
 
-    /* Colours go on every layout, so the phone rail's dots match too */
+    /* Entries oldest first, each with its colour; the colour goes on every
+       layout, so the phone rail's dots match too */
     panels.forEach(function (panel) {
-      var key = panel.getAttribute("data-panel");
-      var pal = PALETTES[key] || PALETTES.experience;
-      var items = Array.prototype.slice.call(panel.querySelectorAll(".tl__item"));
-      var data = items
+      var pal = PALETTES[panel.getAttribute("data-panel")] || PALETTES.experience;
+      var data = Array.prototype.slice
+        .call(panel.querySelectorAll(".tl__item"))
         .map(function (li) {
           return { li: li, r: parseRange(li.getAttribute("data-dates")) };
         })
         .filter(function (d) {
           return d.r;
-        });
-      data
-        .slice()
+        })
         .sort(function (a, b) {
           return a.r.start - b.r.start || a.r.end - b.r.end;
-        })
-        .forEach(function (d, i, all) {
-          /* fewer entries than hues: spread them across the palette */
-          var n = all.length;
-          var idx = n > 1 && n <= pal.length ? Math.round((i * (pal.length - 1)) / (n - 1)) : i % pal.length;
-          d.color = pal[idx];
-          d.li.style.setProperty("--tl-color", d.color);
         });
-      /* The rail reads newest first */
-      data
-        .slice()
-        .sort(function (a, b) {
-          return b.r.start - a.r.start || b.r.end - a.r.end;
-        })
-        .forEach(function (d) {
-          d.li.parentNode.appendChild(d.li);
-        });
+      var n = data.length;
+      data.forEach(function (d, i) {
+        /* fewer entries than hues: spread them across the palette */
+        var idx = n > 1 && n <= pal.length ? Math.round((i * (pal.length - 1)) / (n - 1)) : i % pal.length;
+        d.color = pal[idx];
+        d.li.style.setProperty("--tl-color", d.color);
+        d.li.style.setProperty("--c-rgb", hexRgb(d.color));
+      });
       panel._tl = data;
+      panel._list = panel.querySelector(".tl__list");
+      order(panel, true);
     });
 
-    function teardown(panel) {
-      panel.classList.remove("tl--chart", "tl--focus", "tl--animate", "tl--drawn");
-      var svg = panel.querySelector(".tl__svg");
-      if (svg) svg.remove();
-      var list = panel.querySelector(".tl__list");
-      list.style.removeProperty("--tl-height");
-      panel._tl.forEach(function (d) {
-        d.li.style.left = d.li.style.top = d.li.style.width = d.li.style.height = "";
-        d.li.classList.remove("is-hot");
+    /* The rail reads newest first, the scrubber left to right in time */
+    function order(panel, newestFirst) {
+      var arr = panel._tl.slice();
+      if (newestFirst) arr.reverse();
+      arr.forEach(function (d) {
+        panel._list.appendChild(d.li);
       });
     }
 
-    function layout(panel) {
-      if (panel.hidden) return;
+    function build(panel) {
       var data = panel._tl;
-      if (!wide.matches || !data.length) {
-        teardown(panel);
-        return;
-      }
-      var list = panel.querySelector(".tl__list");
-      panel.classList.add("tl--chart");
-      var old = panel.querySelector(".tl__svg");
-      if (old) old.remove();
-
-      var W = list.clientWidth;
-      /* card width: a quarter of the row, 200–276px; wider cards wrap less */
-      var CW = Math.round(Math.min(276, Math.max(200, (W - 60) / 4)));
-      var GAP = 20; /* between cards in a row */
-      var PADX = 10;
-      var sorted = data.slice().sort(function (a, b) {
-        return a.r.start - b.r.start || a.r.end - b.r.end;
-      });
-
-      /* Time range with a little air either side */
-      var t0 = Math.min.apply(
+      var s0 = Math.min.apply(
         null,
-        sorted.map(function (d) {
+        data.map(function (d) {
           return d.r.start;
         })
       );
-      var t1 = Math.max.apply(
-        null,
-        sorted.map(function (d) {
-          return d.r.end;
-        })
-      );
+      /* the track runs from a little before the first start to today */
+      var t1 = NOW;
+      var t0 = s0 - Math.max(1 / 12, (t1 - s0) * 0.04);
       var span = t1 - t0;
-      if (span > 3) {
-        /* a long range starts and ends on whole years, as on the reference */
-        t0 = Math.floor(t0);
-        t1 = Math.ceil(Math.min(t1, NOW + 0.05) + 0.08);
-      } else {
-        var pad = Math.max(0.12, span * 0.05);
-        t0 -= pad;
-        t1 += pad;
-      }
-      var x = function (t) {
-        return PADX + ((t - t0) / (t1 - t0)) * (W - 2 * PADX);
+      var frac = function (t) {
+        return (t - t0) / span;
       };
+      var S = { panel: panel, data: data, t0: t0, t1: t1, span: span, p: 1, month: null, raf: 0 };
+      order(panel, false);
+      panel.classList.add("tl--scrub");
 
-      /* Greedy lanes: each stint takes the first lane free at its start */
-      var assignLanes = function (items) {
-        var ends = [];
-        items.forEach(function (d) {
-          for (var k = 0; k < ends.length; k++) {
-            if (ends[k] <= d.r.start + 1e-6) break;
-          }
-          ends[k] = d.r.end;
-          d.lane = k;
-        });
-        return ends.length;
-      };
-      var LANE = 11; /* overlapping stints run as parallel bars, 11px apart */
+      var wrap = make("div", "tl__scrub");
+      var play = make("button", "tl__play", wrap);
+      play.type = "button";
+      play.innerHTML = ICONS;
+      var rail = make("div", "tl__rail", wrap);
+      rail.style.setProperty("--lanes", data.length);
 
-      /* Card anchors and rows: each card sits over the middle of its bar,
-         alternating above and below; a card that would collide with its
-         neighbour in a row takes the other row if that one is free there. */
-      sorted.forEach(function (d) {
-        d.li.style.width = CW + "px";
-        d.li.style.height = ""; /* measure the card's natural height */
-        d.anchor = x((d.r.start + Math.min(d.r.end, t1)) / 2);
-        d.xe = d.r.present ? x(t1) : x(Math.min(d.r.end, t1));
-        d.h = d.li.offsetHeight;
-      });
-      var rowsEnd = [-Infinity, -Infinity];
-      sorted
-        .slice()
-        .sort(function (a, b) {
-          return a.anchor - b.anchor;
-        })
-        .forEach(function (d, i) {
-          var want = d.anchor - CW / 2;
-          var pref = i % 2; /* 0 above, 1 below */
-          var fitsPref = rowsEnd[pref] + GAP <= want;
-          var fitsOther = rowsEnd[1 - pref] + GAP <= want;
-          d.row = fitsPref || !fitsOther ? pref : 1 - pref;
-          rowsEnd[d.row] = Math.max(want, rowsEnd[d.row] + GAP) + CW;
-        });
-      /* Bars: when nothing overlaps, every bar rides the one axis line, as on
-         the reference. When stints overlap, the cards above get their bars
-         stacked just above the axis and the cards below just under it, so
-         no connector ever has to cross another entry's bar. */
-      var rowItems = function (row) {
-        return sorted.filter(function (d) {
-          return d.row === row;
-        });
-      };
-      var split = assignLanes(sorted) > 1;
-      var nA = 0;
-      var nB = 0;
-      if (split) {
-        nA = assignLanes(rowItems(0));
-        nB = assignLanes(rowItems(1));
-      } else {
-        sorted.forEach(function (d) {
-          d.lane = 0;
-        });
+      /* Ruler: a tick every month, longer each quarter and year; years
+         labelled, and on a short range the quarters too */
+      var ruler = make("div", "tl__ruler", rail);
+      make("span", "tl__base", ruler);
+      make("span", "tl__base-fill", ruler);
+      var short = span < 3;
+      var labelled = 0;
+      for (var m = Math.ceil(t0 * 12 - 1e-6); m <= monthOf(t1); m++) {
+        var mo = ((m % 12) + 12) % 12;
+        var f = frac(m / 12);
+        var tick = make("span", mo === 0 ? "tl__tick tl__tick--year" : mo % 3 === 0 ? "tl__tick tl__tick--quarter" : "tl__tick", ruler);
+        tick.style.left = pct(f);
+        if (f > 0.93 || (mo !== 0 && !(short && mo % 3 === 0))) continue;
+        var lab = make("span", mo === 0 ? "tl__label tl__label--year" : "tl__label", ruler);
+        /* a month label before the first year label carries its year */
+        lab.textContent = mo === 0 ? String(m / 12) : MONTH_LABEL[mo] + (labelled === 0 ? " " + Math.floor(m / 12) : "");
+        lab.style.left = pct(f);
+        labelled++;
       }
-      var HALF = LANE / 2;
-      var upReach = split && nA ? HALF + (nA - 1) * LANE : 0;
-      var downReach = split && nB ? HALF + (nB - 1) * LANE : 0;
+      make("span", "tl__tick tl__tick--year tl__tick--now", ruler).style.left = "100%";
+      make("span", "tl__now", ruler).textContent = "Now";
 
-      /* Re-anchor: a connector meets its bar where no bar further out (same
-         side of the axis) runs over it, so it never has to cross one. The
-         outermost bar keeps its midpoint. */
-      if (split) {
-        var visEnd = function (d) {
-          return d.r.present ? t1 : Math.min(d.r.end, t1);
-        };
-        sorted.forEach(function (d) {
-          var cover = rowItems(d.row)
-            .filter(function (o) {
-              return o.lane > d.lane;
-            })
-            .map(function (o) {
-              return [o.r.start, visEnd(o)];
-            })
-            .sort(function (p, q) {
-              return p[0] - q[0];
-            });
-          if (!cover.length) return;
-          var a = d.r.start;
-          var b = visEnd(d);
-          var free = [];
-          var cur = a;
-          cover.forEach(function (c) {
-            if (c[1] <= cur || c[0] >= b) return;
-            if (c[0] > cur) free.push([cur, c[0]]);
-            cur = Math.max(cur, c[1]);
-          });
-          if (cur < b) free.push([cur, b]);
-          free.sort(function (p, q) {
-            return q[1] - q[0] - (p[1] - p[0]);
-          });
-          if (free.length && free[0][1] - free[0][0] > 0.04) d.anchor = x((free[0][0] + free[0][1]) / 2);
-        });
-      }
+      /* Lanes: one per entry, oldest on top, the logo at its start */
+      var lanes = make("div", "tl__lanes", rail);
+      S.marks = [t1];
+      data.forEach(function (d) {
+        d.live = d.r.present || d.r.end >= t1; /* still running today */
+        d.s = Math.max(0, frac(d.r.start));
+        d.e = d.live ? 1 : Math.min(1, frac(d.r.end));
+        var w = Math.max(0.001, d.e - d.s).toFixed(5);
+        S.marks.push(d.r.start);
+        if (!d.live) S.marks.push(d.r.end);
 
-      /* Pack each row: forward pass pushes right, backward pass pulls the
-         tail back inside the width */
-      [0, 1].forEach(function (row) {
-        var r = sorted
-          .filter(function (d) {
-            return d.row === row;
-          })
-          .sort(function (a, b) {
-            return a.anchor - b.anchor;
-          });
-        var prevRight = -Infinity;
-        r.forEach(function (d) {
-          d.left = Math.max(d.anchor - CW / 2, prevRight + GAP, 0);
-          prevRight = d.left + CW;
-        });
-        for (var i = r.length - 1; i >= 0; i--) {
-          var limit = i === r.length - 1 ? W - CW : r[i + 1].left - GAP - CW;
-          r[i].left = Math.max(0, Math.min(r[i].left, limit));
+        var lane = make("div", d.live ? "tl__lane tl__lane--live" : "tl__lane", lanes);
+        lane.style.setProperty("--c-rgb", hexRgb(d.color));
+        lane.style.setProperty("--s", d.s.toFixed(5));
+        lane.style.setProperty("--w", w);
+        var bar = make("span", "tl__lane-bar", lane);
+        bar.style.left = pct(d.s);
+        bar.style.width = pct(d.e - d.s);
+        make("span", "tl__lane-fill", bar);
+        var node = make("span", "tl__node", lane);
+        node.style.left = pct(d.s);
+        var logo = d.li.querySelector(".tl__logo img");
+        if (logo) {
+          var img = make("img", "", node);
+          img.src = logo.getAttribute("src");
+          img.alt = "";
         }
-      });
-
-      var aboveH = Math.max.apply(
-        null,
-        [0].concat(
-          rowItems(0).map(function (d) {
-            return d.h;
-          })
-        )
-      );
-      var belowH = Math.max.apply(
-        null,
-        [0].concat(
-          rowItems(1).map(function (d) {
-            return d.h;
-          })
-        )
-      );
-      var G = 46; /* card edge to the nearest bar */
-      var bandTop = aboveH + G;
-      var bandMid = bandTop + upReach; /* the axis line */
-      var bandBottom = bandMid + downReach;
-      var total = bandBottom + G + belowH;
-      list.style.setProperty("--tl-height", total + "px");
-
-      /* Cards in a row share one height, so both rows read as tidy bands */
-      sorted.forEach(function (d) {
-        d.y = !split ? bandMid : d.row === 0 ? bandMid - HALF - d.lane * LANE : bandMid + HALF + d.lane * LANE;
-        d.li.style.left = d.left + "px";
-        d.li.style.top = (d.row === 0 ? 0 : bandBottom + G) + "px";
-        d.li.style.height = (d.row === 0 ? aboveH : belowH) + "px";
-      });
-
-      /* ---- the SVG behind the cards ---- */
-      var svg = el("svg", { class: "tl__svg", width: W, height: total, viewBox: "0 0 " + W + " " + total, "aria-hidden": "true" });
-      list.insertBefore(svg, list.firstChild);
-      var gAxis = el("g", {}, svg);
-      /* labels go on last, so their paper-coloured halo breaks any connector */
-      var gLabels = el("g", { class: "tl__labels" });
-      el("line", { class: "tl__axis", x1: x(t0), x2: x(t1), y1: bandMid, y2: bandMid }, gAxis);
-      /* Ticks: every year; on a short range, every quarter too */
-      var labelY = bandTop - 13;
-      var quarterly = t1 - t0 < 3.2;
-      for (var yr = Math.floor(t0); yr <= Math.ceil(t1); yr++) {
-        for (var q = 0; q < (quarterly ? 4 : 1); q++) {
-          var t = yr + q / 4;
-          if (t < t0 || t > t1) continue;
-          var tx = x(t);
-          var major = q === 0;
-          el("line", { class: "tl__tick", x1: tx, x2: tx, y1: bandMid - (major ? 5 : 3), y2: bandMid + (major ? 5 : 3) }, gAxis);
-          /* Apr and Oct: a tick, no label — except the very first tick, so
-             the left end of a short range still has a date */
-          var firstTick = t - 0.25 < t0;
-          if (!major && q !== 2 && !firstTick) continue;
-          var lab = el("text", { class: "tl__label" + (major ? "" : " tl__label--minor"), x: tx, y: labelY }, gLabels);
-          lab.textContent = major ? String(yr) : MONTH_LABEL[q * 3];
-        }
-      }
-
-      var animate = !reduced && !drawn[panel.id];
-      panel.classList.toggle("tl--animate", animate);
-      panel.classList.remove("tl--drawn");
-
-      sorted.forEach(function (d, i) {
-        var g = el("g", { class: "tl-g" }, svg);
-        d.g = g;
-        var xs = x(d.r.start);
-        var xe = d.xe;
-        var len = Math.max(1, xe - xs);
-        g.style.setProperty("--len", len.toFixed(1));
-        g.style.setProperty("--d", (i * 0.12).toFixed(2) + "s");
-        /* connector: from the card's edge to the bar, straight down when the
-           anchor sits under the card, slanting when the card was pushed */
-        var cardEdgeY = d.row === 0 ? aboveH : bandBottom + G;
-        var attachX = Math.max(d.left + 22, Math.min(d.anchor, d.left + CW - 22));
-        el(
-          "path",
-          {
-            class: "tl-link",
-            d: "M" + attachX + " " + cardEdgeY + " L" + d.anchor + " " + (d.row === 0 ? d.y - 4 : d.y + 4),
-            stroke: d.color,
-          },
-          g
-        );
-        var seg = el("line", { class: "tl-seg", x1: xs, x2: xe, y1: d.y, y2: d.y, stroke: d.color }, g);
-        if (d.r.present) {
-          /* an open-ended bar runs on to the edge and fades out there */
-          var gid = panel.id + "-fade-" + i;
-          var defs = el("defs", {}, g);
-          var lg = el("linearGradient", { id: gid, gradientUnits: "userSpaceOnUse", x1: xs, x2: xe, y1: 0, y2: 0 }, defs);
-          var fadeFrom = Math.max(0, Math.min(0.85, (x(NOW) - xs) / Math.max(1, xe - xs)));
-          el("stop", { offset: "0", "stop-color": d.color }, lg);
-          el("stop", { offset: fadeFrom.toFixed(3), "stop-color": d.color }, lg);
-          el("stop", { offset: "1", "stop-color": d.color, "stop-opacity": "0" }, lg);
-          seg.setAttribute("stroke", "url(#" + gid + ")");
-        }
-        /* start: a solid dot in a soft halo; end: a smaller, paler dot */
-        el("circle", { class: "tl-halo", cx: xs, cy: d.y, r: 8.5, fill: d.color }, g);
-        el("circle", { class: "tl-dot", cx: xs, cy: d.y, r: 5.5, fill: d.color }, g);
-        if (!d.r.present) el("circle", { class: "tl-dot tl-dot--end", cx: xe, cy: d.y, r: 4, fill: d.color }, g);
-        var hit = el("line", { class: "tl-hit", x1: xs, x2: xe, y1: d.y, y2: d.y }, g);
-        hit.addEventListener("mouseenter", function () {
-          focus(panel, d);
+        d.lane = lane;
+        lane.addEventListener("mouseenter", function () {
+          if (!S.dragging) focus(panel, d);
         });
-        hit.addEventListener("mouseleave", function () {
+        lane.addEventListener("mouseleave", function () {
           focus(panel, null);
         });
+
+        /* the card's own progress line, along its bottom edge */
+        d.li.style.setProperty("--s", d.s.toFixed(5));
+        d.li.style.setProperty("--w", w);
+        d.prog = make("span", "tl__prog", d.li.querySelector(".tl__card"));
       });
 
-      svg.appendChild(gLabels);
+      /* The playhead: a line through the lanes under a dark date pill */
+      var head = make("div", "tl__head", rail);
+      make("span", "tl__head-line", head);
+      var knob = make("div", "tl__knob", head);
+      knob.tabIndex = 0;
+      knob.setAttribute("role", "slider");
+      knob.setAttribute("aria-label", "Point in time");
+      knob.setAttribute("aria-valuemin", Math.ceil(t0 * 12 - 1e-6));
+      knob.setAttribute("aria-valuemax", monthOf(t1));
+      var knobText = make("span", "tl__knob-text", knob);
+      /* the ghost follows the mouse over the track and shows its date */
+      var ghost = make("div", "tl__ghost", rail);
+      var ghostText = make("span", "", ghost);
 
-      if (animate) {
-        /* draw once the timeline is actually on screen */
-        var go = function () {
-          drawn[panel.id] = true;
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              panel.classList.add("tl--drawn");
-            });
-          });
-        };
+      panel.appendChild(wrap);
+      S.wrap = wrap;
+      S.play = play;
+      S.rail = rail;
+      S.knob = knob;
+      S.knobText = knobText;
+      S.ghost = ghost;
+      S.ghostText = ghostText;
+      S.W = rail.clientWidth;
+      S.KW = knob.offsetWidth;
+
+      /* ---- input ---- */
+      var pAt = function (clientX, rect) {
+        return (clientX - rect.left) / rect.width;
+      };
+      var snap = function (p) {
+        var t = t0 + p * span;
+        for (var i = 0; i < S.marks.length; i++) {
+          if (Math.abs(t - S.marks[i]) < SNAP) return frac(S.marks[i]);
+        }
+        return p;
+      };
+      rail.addEventListener("pointerdown", function (e) {
+        if (e.button !== 0) return;
+        stop(S);
+        S.dragging = true;
+        S.rect = rail.getBoundingClientRect();
+        S.samples = [];
+        try {
+          rail.setPointerCapture(e.pointerId);
+        } catch (err) {}
+        panel.classList.add("tl--dragging");
+        tl.classList.add("tl--scrubbed");
+        ghost.classList.remove("is-on");
+        focus(panel, null);
+        knob.focus({ preventScroll: true });
+        setP(S, snap(pAt(e.clientX, S.rect)));
+        e.preventDefault();
+      });
+      rail.addEventListener("pointermove", function (e) {
+        if (!S.dragging) {
+          if (e.pointerType === "mouse") hover(S, e.clientX);
+          return;
+        }
+        var p = pAt(e.clientX, S.rect);
+        S.samples.push({ p: p, t: e.timeStamp });
+        while (S.samples.length > 2 && e.timeStamp - S.samples[0].t > 90) S.samples.shift();
+        setP(S, snap(p));
+      });
+      var release = function (e) {
+        if (!S.dragging) return;
+        S.dragging = false;
+        panel.classList.remove("tl--dragging");
+        /* a flick keeps the playhead coasting, slowing as it goes */
+        var sm = S.samples;
+        if (sm.length > 1 && e.timeStamp - sm[sm.length - 1].t < 70) {
+          var dt = sm[sm.length - 1].t - sm[0].t;
+          var v = dt > 0 ? (sm[sm.length - 1].p - sm[0].p) / dt : 0;
+          if (Math.abs(v) > 0.0004) coast(S, v);
+        }
+      };
+      rail.addEventListener("pointerup", release);
+      rail.addEventListener("pointercancel", release);
+      rail.addEventListener("pointerleave", function () {
+        ghost.classList.remove("is-on");
+      });
+      knob.addEventListener("keydown", function (e) {
+        var month = 1 / 12 / span;
+        var from = S.raf && S.goal != null ? S.goal : S.p;
+        var to = null;
+        if (e.key === "ArrowRight" || e.key === "ArrowUp") to = from + month;
+        else if (e.key === "ArrowLeft" || e.key === "ArrowDown") to = from - month;
+        else if (e.key === "PageUp") to = from + 12 * month;
+        else if (e.key === "PageDown") to = from - 12 * month;
+        else if (e.key === "Home") to = 0;
+        else if (e.key === "End") to = 1;
+        if (to === null) return;
+        e.preventDefault();
+        tl.classList.add("tl--scrubbed");
+        glide(S, Math.max(0, Math.min(1, to)), 260, easeOut);
+      });
+      play.addEventListener("click", function () {
+        tl.classList.add("tl--scrubbed");
+        if (S.playing) stop(S);
+        else sweep(S);
+      });
+
+      /* Start at the far left and sweep in once the panel is on screen;
+         with reduced motion, or after a first sweep, sit at today */
+      if (reduced || panel._swept) setP(S, 1);
+      else {
+        setP(S, 0);
         if ("IntersectionObserver" in window) {
-          var io2 = new IntersectionObserver(
+          S.io = new IntersectionObserver(
             function (entries) {
               if (
-                entries.some(function (e) {
-                  return e.isIntersecting;
+                !entries.some(function (en) {
+                  return en.isIntersecting;
                 })
-              ) {
-                io2.disconnect();
-                go();
-              }
+              )
+                return;
+              S.io.disconnect();
+              S.io = null;
+              panel._swept = true;
+              S.wait = setTimeout(function () {
+                if (!S.dragging && S.p === 0) sweep(S);
+              }, 250);
             },
-            { threshold: 0.25 }
+            { threshold: 0.4 }
           );
-          io2.observe(list);
-        } else go();
+          S.io.observe(panel);
+        } else {
+          panel._swept = true;
+          setP(S, 1);
+        }
       }
+      return S;
     }
 
-    /* Hovering a card or a bar lights that pair and dims the rest */
+    /* Move the playhead: --p drives the fills; the cards and lanes take a
+       state class only when it changes */
+    function setP(S, p) {
+      p = Math.max(0, Math.min(1, p));
+      S.p = p;
+      S.panel.style.setProperty("--p", p.toFixed(5));
+      var atNow = p > 0.9995;
+      var month = monthOf(S.t0 + p * S.span);
+      if (month !== S.month || atNow !== S.atNow) {
+        S.month = month;
+        S.atNow = atNow;
+        S.panel.classList.toggle("tl--now", atNow);
+        S.knobText.textContent = atNow ? "Now" : monthText(month);
+        S.knob.setAttribute("aria-valuenow", month);
+        S.knob.setAttribute("aria-valuetext", atNow ? "Now, " + monthText(month) : monthText(month));
+      }
+      /* the pill keeps inside the track; its notch stays on the line */
+      var x = p * S.W;
+      var left = Math.max(-16, Math.min(S.W + 16 - S.KW, x - S.KW / 2));
+      S.knob.style.translate = (left - x).toFixed(1) + "px 0";
+      S.knob.style.setProperty("--notch", (x - left).toFixed(1) + "px");
+      S.data.forEach(function (d) {
+        var st = p < d.s - 1e-6 ? "future" : !d.live && p >= d.e - 1e-6 ? "past" : "active";
+        if (st === d.state) return;
+        d.state = st;
+        [d.li, d.lane].forEach(function (n) {
+          n.classList.toggle("is-active", st === "active");
+          n.classList.toggle("is-past", st === "past");
+          n.classList.toggle("is-future", st === "future");
+        });
+      });
+      syncPlay(S);
+    }
+    function syncPlay(S) {
+      S.play.classList.toggle("is-playing", !!S.playing);
+      S.play.classList.toggle("is-ended", S.p > 0.9995);
+      var label = S.playing ? "Pause the timeline" : S.p > 0.9995 ? "Replay the timeline" : "Play the timeline to today";
+      if (S.play.getAttribute("aria-label") !== label) S.play.setAttribute("aria-label", label);
+    }
+    function stop(S) {
+      if (S.raf) cancelAnimationFrame(S.raf);
+      clearTimeout(S.wait);
+      S.raf = 0;
+      S.goal = null;
+      if (S.playing) {
+        S.playing = false;
+        syncPlay(S);
+      }
+    }
+    function glide(S, to, ms, ease, playing) {
+      stop(S);
+      if (reduced) {
+        setP(S, to);
+        return;
+      }
+      var from = S.p;
+      var start = null;
+      S.goal = to;
+      S.playing = !!playing;
+      var step = function (ts) {
+        if (start === null) start = ts;
+        var k = Math.min(1, (ts - start) / ms);
+        setP(S, from + (to - from) * ease(k));
+        if (k < 1) S.raf = requestAnimationFrame(step);
+        else {
+          S.raf = 0;
+          S.goal = null;
+          S.playing = false;
+          syncPlay(S);
+        }
+      };
+      S.raf = requestAnimationFrame(step);
+      syncPlay(S);
+    }
+    /* Play: from the start when at today, else on from where it stands */
+    function sweep(S) {
+      var from = S.p > 0.9995 ? 0 : S.p;
+      setP(S, from);
+      glide(S, 1, Math.max(500, (1 - from) * SWEEP_MS), from === 0 ? easeInOut : easeOut, true);
+    }
+    function coast(S, v) {
+      stop(S);
+      if (reduced) return;
+      var last = null;
+      var step = function (ts) {
+        if (last !== null) {
+          var dt = Math.min(40, ts - last);
+          setP(S, S.p + v * dt);
+          v *= Math.pow(0.93, dt / 16.7);
+          if (S.p <= 0 || S.p >= 1 || Math.abs(v) < 0.00003) {
+            S.raf = 0;
+            return;
+          }
+        }
+        last = ts;
+        S.raf = requestAnimationFrame(step);
+      };
+      S.raf = requestAnimationFrame(step);
+    }
+    function hover(S, clientX) {
+      var r = S.rail.getBoundingClientRect();
+      var p = (clientX - r.left) / r.width;
+      /* nothing to show past the ends, or right under the playhead */
+      if (p < 0 || p > 1 || Math.abs(p - S.p) * r.width < 52) {
+        S.ghost.classList.remove("is-on");
+        return;
+      }
+      S.ghost.style.left = pct(p);
+      S.ghostText.textContent = p > 0.9995 ? "Now" : monthText(monthOf(S.t0 + p * S.span));
+      S.ghost.classList.add("is-on");
+    }
+
+    function teardown(panel) {
+      var S = panel._s;
+      if (!S) return;
+      stop(S);
+      if (S.io) S.io.disconnect();
+      S.wrap.remove();
+      panel.classList.remove("tl--scrub", "tl--now", "tl--focus", "tl--dragging");
+      panel.style.removeProperty("--p");
+      panel._tl.forEach(function (d) {
+        d.li.classList.remove("is-active", "is-past", "is-future", "is-hot");
+        if (d.prog) d.prog.remove();
+        d.state = null;
+      });
+      panel._s = null;
+      order(panel, true);
+    }
+
+    function layout(panel) {
+      if (!panel._tl.length) return;
+      if (!wide.matches) {
+        teardown(panel);
+        return;
+      }
+      if (panel.hidden) return;
+      var S = panel._s || (panel._s = build(panel));
+      S.W = S.rail.clientWidth;
+      S.KW = S.knob.offsetWidth;
+      setP(S, S.p);
+    }
+
+    /* Hovering a card or a lane lights that pair and dims the rest; a
+       click on a card (not its link) takes the playhead to its start */
     function focus(panel, d) {
       panel.classList.toggle("tl--focus", !!d);
       panel._tl.forEach(function (e) {
         var on = e === d;
         e.li.classList.toggle("is-hot", on);
-        if (e.g) e.g.classList.toggle("is-hot", on);
+        if (e.lane) e.lane.classList.toggle("is-hot", on);
       });
     }
     panels.forEach(function (panel) {
       panel._tl.forEach(function (d) {
         d.li.addEventListener("mouseenter", function () {
-          if (panel.classList.contains("tl--chart")) focus(panel, d);
+          if (panel._s && !panel._s.dragging) focus(panel, d);
         });
         d.li.addEventListener("mouseleave", function () {
           focus(panel, null);
+        });
+        d.li.addEventListener("click", function (e) {
+          var S = panel._s;
+          if (!S || e.target.closest("a")) return;
+          tl.classList.add("tl--scrubbed");
+          glide(S, Math.min(1, d.s + 0.5 / 12 / S.span), 700, easeInOut);
         });
       });
     });
@@ -516,6 +601,7 @@
       });
       panels.forEach(function (p) {
         var on = p.getAttribute("data-panel") === tab.getAttribute("data-tab");
+        if (!on && p._s) stop(p._s);
         p.hidden = !on;
         p.classList.toggle("is-active", on);
         if (on) layout(p);
@@ -538,6 +624,11 @@
         }
       });
     });
+
+    /* a hint beside the tabs, until the first drag */
+    var hint = make("span", "tl__hint", tl.querySelector(".tl__tabs"));
+    hint.setAttribute("aria-hidden", "true");
+    hint.textContent = "Drag the timeline";
 
     var relayout = function () {
       panels.forEach(layout);
